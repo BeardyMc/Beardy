@@ -6,8 +6,7 @@ st.write(
 )
 era = st.selectbox(
     "Age:",
-    [   "Please select an age", 
-        "Primitive",
+    [   "Primitive",
         "Medieval",
         "Early-Modern",
         "Modern",
