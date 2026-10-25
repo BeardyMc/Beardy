@@ -75,4 +75,48 @@ skin_q = st.selectbox(
     ],
 )
 
+weapon_windups = {
+    # Primitive
+    "Blowgun": 1.0,
+    "Rock": 1.0,
+    "Slinger": 1.0,
+    # Medieval
+    "Bow": 1.0,
+    "Tomahawk": 1.0,
+    # Early-Modern
+    "Crossbow": 1.0,
+    "Dual Pistols": 1.0,
+    "Musket": 1.0,
+    # Modern
+    "AK": 1.0,
+    "M4": 1.0,
+    "Sniper": 1.0,
+    "Uzi": 1.0,
+    # Space
+    "Blaster": 1.0,
+    "Space Gun": 1.0,
+    "Space Pistol": 1.0,
+    # Interstellar
+    "Ionic Blaster": 1.0,
+    "Plasma Rifle": 1.0,
+    "Ray Gun": 1.0,
+    # Multiverse
+    "Virtual Gun": 1.0,
+    "Virtual Bow": 1.0,
+    # Quantum
+    "Black Bow": 1.0,
+    "Black Gun": 1.0,
+    "Black Staff": 1.0,
+    # Underworld
+    "Abyssal Fork": 1.0,
+    "Abyssal Trident": 1.0,
+    # Divine
+    "Staff": 1.0,
+    "Staff of Wisdom": 1.0,
+}
+ 
+item_windup = weapon_windups.get(selected_item, 1.0)
+
+# Display it to test
+st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
 
