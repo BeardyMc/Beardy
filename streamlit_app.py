@@ -20,28 +20,28 @@ era = st.selectbox(
     ],
 ) 
 
-if era == "Primative"
+if era == "Primative":
 items = ["Blowgun", "Rock", "Slinger"] 
-elif era =="Medieval"
+elif era =="Medieval":
 items = ["Bow", "Tomahawk"] 
-elif era == "Early-Modern" 
+elif era == "Early-Modern":
 items = ["Crossbow", "Dual Pistols", "Musket"]
-elif era == "Modern"
+elif era == "Modern":
 items = ["AK", "M4", "Sniper", "Uzi"]
-elif era == "Space" 
+elif era == "Space":
 items = ["Blaster", "Space Gun", "Space Pistol"] 
-elif era == "Interstellar"
+elif era == "Interstellar":
 items = ["Ionic Blaster", "Plasma Rifle", "Ray Gun"]
-elif era == "Multiverse" 
+elif era == "Multiverse":
 items = ["Virtual Gun", "Virtual Bow"] 
-elif era == "Quantum" 
+elif era == "Quantum":
 items = ["Black Bow", "Black Gun", "Black Staff"] 
-elif era == "Underworld" 
+elif era == "Underworld":
 items = ["Abyssal Fork", "Abyssal Trident"] 
-elif era == "Divine" 
+elif era == "Divine":
 items = ["Staff", "Staff of Wisdom"]
-else 
+else:
 items = [] 
 
-selected_item = st.selectbox(f"Select specific {category}:", items)
+selected_item = st.selectbox(f"Weapon:", items)
 
