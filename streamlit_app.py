@@ -44,3 +44,35 @@ else:
 
 selected_item = st.selectbox(f"Weapon:", items)
 
+skin_q = st.selectbox(
+    "Skin:",
+    [
+        "None",
+        "Anubis",
+        "Boxer",
+        "Bunny",
+        "Cat",
+        "Chef",
+        "Clown",
+        "Cubeguy",
+        "Dark Planet Warrior",
+        "Demon",
+        "Druid",
+        "Eagle",
+        "Fishbowl",
+        "Flower",
+        "King",
+        "Knight",
+        "Lavaman",
+        "Leprechaun",
+        "Millionaire",
+        "Mummy",
+        "Mushroom",
+        "Reaper",
+        "Shark",
+        "Skater",
+        "Skeleton",
+    ],
+)
+
+
