@@ -120,3 +120,35 @@ item_windup = weapon_windups.get(selected_item, 1.0)
 # Display it to test
 st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
 
+# 1. Dictionary for all skin modifiers
+skin_modifiers = {
+    "Anubis": 1.0,
+    "Boxer": 1.0,
+    "Bunny": 1.0,
+    "Cat": 1.0,
+    "Chef": 1.0,
+    "Clown": 1.0,
+    "Cubeguy": 1.0,
+    "Dark Planet Warrior": 1.0,
+    "Demon": 1.0,
+    "Druid": 1.0,
+    "Eagle": 1.0,
+    "Fishbowl": 1.0,
+    "Flower": 1.0,
+    "King": 1.0,
+    "Knight": 1.0,
+    "Lavaman": 1.0,
+    "Leprechaun": 1.0,
+    "Millionaire": 1.0,
+    "Mummy": 1.0,
+    "Mushroom": 1.0,
+    "Reaper": 1.0,
+    "Shark": 1.0,
+    "Skater": 1.0,
+    "Skeleton": 1.0,
+}
+
+if skin_q != "None":
+  skin_windup = skin_modifiers.get(skin_q, 1.0)
+  st.write(f"Active Skin: **{skin_q}** (Windup: {skin_windup})")
+
