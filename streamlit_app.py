@@ -2,10 +2,10 @@ import streamlit as st
 
 st.title("🎈 Beardy Does Maths")
 st.write(
-    "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nFirst, select your weapon:\n\nAge:"
+    "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nFirst, select your weapon:\n"
 )
 selected_era = st.selectbox(
-    "Select Category",
+    "Age:",
     [
         "Primitive",
         "Medieval",
