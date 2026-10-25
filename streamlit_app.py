@@ -19,7 +19,7 @@ era = st.selectbox(
     ],
 ) 
 
-if era == "Primative":
+if era == "Primitive":
     items = ["Blowgun", "Rock", "Slinger"] 
 elif era =="Medieval":
     items = ["Bow", "Tomahawk"] 
@@ -40,7 +40,7 @@ elif era == "Underworld":
 elif era == "Divine":
     items = ["Staff", "Staff of Wisdom"]
 else:
-    items = [] 
+    items = ["Please select an age"] 
 
 selected_item = st.selectbox(f"Weapon:", items)
 
