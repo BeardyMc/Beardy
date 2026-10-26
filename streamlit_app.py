@@ -268,7 +268,7 @@ if Clicked:
         final_breakpoints = item_breakpoints
 
 
-    st.write("Calculated Breakpoints") 
+    st.dataframe(final_breakpoints) 
     
 
 
