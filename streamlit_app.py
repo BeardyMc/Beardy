@@ -270,7 +270,7 @@ if Clicked:
 
     df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
 
-    if Skin_q != "None":
+    if skin_q != "None":
         df = df.set_index(wearing)
         st.dataframe(df)
     else:
