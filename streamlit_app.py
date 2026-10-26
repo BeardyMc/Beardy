@@ -345,7 +345,7 @@ if Clicked:
 
     SubN, SubV = best_substats(final_breakpoints, N_ls)
 
-    subNdf = pd.DataFrame(SubN,columns=["% Perf", "Crit Dmg", "Damage", "Ranged", "Double", "Speed"] 
+    subNdf = pd.DataFrame(SubN,columns=["% Perf", "Crit Dmg", "Damage", "Ranged", "Double", "Speed"]) 
 
     st.dataframe(subNdf, use_container_width=True, height="content", hide_index=True)
 
