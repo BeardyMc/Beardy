@@ -268,7 +268,7 @@ if Clicked:
     else:
         final_breakpoints = item_breakpoints
 
-    df = pd.Dataframe(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
+    df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
 
     st.dataframe(df) 
     
