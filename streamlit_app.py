@@ -261,7 +261,7 @@ def combine_breakpoints(IB,SB):
 if Clicked:
     item_breakpoints = calculate_breakpoints(item_windup)
 
-    if skin_q~="none":
+    if Skin_q !="None":
         skin_breakpoints = calculate_breakpoints(skin_windup)
         final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
     else:
