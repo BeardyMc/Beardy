@@ -348,7 +348,7 @@ if Clicked:
     col_names = ['% Perf', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
     combined_df = pd.DataFrame()
-    combined_df['% Perf'] = subN[:, 0]
+    combined_df['% Perf'] = SubN[:, 0]
 
     # Loop through columns 1 to 5 to combine raw and scaled values
     for i, col_name in enumerate(col_names[1:], start=1):
