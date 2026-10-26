@@ -1,6 +1,7 @@
 import streamlit as st
 import math
 import numpy as np
+import pandas as pd
 
 st.title("🎈 Beardy Does Maths")
 st.write(
@@ -267,8 +268,9 @@ if Clicked:
     else:
         final_breakpoints = item_breakpoints
 
+    df = pd.dataframe(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
 
-    st.dataframe(final_breakpoints) 
+    st.dataframe(df) 
     
 
 
