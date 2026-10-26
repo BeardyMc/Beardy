@@ -216,7 +216,7 @@ def combine_breakpoints(IB,SB):
     for row in IB:
         all_AS.add(row[0])
     for row in SB:
-        all_AS.add(row[0])    7
+        all_AS.add(row[0])    
     all_AS = sorted(list(all_AS))
     print(all_AS)
     
