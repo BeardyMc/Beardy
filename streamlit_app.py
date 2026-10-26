@@ -199,8 +199,75 @@ def calculate_breakpoints(Windup):
     
     return breakpoints
     
+
+def manual_lookup(x_val, dataset):
+    # search function
+    active_row = dataset[0]  # default to first row
+    for row in dataset:
+        if row[0] <= x_val:
+            active_row = row
+        else:
+            break  # Stop once we pass x_val
+    return active_row[1], active_row[2]  # Returns (val1, val2)
+
+def combine_breakpoints(IB,SB):
+    # get all AS breakpoints
+    all_AS = set()
+    for row in IB:
+        all_AS.add(row[0])
+    for row in SB:
+        all_AS.add(row[0])    7
+    all_AS = sorted(list(all_AS))
+    print(all_AS)
+    
+    # inigltialise combined
+    CB=[]
+    choice=[]
+    single_speed=2
+    double_speed=2
+    
+    for AS in all_AS:
+        item_single, item_double = manual_lookup(AS,IB)
+        skin_single, skin_double = manual_lookup(AS,SB)
+        
+        print("item")
+        print([AS,item_single,item_double])
+        print("skin")
+        print([AS,skin_single,skin_double])
+        print("current")
+        print([single_speed, double_speed])
+        if item_single<single_speed or item_double<double_speed or skin_double<double_speed:
+            if item_double < skin_double:
+                CB.append([AS, item_single, item_double])
+                choice.append("Item")
+                double_speed=item_double
+            elif item_double > skin_double:
+                CB.append([AS, skin_single, skin_double])
+                choice.append("Skin")
+                double_speed=skin_double
+            else:
+                CB.append([AS,item_single,item_double])
+                choice.append("equal")
+                double_speed=item_double
+            single_speed=item_single
+        
+    return CB, choice
+            
+                
+
+
+
+
 if Clicked:
     item_breakpoints = calculate_breakpoints(item_windup)
+
+    if skin_q~="none":
+        skin_breakpoints = calculate_breakpoints(skin_windup)
+        final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
+    else:
+        final_breakpoints = item_breakpoints
+
+
     st.write("Calculated Breakpoints") 
     
 
