@@ -346,9 +346,19 @@ if Clicked:
     SubN, SubV = best_substats(final_breakpoints, N_ls)
 
     subNdf = pd.DataFrame(SubN,columns=["% Perf", "Crit Dmg", "Damage", "Ranged", "Double", "Speed"]) 
+    subVdf = pd.DataFrame(SubV,columns=["% Perf", "Crit Dmg", "Damage", "Ranged", "Double", "Speed"])  
 
+    st.divider()
+    st.subheader("Results")
+    st.write("These results all assume 3 slots are taken for Skill Damage, with a lvl 20 Mira giving 80% Crit Chance. \n\nThis is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached:")
     st.dataframe(subNdf, use_container_width=True, height="content", hide_index=True)
+    st.write("Here is the explicit percentage targeted by the model:")
+    st.dataframe(subVdf, use_container_width=True, height="content", hide_index=True)
 
+
+
+    st.divider()
+    st.write("Here is the full breakpoint table for your build:")
     st.dataframe(df, use_container_width=True, height="content", hide_index=True)
     
 
