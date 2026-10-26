@@ -1,4 +1,6 @@
 import streamlit as st
+import math
+import numpy as np
 
 st.title("🎈 Beardy Does Maths")
 st.write(
@@ -152,5 +154,50 @@ if skin_q != "None":
   skin_windup = skin_modifiers.get(skin_q, 1.0)
   st.write(f"Active Skin: **{skin_q}** (Windup: {skin_windup})")
 
+def calculate_breakpoints(Windup):
+    #fun comes here
+    breakpoints=[[0,0,0]] #initialise
+    BaseD=1.5 #standard time for all weapons
+    
+    inc=0.09999999976 #fd6
+    n_tics = math.ceil(Windup / inc)
+    first_hit = inc * n_tics
+    cooldown_tics = max(1, math.ceil((BaseD - first_hit) / inc))
+    total_t = (n_tics + cooldown_tics + 1) * 0.1
+    
+    breakpoints[0][1] = round(total_t,1) #first row, second val
+    
+    d_reset = Windup * 0.75
+    gap = max(1, math.ceil((Windup - d_reset) / inc))
+    t2 = d_reset + gap * inc
+    d_cool = max(1, math.ceil((BaseD - t2) / inc))
+    n_tics = math.ceil(Windup / inc)
+    d_total = gap + d_cool + 1 + n_tics
+
+    breakpoints[0][2] = round(d_total * 0.1,1)#first row, third val
+    
+    for i in range(1,48001):
+        AS=i*0.01
+
+        spd_multi = 1 + AS / 100
+        inc = spd_multi * 0.09999999976
+        n_tics = math.ceil(Windup / inc)
+        first_hit = inc * n_tics
+        cooldown_tics = max(1, math.ceil((BaseD - first_hit) / inc))
+        total_t = round((n_tics + cooldown_tics + 1) * 0.1,1)
+
+        gap = max(1, math.ceil((Windup - d_reset) / inc))
+        t2 = d_reset + gap * inc
+        d_cool = max(1, math.ceil((BaseD - t2) / inc))
+        n_tics = math.ceil(Windup / inc)  # re-evaluated
+        d_total = round((gap + d_cool + 1 + n_tics) * 0.1,1)
+
+        if total_t < breakpoints[-1][1] or d_total < breakpoints[-1][2]:
+            breakpoints.append([round(AS,2), total_t, d_total])
+    
+    return breakpoints
+    
+item_breakpoints = calculate_breakpoints(item_windup)
+    
 
 
