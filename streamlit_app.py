@@ -5,12 +5,16 @@ import pandas as pd
 
 hide_streamlit_style = """
 <style>
-MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
+#MainMenu {visibility: hidden;}
 header {visibility: hidden;}
+footer {visibility: hidden;}
+.stDeployButton {display: none;}
+[data-testid="stStatusWidget"] {visibility: hidden;}
+div[data-testid="stToolbar"] {visibility: hidden;}
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 
 
 st.title("🎈 Beardy Does Maths")
