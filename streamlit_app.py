@@ -271,10 +271,9 @@ if Clicked:
     df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
 
     if skin_q != "None":
-        df = df.set_index(wearing)
-        st.dataframe(df)
-    else:
-        st.dataframe(df, hide_index=True) 
+        df = df.insert(0,"Applied Skin", wearing)
+    
+    st.dataframe(df, hide_index=True) 
     
 
 
