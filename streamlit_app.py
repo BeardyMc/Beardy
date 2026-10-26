@@ -154,6 +154,10 @@ if skin_q != "None":
   skin_windup = skin_modifiers.get(skin_q, 1.0)
   st.write(f"Active Skin: **{skin_q}** (Windup: {skin_windup})")
 
+Clicked = st.button("Let's go!")
+
+st.write(Clicked)
+
 def calculate_breakpoints(Windup):
     #fun comes here
     breakpoints=[[0,0,0]] #initialise
