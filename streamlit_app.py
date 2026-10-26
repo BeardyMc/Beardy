@@ -156,6 +156,14 @@ if skin_q != "None":
   skin_windup = skin_modifiers.get(skin_q, 1.0)
   st.write(f"Active Skin: **{skin_q}** (Windup: {skin_windup})")
 
+N_ls = st.slider(
+    label="Select desired amount of lifesteal slots, recommended 2:", 
+    min_value=0,
+    max_value=12,
+    value=2,
+    step=1
+)
+
 Clicked = st.button("Let's go!")
 
 def calculate_breakpoints(Windup):
