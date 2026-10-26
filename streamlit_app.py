@@ -201,6 +201,7 @@ def calculate_breakpoints(Windup):
     
 if Clicked:
     item_breakpoints = calculate_breakpoints(item_windup)
+    st.write("Calculated Breakpoints") 
     
 
 
