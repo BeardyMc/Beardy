@@ -3,19 +3,6 @@ import math
 import numpy as np
 import pandas as pd
 
-hide_streamlit_style = """
-<style>
-#MainMenu {visibility: hidden;}
-header {visibility: hidden;}
-footer {visibility: hidden;}
-.stDeployButton {display: none;}
-[data-testid="stStatusWidget"] {visibility: hidden;}
-div[data-testid="stToolbar"] {visibility: hidden;}
-</style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
 
 st.title("🎈 Beardy Does Maths")
 st.write(
@@ -233,9 +220,8 @@ def combine_breakpoints(IB,SB):
     for row in SB:
         all_AS.add(row[0])    
     all_AS = sorted(list(all_AS))
-    print(all_AS)
     
-    # inigltialise combined
+    # initialise combined
     CB=[]
     choice=[]
     single_speed=2
@@ -245,12 +231,6 @@ def combine_breakpoints(IB,SB):
         item_single, item_double = manual_lookup(AS,IB)
         skin_single, skin_double = manual_lookup(AS,SB)
         
-        print("item")
-        print([AS,item_single,item_double])
-        print("skin")
-        print([AS,skin_single,skin_double])
-        print("current")
-        print([single_speed, double_speed])
         if item_single<single_speed or item_double<double_speed or skin_double<double_speed:
             if item_double < skin_double:
                 CB.append([AS, item_single, item_double])
