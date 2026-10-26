@@ -345,17 +345,31 @@ if Clicked:
 
     SubN, SubV = best_substats(final_breakpoints, N_ls)
 
-    subNdf = pd.DataFrame(SubN,columns=["% Perf", "Crit Dmg", "Damage", "Ranged", "Double", "Speed"]) 
-    subVdf = pd.DataFrame(SubV,columns=["% Perf", "Crit Dmg", "Damage", "Ranged", "Double", "Speed"])  
+    col_names = ['% Perf', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
+    combined_df = pd.DataFrame()
+    combined_df['% Perf'] = subN[:, 0]
+
+    # Loop through columns 1 to 5 to combine raw and scaled values
+    for i, col_name in enumerate(col_names[1:], start=1):
+        raw_vals = subN[:, i]
+        scaled_vals = subV[:, i]
+    
+    # Combine them into a "Raw / Scaled" string format
+    # (Using int() on raw values since tiers are whole numbers, and .1f for scaled)
+        combined_df[col_name] = [
+            f"{int(r)} / {s:.1f}" for r, s in zip(raw_vals, scaled_vals)
+        ]
+    
     st.divider()
     st.subheader("Results")
-    st.write("These results all assume 3 slots are taken for Skill Damage, with a lvl 20 Mira giving 80% Crit Chance. \n\nThis is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached:")
-    st.dataframe(subNdf, use_container_width=True, height="content", hide_index=True)
-    st.write("Here is the explicit percentage targeted by the model:")
-    st.dataframe(subVdf, use_container_width=True, height="content", hide_index=True)
-
-
+    st.write("These results all assume 3 slots are taken for Skill Damage, with a lvl 20 Mira giving 80% Crit Chance. \n\nThis is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
+    st.dataframe(
+        combined_df, 
+        use_container_width=True, 
+        height="content", 
+        hide_index=True
+    )
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
