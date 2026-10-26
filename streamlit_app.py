@@ -119,7 +119,7 @@ weapon_windups = {
  
 item_windup = weapon_windups.get(selected_item, 1.0)
 
-# Display it to test
+# Show on screen
 st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
 
 # 1. Dictionary for all skin modifiers
@@ -155,8 +155,6 @@ if skin_q != "None":
   st.write(f"Active Skin: **{skin_q}** (Windup: {skin_windup})")
 
 Clicked = st.button("Let's go!")
-
-st.write(Clicked)
 
 def calculate_breakpoints(Windup):
     #fun comes here
@@ -201,7 +199,8 @@ def calculate_breakpoints(Windup):
     
     return breakpoints
     
-item_breakpoints = calculate_breakpoints(item_windup)
+if Clicked:
+    item_breakpoints = calculate_breakpoints(item_windup)
     
 
 
