@@ -352,8 +352,8 @@ if Clicked:
 
     # Loop through columns 1 to 5 to combine raw and scaled values
     for i, col_name in enumerate(col_names[1:], start=1):
-        raw_vals = subN[:, i]
-        scaled_vals = subV[:, i]
+        raw_vals = SubN[:, i]
+        scaled_vals = SubV[:, i]
     
     # Combine them into a "Raw / Scaled" string format
     # (Using int() on raw values since tiers are whole numbers, and .1f for scaled)
