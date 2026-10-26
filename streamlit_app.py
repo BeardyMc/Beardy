@@ -267,7 +267,7 @@ if Clicked:
     if skin_q != "None":
         df["Applied Skin"] = wearing
     
-    st.dataframe(df, hide_index=True) 
+    st.dataframe(df, use_container_width=True, height="content", hide_index=True)
     
 
 
