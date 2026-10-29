@@ -375,7 +375,8 @@ if Clicked:
 
     col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
-    second_df['% Perf'] = SubN[:, 0] 
+    second_df['% Perf'] = SubN[:, 0]
+    second_df['Speed'] = []
 
     workable_breakpoints = np.array(final_breakpoints)
 
