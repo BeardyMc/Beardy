@@ -271,11 +271,11 @@ def best_substats(timings, N_ls):
     CC = 0.8 #setting manually due to Mira, update at each new fairy launch
     
     # initialise
-    Record=[[0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0]]
     
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,24,0]
+        bestest=[0,0,0,0,24,0,0]
         
         for N_cd in range(1, 13):
             cd = N_cd * cd_max * perf
@@ -312,9 +312,9 @@ def best_substats(timings, N_ls):
                                         bestest = best_new
                                         best_val = [cd, dmg, rdmg, dc, spd]
 
-        last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
-            new_row = [perf] + bestest[0:5]
+        last_row_check = Record[-1][1:7]
+        if np.any(last_row_check != bestest):
+            new_row = [perf] + bestest
             Record.append(new_row)
         
     Record = np.array(Record)
