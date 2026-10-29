@@ -371,7 +371,7 @@ if Clicked:
         hide_index=True
     )
 
-    st.write(["Below we look at the PvP capabilities of these builds.", "Note: standard health is 8x damage, with a 5x multiplier in PvP. Pet typing and equipped item levels can change this distribution. These percentages assume health is 40x base damage before modifiers."]) 
+    st.write("Below we look at the PvP capabilities of these builds. \n\nNote: standard health is 8x damage, with a 5x multiplier in PvP. Pet typing and equipped items levels can change this distribution. These percentages assume health is the standard 40x base damage before modifiers.") 
 
     col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
