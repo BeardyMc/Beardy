@@ -392,8 +392,8 @@ if Clicked:
         spd_str.append(f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)")
         aps.append((1-SubV[i,4]/100)/C[-1,0] + 0.02*SubV[i,4]/C[-1,1])
         lifesteal.append(SubV[i,0]*20*N_ls)
-        regenH.append(lifesteal[i]*SubV[i,6]/aps[i]) 
-        regenS.append(lifesteal[i]*SubV[i,6])
+        regenH.append((lifesteal[i]*SubV[i,6]/aps[i])/40)
+        regenS.append(lifesteal[i]*SubV[i,6]/40)
         
         
  
@@ -409,11 +409,12 @@ if Clicked:
 
     st.dataframe(
         second_df.style.format({
+        '% Perf': '{:.2f}',
         'APS': '{:.2f}',
         'DPS': '{:.2f}',
-        'Lifesteal': '{:.1f}',
-        'Regen/s': '{:.2f}',
-        'Regen/hit': '{:.2f}'
+        'Lifesteal': '{:.1f}%',
+        'Regen/s': '{:.2f}%',
+        'Regen/hit': '{:.2f}%'
     }),  
         use_container_width=True, 
         height="content", 
