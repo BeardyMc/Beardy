@@ -373,11 +373,15 @@ if Clicked:
 
     st.write("Below we look at the PvP capabilities of these builds. Note: standard health is 8x damage, with a 5x multiplier in PvP.") 
 
-    col_names = ["% Perf", "Speed", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
+    col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0] 
 
-    
+    for rows in subV
+        spd=row[6]
+        B=final_breakpoints[:,0]<spd
+        C=final_breakpoints[B,1:3]
+        second_df['Speed'] = f"{spd:.1f}% ({C[0]:.3f}s / {C[1]:.3f}s)"
  
     #second_df[] 
 
