@@ -379,6 +379,8 @@ if Clicked:
 
     workable_breakpoints = np.array(final_breakpoints)
     spd_str=[]
+    aps=[] 
+    lifesteal=[]
 
     for i in range(len(SubV)):
         spd=SubV[i,5]
@@ -386,8 +388,15 @@ if Clicked:
         C=workable_breakpoints[B,1:3]
         
         spd_str.append(f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)")
+        aps.append((1-SubV[i,4]/100)/C[-1,0] + 0.02*SubV[i,4]/C[-1,1])
+        lifesteal.append(SubV[i,0]*perf*N_ls)
+        
  
     second_df['Speed'] = spd_str
+    second_df['APS'] = aps
+    second_df['DPS'] = SubV[:,6]
+    second_df['Lifesteal'] = lifesteal 
+
 
     st.dataframe(
         second_df, 
