@@ -154,7 +154,7 @@ skin_modifiers = {
 
 if skin_q != "None":
   skin_windup = skin_modifiers.get(skin_q, 1.0)
-  st.write(f"Active Skin: **{skin_q}** (Windup: {skin_windup})")
+  st.write(f"Available Skin: {skin_q}, Windup: {skin_windup}")
 
 N_ls = st.slider(
     label="Select desired amount of lifesteal slots, recommended 2:", 
