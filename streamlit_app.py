@@ -371,7 +371,7 @@ if Clicked:
         hide_index=True
     )
 
-    st.write("Below we look at the PvP capabilities of these builds. Note: standard health is 8x damage, with a 5x multiplier in PvP.") 
+    st.write("Below we look at the PvP capabilities of these builds. \nNote: standard health is 8x damage, with a 5x multiplier in PvP.") 
 
     col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
