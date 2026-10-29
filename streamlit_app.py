@@ -376,18 +376,18 @@ if Clicked:
     col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0]
-    second_df['Speed'] = SubN[:,0]
 
     workable_breakpoints = np.array(final_breakpoints)
+    spd_str=[]
 
     for i in range(len(SubV)):
         spd=SubV[i,5]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
-        second_df['Speed'][i] = f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)"
+        spd_str.append = f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)"
  
-    #second_df[] 
+    #second_df['Speed'] = spd_str
 
     st.dataframe(
         second_df, 
