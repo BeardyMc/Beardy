@@ -377,10 +377,12 @@ if Clicked:
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0] 
 
+    workable_breakpoints = np.array(final_breakpoints)
+
     for row in SubV:
         spd=row[6]
-        B=final_breakpoints[:][0]<spd
-        C=final_breakpoints[B][1:3]
+        B=workable_breakpoints[:,0]<spd
+        C=workable_breakpoints[B,1:3]
         second_df['Speed'] = f"{spd:.1f}% ({C[0]:.3f}s / {C[1]:.3f}s)"
  
     #second_df[] 
@@ -392,7 +394,7 @@ if Clicked:
         hide_index=True
     )
 
-    st.write(final_breakpoints)
+    st.write(workable_breakpoints)
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
