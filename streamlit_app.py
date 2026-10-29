@@ -384,7 +384,7 @@ if Clicked:
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
-        second_df['Speed'] = f"{spd:f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)"
+        second_df['Speed'][i] = f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)"
  
     #second_df[] 
 
