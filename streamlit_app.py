@@ -379,8 +379,8 @@ if Clicked:
 
     workable_breakpoints = np.array(final_breakpoints)
 
-    for row in SubV:
-        spd=row[5]
+    for i in range(len(SubV)):
+        spd=SubV[i,5]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
