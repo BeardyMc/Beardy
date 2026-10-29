@@ -371,6 +371,23 @@ if Clicked:
         hide_index=True
     )
 
+    st.write("Below we look at the PvP capabilities of these builds. Note: standard health is 8x damage, with a 5x multiplier in PvP.") 
+
+    col_names = ["% Perf", "Speed", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
+    second_df = pd.DataFrame()
+    second_df['% Perf'] = SubN[:, 0] 
+
+    
+ 
+    #second_df[] 
+
+    st.dataframe(
+        second_df, 
+        use_container_width=True, 
+        height="content", 
+        hide_index=True
+    )
+
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
     st.dataframe(df, use_container_width=True, height="content", hide_index=True)
