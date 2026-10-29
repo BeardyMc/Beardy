@@ -377,7 +377,7 @@ if Clicked:
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0] 
 
-    for rows in subV:
+    for rows in SubV:
         spd=row[6]
         B=final_breakpoints[:,0]<spd
         C=final_breakpoints[B,1:3]
