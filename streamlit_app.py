@@ -380,7 +380,7 @@ if Clicked:
     workable_breakpoints = np.array(final_breakpoints)
 
     for row in SubV:
-        spd=row[6]
+        spd=row[5]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
@@ -395,7 +395,6 @@ if Clicked:
         hide_index=True
     )
 
-    st.write(workable_breakpoints)
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
