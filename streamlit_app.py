@@ -384,7 +384,7 @@ if Clicked:
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
-        second_df['Speed'] = f"{spd:.1f}% ({C[-1,0]:.3f}s / {C[-1,1]:.3f}s)"
+        second_df['Speed'] = f"{spd:f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)"
  
     #second_df[] 
 
@@ -395,6 +395,7 @@ if Clicked:
         hide_index=True
     )
 
+    st.write(SubV)
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
