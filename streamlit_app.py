@@ -383,6 +383,7 @@ if Clicked:
         spd=row[6]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
+        st.write(C)
         second_df['Speed'] = f"{spd:.1f}% ({C[0]:.3f}s / {C[1]:.3f}s)"
  
     #second_df[] 
