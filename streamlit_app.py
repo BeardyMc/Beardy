@@ -388,6 +388,8 @@ if Clicked:
         hide_index=True
     )
 
+    st.write(final_breakpoints)
+
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
     st.dataframe(df, use_container_width=True, height="content", hide_index=True)
