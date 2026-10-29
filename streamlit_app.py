@@ -260,7 +260,7 @@ def combine_breakpoints(IB,SB):
 
 def best_substats(timings, N_ls):
     timings=np.array(timings)
-    # function for findinf optimal substat builds
+    # function for finding optimal substat builds
     cd_max = 0.8
     cc_max = 0.12
     dc_max = 0.2
@@ -312,8 +312,8 @@ def best_substats(timings, N_ls):
                                         bestest = best_new
                                         best_val = [cd, dmg, rdmg, dc, spd]
 
-        last_row_check = Record[-1][1:7]
-        if np.any(last_row_check != bestest):
+        last_row_check = Record[-1][1:6]
+        if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
             Record.append(new_row)
         
