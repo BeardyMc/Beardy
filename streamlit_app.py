@@ -380,7 +380,7 @@ if Clicked:
     for row in SubV:
         spd=row[6]
         B=final_breakpoints[:][0]<spd
-        C=final_breakpoints[B,1:3]
+        C=final_breakpoints[B][1:3]
         second_df['Speed'] = f"{spd:.1f}% ({C[0]:.3f}s / {C[1]:.3f}s)"
  
     #second_df[] 
