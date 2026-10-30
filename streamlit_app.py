@@ -166,7 +166,7 @@ N_ls = st.slider(
     step=1
 )
 
-fairy = st.toggle("Using damage fairy",value=true) 
+fairy = st.toggle("Using damage fairy",value=True) 
 
 fairy2 = st.radio(
     "Fairy choice",
