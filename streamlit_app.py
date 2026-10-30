@@ -8,7 +8,7 @@ st.title("🎈 Beardy Does Maths")
 st.write(
     "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nWeapon:\n"
 )
-era = st.selectbox(
+era = st.segmented_control(
     "Age:",
     [   "Primitive",
         "Medieval",
@@ -21,7 +21,10 @@ era = st.selectbox(
         "Underworld",
         "Divine",
     ],
-) 
+    required=True,
+    default="Primitive",
+    selection_mode="Single"
+    )
 
 
 if era == "Primitive":
@@ -47,7 +50,13 @@ elif era == "Divine":
 else:
     items = ["Please select an age"] 
 
-selected_item = st.selectbox(f"Weapon:", items)
+selected_item = st.segmented_control(
+    "Weapon:",
+    items, 
+    required=True,
+    default=items[0],
+    selection_mode="Single"
+)
 
 skin_q = st.selectbox(
     "Skin:",
@@ -177,7 +186,8 @@ with col2:
         ["Damage", "5th hit boost"], 
         label_visibility="collapsed", # Hides the redundant label so it aligns cleanly
         required=True,
-        default="Damage" 
+        default="Damage", 
+        selection_mode="Single"
     )
 
 Clicked = st.button("Let's go!")
