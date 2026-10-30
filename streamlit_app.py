@@ -200,7 +200,7 @@ def calculate_breakpoints(Windup):
     breakpoints=[[0,0,0]] #initialise
     BaseD=1.5 #standard time for all weapons
     
-    inc= math.floor((2**32)\10)/(2**32) #fd6
+    inc= math.floor((2**32)/10)/(2**32) #fd6
     n_tics = math.ceil(Windup / inc)
     first_hit = inc * n_tics
     cooldown_tics = max(1, math.ceil((BaseD - first_hit) / inc))
