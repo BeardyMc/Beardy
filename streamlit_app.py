@@ -180,8 +180,6 @@ with col2:
         default="Damage" 
     )
 
-st.write(fairy_choice)
-
 Clicked = st.button("Let's go!")
 
 def calculate_breakpoints(Windup):
