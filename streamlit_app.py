@@ -165,30 +165,21 @@ N_ls = st.slider(
     step=1
 )
 
-fairy = st.toggle("Using damage fairy",value=True) 
-
-fairy2 = st.radio(
-    "Fairy choice",
-    ["Damage", "5th hit"], 
-    horizontal=True) 
-
-# Create two columns (adjust ratios to fit your text length, e.g., [1, 2] or [1, 1])
-col1, col2 = st.columns([1, 2], wrap=False)
+# Columns force the segmented control to take up only 1 line
+col1, col2 = st.columns([1, 3], wrap=False)
 
 with col1:
-    # Put your label or description text on the left
     st.markdown("**Fairy Choice:**")
 
 with col2:
-    # Put your switch or radio option on the right
     fairy_choice = st.segmented_control(
-        "Fairy Choice Label", # Hidden label if you prefer, or use columns to handle it
-        ["Damage", "5th hit"], 
+        "Fairy Choice Label", # Hidden label
+        ["Damage", "5th hit boost"], 
         label_visibility="collapsed", # Hides the redundant label so it aligns cleanly
         required=True
     )
 
-
+st.write(fairy_choice)
 
 Clicked = st.button("Let's go!")
 
@@ -346,7 +337,6 @@ def best_substats(timings, N_ls):
             new_row = [perf] + bestest
             Record.append(new_row)
      
-    print(Record)
     Record = np.array(Record)
     Record = Record[1:]
 
