@@ -59,7 +59,7 @@ selected_item = st.segmented_control(
     selection_mode="single"
 )
 
-skin_q = st.selectbox(
+skin_q = st.segmented_control(
     "Skin:",
     [
         "None",
@@ -88,6 +88,10 @@ skin_q = st.selectbox(
         "Skater",
         "Skeleton",
     ],
+    required=True,
+    default="None",
+    selection_mode="single",
+    width="stretch" 
 )
 
 weapon_windups = {
