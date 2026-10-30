@@ -393,21 +393,21 @@ if Clicked:
     regenS=[] 
 
     for i in range(len(SubV)):
-        spd=SubV[i,5]
+        spd=SubV[i,6]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
         spd_str.append(f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)")
-        aps.append((1-SubV[i,4]/100)/C[-1,0] + 0.02*SubV[i,4]/C[-1,1])
+        aps.append((1-SubV[i,5]/100)/C[-1,0] + 0.02*SubV[i,5]/C[-1,1])
         lifesteal.append(SubV[i,0]*20*N_ls)
-        regenH.append((lifesteal[i]*SubV[i,6]/aps[i])/40)
-        regenS.append(lifesteal[i]*SubV[i,6]/40)
+        regenH.append((lifesteal[i]*SubV[i,7]/aps[i])/40)
+        regenS.append(lifesteal[i]*SubV[i,7]/40)
         
         
  
     second_df['Speed'] = spd_str
     second_df['APS'] = aps
-    second_df['DPS'] = SubV[:,6]
+    second_df['DPS'] = SubV[:,7]
     second_df['Lifesteal'] = lifesteal 
     second_df['Regen/s'] = regenS
     second_df['Regen/hit'] = regenH
