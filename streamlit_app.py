@@ -172,13 +172,23 @@ fairy2 = st.radio(
     ["Damage", "5th hit"], 
     horizontal=True) 
 
-# A sleek, single-line horizontal selector for your mutually exclusive options
-fairy_choice = st.segmented_control(
-    "Fairy Choice",
-    options=["Damage Fairy", "5th Hit Fairy"],
-    default="Damage Fairy",
-    selection_mode="single"
-)
+# Create two columns (adjust ratios to fit your text length, e.g., [1, 2] or [1, 1])
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    # Put your label or description text on the left
+    st.markdown("**Fairy Choice:**")
+
+with col2:
+    # Put your switch or radio option on the right
+    fairy_choice = st.radio(
+        "Fairy Choice Label", # Hidden label if you prefer, or use columns to handle it
+        ["Damage", "5th hit"], 
+        horizontal=True, 
+        label_visibility="collapsed" # Hides the redundant label so it aligns cleanly
+    )
+
+
 
 Clicked = st.button("Let's go!")
 
