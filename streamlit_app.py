@@ -23,6 +23,8 @@ era = st.selectbox(
     ],
 ) 
 
+
+
 if era == "Primitive":
     items = ["Blowgun", "Rock", "Slinger"] 
 elif era =="Medieval":
@@ -163,6 +165,13 @@ N_ls = st.slider(
     value=2,
     step=1
 )
+
+fairy = st.toggle("Using damage fairy",value=true) 
+
+fairy2 = st.radio(
+    "Fairy choice",
+    ["Damage", "5th hit"], 
+    horizontal=True) 
 
 Clicked = st.button("Let's go!")
 
