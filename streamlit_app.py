@@ -24,7 +24,6 @@ era = st.selectbox(
 ) 
 
 
-
 if era == "Primitive":
     items = ["Blowgun", "Rock", "Slinger"] 
 elif era =="Medieval":
@@ -172,6 +171,14 @@ fairy2 = st.radio(
     "Fairy choice",
     ["Damage", "5th hit"], 
     horizontal=True) 
+
+# A sleek, single-line horizontal selector for your mutually exclusive options
+fairy_choice = st.segmented_control(
+    "Fairy Choice",
+    options=["Damage Fairy", "5th Hit Fairy"],
+    default="Damage Fairy",
+    selection_mode="single"
+)
 
 Clicked = st.button("Let's go!")
 
