@@ -186,7 +186,7 @@ with col1:
 with col2:
     fairy_choice = st.segmented_control(
         "Fairy Choice Label", # Hidden label
-        ["Damage", "5th hit boost"], 
+        ["Damage", "5th hit boost", "None"], 
         label_visibility="collapsed", #Hides label
         required=True,
         default="Damage", 
@@ -359,9 +359,153 @@ def best_substats_5th(timings, N_ls):
 
     return Record, Record_stats
                        
-                                
+
+def best_substats_dmg(timings, N_ls):
+    timings=np.array(timings)
+    # function for finding optimal substat builds
+    cd_max = 0.8
+    cc_max = 0.12
+    dc_max = 0.2
+    dmg_max = 0.15
+    rdmg_max = 0.15
+    spd_max = 0.4
+
+    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
+    
+    # initialise
+    Record=[[0,0,0,0,0,0,0,0]]
+    
+    for i in range(70,101):
+        perf=i/100
+        bestest=[0,0,0,0,0,24,0]
+        
+        for N_cc in range(1,13):
+            CC = min(1, N_cc * cc_max * perf)
+        
+            for N_cd in range(1, 13):
+                cd = N_cd * cd_max * perf
+        
+                for N_dmg in range(13):  # 0 to 12 inclusive
+                    N_health=N_dmg
+                    dmg = math.floor(N_health * perf * 0.15/0.1) * 0.15
+            
+                    for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
+                        rdmg = N_rdmg * rdmg_max * perf
+                
+                        for N_dc in range(7):  # 0 to 6 inclusive
+                            dc = min(1, dc_max * N_dc * perf)
+                    
+                            for N_spd in range(1, 13):
+                                if (N_cc+N_spd+N_dc+N_rdmg+N_health+N_cd) == (24-N_ls):
+                                    spd = N_spd * spd_max * perf * 100
+                                    
+                                    B = timings[:,0]<spd
+                                    C = timings[B]
+                                    time1 = C[-1, 1:3]
+                                    
+                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
+                                    Crit_multi = CC * (1.2 + cd) + 0.2
+                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+    
+                                    if DPS > bestest[6]:
+                                        bestest = best_new
+                                        best_val = [CC, cd, dmg, rdmg, dc, spd]
+    
+                                    elif DPS == bestest[6]:
+                                        if max(best_new[0:6]) < max(bestest[0:6]):
+                                            bestest = best_new
+                                            best_val = [CC, cd, dmg, rdmg, dc, spd]
+        print(Record)
+        last_row_check = Record[-1][1:6]
+        if np.any(last_row_check != bestest[0:5]):
+            new_row = [perf] + bestest
+            Record.append(new_row)
+     
+    Record = np.array(Record)
+    Record = Record[1:]
+
+    Record_stats = Record.copy()
+    Record_stats[:, 1:7] = Record[:, 1:7] * Record[:, 0:1]
+    max_factors = np.array([cc_max, cd_max, dmg_max, rdmg_max, dc_max, spd_max])
+    Record_stats[:, 1:7] = Record_stats[:, 1:7] * max_factors * 100
 
     return Record, Record_stats
+
+
+def best_substats(timings, N_ls):
+    timings=np.array(timings)
+    # function for finding optimal substat builds
+    cd_max = 0.8
+    cc_max = 0.12
+    dc_max = 0.2
+    dmg_max = 0.15
+    rdmg_max = 0.15
+    spd_max = 0.4
+
+    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
+    
+    # initialise
+    Record=[[0,0,0,0,0,0,0,0]]
+    
+    for i in range(70,101):
+        perf=i/100
+        bestest=[0,0,0,0,0,24,0]
+        
+        for N_cc in range(1,13):
+            CC = min(1, N_cc * cc_max * perf)
+        
+            for N_cd in range(1, 13):
+                cd = N_cd * cd_max * perf
+        
+                for N_dmg in range(7):  # 0 to 6 inclusive
+                    dmg = N_dmg * dmg_max * perf
+            
+                    for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
+                        rdmg = N_rdmg * rdmg_max * perf
+                
+                        for N_dc in range(7):  # 0 to 6 inclusive
+                            dc = min(1, dc_max * N_dc * perf)
+                    
+                            for N_spd in range(1, 13):
+                                if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls):
+                                    spd = N_spd * spd_max * perf * 100
+                                    
+                                    B = timings[:,0]<spd
+                                    C = timings[B]
+                                    time1 = C[-1, 1:3]
+                                    
+                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
+                                    Crit_multi = CC * (1.2 + cd) + 0.2
+                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+    
+                                    if DPS > bestest[6]:
+                                        bestest = best_new
+                                        best_val = [CC, cd, dmg, rdmg, dc, spd]
+    
+                                    elif DPS == bestest[6]:
+                                        if max(best_new[0:6]) < max(bestest[0:6]):
+                                            bestest = best_new
+                                            best_val = [CC, cd, dmg, rdmg, dc, spd]
+        print(Record)
+        last_row_check = Record[-1][1:6]
+        if np.any(last_row_check != bestest[0:5]):
+            new_row = [perf] + bestest
+            Record.append(new_row)
+     
+    Record = np.array(Record)
+    Record = Record[1:]
+
+    Record_stats = Record.copy()
+    Record_stats[:, 1:7] = Record[:, 1:7] * Record[:, 0:1]
+    max_factors = np.array([cc_max, cd_max, dmg_max, rdmg_max, dc_max, spd_max])
+    Record_stats[:, 1:7] = Record_stats[:, 1:7] * max_factors * 100
+
+    return Record, Record_stats
+
 
 
 if Clicked:
@@ -380,8 +524,11 @@ if Clicked:
     
     if fairy_choice == "5th hit boost":
         SubN, SubV = best_substats_5th(final_breakpoints, N_ls)
+    elif fairy_choice == “Damage:
+        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls)
     else:
-        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls) 
+        SubN, SubV = best_substats(final_breakpoints, N_ls)
+
 
     col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
@@ -463,5 +610,6 @@ if Clicked:
     st.write("Here is the full breakpoint table for your build:")
     st.dataframe(df, use_container_width=True, height="content", hide_index=True)
     
+
 
 
