@@ -173,7 +173,7 @@ fairy2 = st.radio(
     horizontal=True) 
 
 # Create two columns (adjust ratios to fit your text length, e.g., [1, 2] or [1, 1])
-col1, col2 = st.columns([1, 1])
+col1, col2 = st.columns([1, 2], wrap=False)
 
 with col1:
     # Put your label or description text on the left
@@ -185,6 +185,7 @@ with col2:
         "Fairy Choice Label", # Hidden label if you prefer, or use columns to handle it
         ["Damage", "5th hit"], 
         label_visibility="collapsed" # Hides the redundant label so it aligns cleanly
+        required=True
     )
 
 
