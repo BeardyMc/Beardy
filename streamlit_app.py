@@ -189,7 +189,7 @@ with col2:
         ["Damage", "5th hit boost", "None"], 
         label_visibility="collapsed", #Hides label
         required=True,
-        default="Damage", 
+        default="5th hit boost", 
         selection_mode="single"
     )
 
@@ -200,7 +200,7 @@ def calculate_breakpoints(Windup):
     breakpoints=[[0,0,0]] #initialise
     BaseD=1.5 #standard time for all weapons
     
-    inc=0.09999999976 #fd6
+    inc= math.floor((2**32)\10)/(2**32) #fd6
     n_tics = math.ceil(Windup / inc)
     first_hit = inc * n_tics
     cooldown_tics = max(1, math.ceil((BaseD - first_hit) / inc))
@@ -529,8 +529,10 @@ if Clicked:
     else:
         SubN, SubV = best_substats(final_breakpoints, N_ls)
 
-
-    col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
+    if fairy_choice == "Damage":
+        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
+    else:
+        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
     combined_df = pd.DataFrame()
     combined_df['% Perf'] = SubN[:, 0]
@@ -605,6 +607,9 @@ if Clicked:
         height="content", 
         hide_index=True
     )
+
+    if fairy_choice == "5th hit boost":
+        st.write("This DPS value is the average over the 5 hits from the fairies boost.") 
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
