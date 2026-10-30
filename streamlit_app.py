@@ -91,7 +91,7 @@ skin_q = st.segmented_control(
     required=True,
     default="None",
     selection_mode="single",
-    width="stretch" 
+    #width="stretch" 
 )
 
 weapon_windups = {
@@ -134,7 +134,7 @@ weapon_windups = {
     "Staff of Wisdom": 0.717,
 }
  
-item_windup = weapon_windups.get(selected_item, 1.0)
+item_windup = weapon_windups.get(selected_item, 1.5)
 
 # Show on screen
 st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
@@ -181,15 +181,13 @@ N_ls = st.slider(
 
 # Columns force the segmented control to take up only 1 line
 col1, col2 = st.columns([1, 3], wrap=False)
-
 with col1:
     st.markdown("**Fairy Choice:**")
-
 with col2:
     fairy_choice = st.segmented_control(
         "Fairy Choice Label", # Hidden label
         ["Damage", "5th hit boost"], 
-        label_visibility="collapsed", # Hides the redundant label so it aligns cleanly
+        label_visibility="collapsed", #Hides label
         required=True,
         default="Damage", 
         selection_mode="single"
@@ -289,7 +287,7 @@ def combine_breakpoints(IB,SB):
             
                 
 
-def best_substats(timings, N_ls):
+def best_substats_5th(timings, N_ls):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
@@ -315,7 +313,7 @@ def best_substats(timings, N_ls):
                 cd = N_cd * cd_max * perf
         
                 for N_dmg in range(7):  # 0 to 6 inclusive
-                    dmg = N_dmg * dmg_max * perf
+                    dmg = N_dmg * dmg_max * perf + 0.44
             
                     for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
@@ -380,8 +378,10 @@ if Clicked:
     if skin_q != "None":
         df["Applied Skin"] = wearing
     
-
-    SubN, SubV = best_substats(final_breakpoints, N_ls)
+    if fairy_choice == "5th hit boost":
+        SubN, SubV = best_substats_5th(final_breakpoints, N_ls)
+    else:
+        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls) 
 
     col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
@@ -401,7 +401,7 @@ if Clicked:
     
     st.divider()
     st.subheader("Results")
-    st.write("These results all assume 3 slots are taken for Skill Damage, with a lvl 20 Mira giving 80% Crit Chance. \n\nThis is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
+    st.write("This is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
     st.dataframe(
         combined_df, 
         use_container_width=True, 
