@@ -524,7 +524,7 @@ if Clicked:
     
     if fairy_choice == "5th hit boost":
         SubN, SubV = best_substats_5th(final_breakpoints, N_ls)
-    elif fairy_choice == “Damage:
+    elif fairy_choice == "Damage":
         SubN, SubV = best_substats_dmg(final_breakpoints, N_ls)
     else:
         SubN, SubV = best_substats(final_breakpoints, N_ls)
