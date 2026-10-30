@@ -23,7 +23,8 @@ era = st.segmented_control(
     ],
     required=True,
     default="Primitive",
-    selection_mode="single"
+    selection_mode="single",
+    width="stretch" 
     )
 
 
