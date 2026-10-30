@@ -181,7 +181,7 @@ with col1:
 
 with col2:
     # Put your switch or radio option on the right
-    fairy_choice = st.radio(
+    fairy_choice = st.segmented_control(
         "Fairy Choice Label", # Hidden label if you prefer, or use columns to handle it
         ["Damage", "5th hit"], 
         horizontal=True, 
