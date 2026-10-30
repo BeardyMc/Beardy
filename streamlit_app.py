@@ -23,7 +23,7 @@ era = st.segmented_control(
     ],
     required=True,
     default="Primitive",
-    selection_mode="Single"
+    selection_mode="single"
     )
 
 
@@ -55,7 +55,7 @@ selected_item = st.segmented_control(
     items, 
     required=True,
     default=items[0],
-    selection_mode="Single"
+    selection_mode="single"
 )
 
 skin_q = st.selectbox(
@@ -187,7 +187,7 @@ with col2:
         label_visibility="collapsed", # Hides the redundant label so it aligns cleanly
         required=True,
         default="Damage", 
-        selection_mode="Single"
+        selection_mode="single"
     )
 
 Clicked = st.button("Let's go!")
