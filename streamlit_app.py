@@ -176,7 +176,8 @@ with col2:
         "Fairy Choice Label", # Hidden label
         ["Damage", "5th hit boost"], 
         label_visibility="collapsed", # Hides the redundant label so it aligns cleanly
-        required=True
+        required=True,
+        defaulf="Damage" 
     )
 
 st.write(fairy_choice)
