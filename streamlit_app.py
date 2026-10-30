@@ -184,7 +184,6 @@ with col2:
     fairy_choice = st.segmented_control(
         "Fairy Choice Label", # Hidden label if you prefer, or use columns to handle it
         ["Damage", "5th hit"], 
-        horizontal=True, 
         label_visibility="collapsed" # Hides the redundant label so it aligns cleanly
     )
 
