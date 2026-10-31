@@ -543,11 +543,10 @@ if Clicked:
     
     # Combine them into a "Raw / Scaled" string format
     # (Using int() on raw values since tiers are whole numbers, and .1f for scaled)
-        for r, s in zip(raw_vals, scaled_vals):
-            if r!=0:
-                combined_df[col_name][i] = [f"{int(r)} ({s:.1f}%)"]
-            else:
-                combined_df[col_names][i] = [" "]
+        combined_df[col_name] = [
+            " " if int(r) == 0 else f"{int(r)} ({s:.1f}%)" 
+            for r, s in zip(raw_vals, scaled_vals)
+        ]
     
     st.divider()
     st.subheader("Results")
