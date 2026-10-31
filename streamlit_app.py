@@ -301,6 +301,7 @@ def best_substats_5th(timings, N_ls):
     
     # initialise
     Record=[[0,0,0,0,0,0,0,0]]
+    Record_stats=[]
     
     for i in range(70,101):
         perf=i/100
@@ -342,20 +343,17 @@ def best_substats_5th(timings, N_ls):
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [CC, cd, dmg, rdmg, dc, spd]
-        print(Record)
+                                            best_val = [perf, CC, cd, dmg, rdmg, dc, spd]
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
             Record.append(new_row)
+            Record_stats.append(best_val) 
      
     Record = np.array(Record)
-    Record = Record[1:]
-
-    Record_stats = Record.copy()
-    Record_stats[:, 1:7] = Record[:, 1:7] * Record[:, 0:1]
-    max_factors = np.array([cc_max, cd_max, dmg_max, rdmg_max, dc_max, spd_max])
-    Record_stats[:, 1:7] = Record_stats[:, 1:7] * max_factors * 100
+    Record = Record[1:] 
+    Record_stats = np.array(Record_stats)
 
     return Record, Record_stats
                        
