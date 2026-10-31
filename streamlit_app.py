@@ -172,10 +172,10 @@ if skin_q != "None":
   st.write(f"Windup for **{skin_q}** skin: {skin_windup}")
 
 N_ls = st.slider(
-    label="Select desired amount of lifesteal slots, recommended 2:", 
+    label="Select desired amount of lifesteal slots:", 
     min_value=0,
     max_value=12,
-    value=2,
+    value=3,
     step=1
 )
 
