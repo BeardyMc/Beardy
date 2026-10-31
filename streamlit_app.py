@@ -541,6 +541,7 @@ if Clicked:
     print(SubV) 
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
+        print(SubV[:, i]) 
         scaled_vals = SubV[:, i]
     
     # Combine them into a "Raw / Scaled" string format
