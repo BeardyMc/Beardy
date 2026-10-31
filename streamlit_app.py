@@ -526,7 +526,7 @@ if Clicked:
         SubN, SubV = best_substats(final_breakpoints, N_ls)
 
     if fairy_choice == "Damage":
-        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Health (damage)', 'Ranged', 'Double', 'Speed'] 
+        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
     else:
         col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
