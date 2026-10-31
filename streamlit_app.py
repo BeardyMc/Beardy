@@ -415,7 +415,7 @@ def best_substats_dmg(timings, N_ls):
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
                                             best_val = [CC, cd, dmg, rdmg, dc, spd]
-        print(Record)
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
@@ -488,7 +488,7 @@ def best_substats(timings, N_ls):
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
                                             best_val = [CC, cd, dmg, rdmg, dc, spd]
-        print(Record)
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
@@ -507,6 +507,7 @@ def best_substats(timings, N_ls):
 
 
 if Clicked:
+    print(fairy_choice) 
     item_breakpoints = calculate_breakpoints(item_windup)
 
     if skin_q !="None":
@@ -536,6 +537,8 @@ if Clicked:
     combined_df['% Perf'] = SubN[:, 0]
 
     # Loop through columns 1 to 5 to combine raw and scaled values
+    print(SubN)
+    print(SubV) 
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
         scaled_vals = SubV[:, i]
