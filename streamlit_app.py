@@ -545,9 +545,9 @@ if Clicked:
     # (Using int() on raw values since tiers are whole numbers, and .1f for scaled)
         for r, s in zip(raw_vals, scaled_vals):
             if r!=0:
-                combined_df[col_name] = [f"{int(r)} ({s:.1f}%)"]
+                combined_df[col_name][i] = [f"{int(r)} ({s:.1f}%)"]
             else:
-                combined_df[col_names] = [" "]
+                combined_df[col_names][i] = [" "]
     
     st.divider()
     st.subheader("Results")
