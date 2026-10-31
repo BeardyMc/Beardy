@@ -372,6 +372,7 @@ def best_substats_dmg(timings, N_ls):
     
     # initialise
     Record=[[0,0,0,0,0,0,0,0]]
+    Record_stats=[] 
     
     for i in range(70,101):
         perf=i/100
@@ -385,7 +386,8 @@ def best_substats_dmg(timings, N_ls):
         
                 for N_dmg in range(13):  # 0 to 12 inclusive
                     N_health=N_dmg
-                    dmg = math.floor(N_health * perf * 0.15/0.1) * 0.15
+                    health_r = N_health * perf * 0.15
+                    dmg = math.floor(health_r/0.1) * 0.15
             
                     for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
@@ -409,25 +411,22 @@ def best_substats_dmg(timings, N_ls):
     
                                     if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [CC, cd, dmg, rdmg, dc, spd]
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
     
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [CC, cd, dmg, rdmg, dc, spd]
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
             Record.append(new_row)
+            Record_stats.append(best_val)
      
     Record = np.array(Record)
     Record = Record[1:]
-
-    Record_stats = Record.copy()
-    Record_stats[:, 1:7] = Record[:, 1:7] * Record[:, 0:1]
-    max_factors = np.array([cc_max, cd_max, dmg_max, rdmg_max, dc_max, spd_max])
-    Record_stats[:, 1:7] = Record_stats[:, 1:7] * max_factors * 100
+    Record_stats = np.array(Record_stats) 
 
     return Record, Record_stats
 
@@ -446,6 +445,7 @@ def best_substats(timings, N_ls):
     
     # initialise
     Record=[[0,0,0,0,0,0,0,0]]
+    Record_stats=[] 
     
     for i in range(70,101):
         perf=i/100
@@ -482,25 +482,22 @@ def best_substats(timings, N_ls):
     
                                     if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [CC, cd, dmg, rdmg, dc, spd]
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
     
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [CC, cd, dmg, rdmg, dc, spd]
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
             Record.append(new_row)
+            Record_stats.append(best_val)
      
     Record = np.array(Record)
     Record = Record[1:]
-
-    Record_stats = Record.copy()
-    Record_stats[:, 1:7] = Record[:, 1:7] * Record[:, 0:1]
-    max_factors = np.array([cc_max, cd_max, dmg_max, rdmg_max, dc_max, spd_max])
-    Record_stats[:, 1:7] = Record_stats[:, 1:7] * max_factors * 100
+    Record_stats = np.array(Record_stats)
 
     return Record, Record_stats
 
@@ -529,7 +526,7 @@ if Clicked:
         SubN, SubV = best_substats(final_breakpoints, N_ls)
 
     if fairy_choice == "Damage":
-        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
+        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Health (damage)', 'Ranged', 'Double', 'Speed'] 
     else:
         col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
