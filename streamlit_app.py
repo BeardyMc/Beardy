@@ -338,12 +338,12 @@ def best_substats_5th(timings, N_ls):
     
                                     if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+                                        best_val = [perf, CC*100, cd*100, dmg*100-44, rdmg*100, dc*100, spd, DPS]
     
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+                                            best_val = [perf, CC*100, cd*100, dmg*100-44, rdmg*100, dc*100, spd, DPS]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
