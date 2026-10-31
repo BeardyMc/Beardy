@@ -338,7 +338,7 @@ def best_substats_5th(timings, N_ls):
     
                                     if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [CC, cd, dmg, rdmg, dc, spd]
+                                        best_val = [perf, CC, cd, dmg, rdmg, dc, spd, DPS]
     
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
