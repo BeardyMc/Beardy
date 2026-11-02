@@ -8,6 +8,21 @@ st.title("🎈 Beardy Does Maths")
 st.write(
     "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nWeapon:\n"
 )
+
+melee_bad = st.segmented_contol(
+    "Do you have ranged or melee weapon?", 
+    [
+        "Ranged", 
+        "Melee"
+    ],
+    required=True,
+    default="Ranged",
+    selection_mode="single"
+) 
+
+if melee_bad == "melee":
+    item_windup = st.
+else:
 era = st.segmented_control(
     "Age:",
     [   "Primitive",
