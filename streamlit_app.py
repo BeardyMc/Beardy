@@ -21,58 +21,72 @@ melee_bad = st.segmented_contol(
 ) 
 
 if melee_bad == "melee":
-    item_windup = st.
+    selected_item = "melee"
+    item_windup = st.number_input(
+        "I don't like melee, enter item windup speed manually:",
+        min_value=0.0,
+        max_value=1.5,
+        value=1.0,       # Your default starting value
+        step=0.001,      # Allows increments down to 0.001
+        format="%.3f"    # 3 dp precision
+    )
+    if item_windup == None:
+        item_windup = 1.0
+
 else:
-era = st.segmented_control(
-    "Age:",
-    [   "Primitive",
-        "Medieval",
-        "Early-Modern",
-        "Modern",
-        "Space",
-        "Interstellar",
-        "Multiverse",
-        "Quantum",
-        "Underworld",
-        "Divine",
-    ],
-    required=True,
-    default="Primitive",
-    selection_mode="single",
-    width="stretch" 
+    era = st.segmented_control(
+        "Age:",
+        [   "Primitive",
+            "Medieval",
+            "Early-Modern",
+            "Modern",
+            "Space",
+            "Interstellar",
+            "Multiverse",
+            "Quantum",
+            "Underworld",
+            "Divine",
+        ],
+        required=True,
+        default="Primitive",
+        selection_mode="single",
+        width="stretch" 
+        )
+    
+    
+    if era == "Primitive":
+        items = ["Blowgun", "Rock", "Slinger"] 
+    elif era =="Medieval":
+        items = ["Bow", "Tomahawk"] 
+    elif era == "Early-Modern":
+        items = ["Crossbow", "Dual Pistols", "Musket"]
+    elif era == "Modern":
+        items = ["AK", "M4", "Sniper", "Uzi"]
+    elif era == "Space":
+        items = ["Blaster", "Space Gun", "Space Pistol"] 
+    elif era == "Interstellar":
+        items = ["Ionic Blaster", "Plasma Rifle", "Ray Gun"]
+    elif era == "Multiverse":
+        items = ["Virtual Gun", "Virtual Bow"] 
+    elif era == "Quantum":
+        items = ["Black Bow", "Black Gun", "Black Staff"] 
+    elif era == "Underworld":
+        items = ["Abyssal Fork", "Abyssal Trident"] 
+    elif era == "Divine":
+        items = ["Staff", "Staff of Wisdom"]
+    else:
+        items = ["Please select an age"] 
+    
+    selected_item = st.segmented_control(
+        "Weapon:",
+        items, 
+        required=True,
+        default=items[0],
+        selection_mode="single"
     )
 
 
-if era == "Primitive":
-    items = ["Blowgun", "Rock", "Slinger"] 
-elif era =="Medieval":
-    items = ["Bow", "Tomahawk"] 
-elif era == "Early-Modern":
-    items = ["Crossbow", "Dual Pistols", "Musket"]
-elif era == "Modern":
-    items = ["AK", "M4", "Sniper", "Uzi"]
-elif era == "Space":
-    items = ["Blaster", "Space Gun", "Space Pistol"] 
-elif era == "Interstellar":
-    items = ["Ionic Blaster", "Plasma Rifle", "Ray Gun"]
-elif era == "Multiverse":
-    items = ["Virtual Gun", "Virtual Bow"] 
-elif era == "Quantum":
-    items = ["Black Bow", "Black Gun", "Black Staff"] 
-elif era == "Underworld":
-    items = ["Abyssal Fork", "Abyssal Trident"] 
-elif era == "Divine":
-    items = ["Staff", "Staff of Wisdom"]
-else:
-    items = ["Please select an age"] 
 
-selected_item = st.segmented_control(
-    "Weapon:",
-    items, 
-    required=True,
-    default=items[0],
-    selection_mode="single"
-)
 
 skin_hider = st.segmented_control(
     "Do you have a weapon skin?", 
@@ -246,8 +260,7 @@ if fairy_shield == "Overall":
 else:
     c_shield_q=1
 
-melee_bad = "melee" 
-# melee_bad = "ranged" 
+
 
 Clicked = st.button("Let's go!")
 
