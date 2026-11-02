@@ -92,7 +92,7 @@ skin_q = st.segmented_control(
         "Skater",
         "Skeleton",
         "Ski", 
-        "Snowman" 
+        "Snowman", 
     ],
     required=True,
     default="None",
@@ -175,7 +175,7 @@ skin_modifiers = {
     "Skater": 0.733,
     "Skeleton": 0.783,
     "Ski": 0.783,
-    "Snowman", 0.783
+    "Snowman": 0.783
 }
 
 if skin_q != "None":
