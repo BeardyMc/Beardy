@@ -260,8 +260,11 @@ else:
     c_shield_q=1
 
 
+# Create 3 columns: push space to the left, keep button on the right
+col1, col2 = st.columns([3, 1], wrap=False)
 
-Clicked = st.button("Let's go!")
+with col2:
+    Clicked = st.button("Let's go!", use_container_width=True)
 
 def calculate_breakpoints(Windup):
     #fun comes here
