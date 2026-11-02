@@ -253,7 +253,8 @@ with col2:
         label_visibility="collapsed", #Hides label
         required=True,
         default="5th hit boost", 
-        selection_mode="single"
+        selection_mode="single", 
+        width="stretch"   
     )
 
 fairy_shield = st.segmented_control(
