@@ -209,7 +209,7 @@ with col1:
 with col2:
     fairy_choice = st.segmented_control(
         "Fairy Choice Label", # Hidden label
-        ["Damage", "5th hit boost", "None"], 
+        ["Damage", "5th hit boost", "Shield"], 
         label_visibility="collapsed", #Hides label
         required=True,
         default="5th hit boost", 
@@ -511,7 +511,7 @@ def best_substats(timings, N_ls, c_shield):
                             dc = min(1, dc_max * N_dc * perf)
                     
                             for N_spd in range(1, 13):
-                                if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls):
+                                if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls-4):
                                     spd = N_spd * spd_max * perf * 100
                                     
                                     B = timings[:,0]<spd
@@ -656,7 +656,9 @@ if Clicked:
     )
 
     if fairy_choice == "5th hit boost":
-        st.write("This DPS value is the average over the 5 hits from the fairies boost.") 
+        st.write("This DPS value is the average over the 5 hits from the fairies boost.")
+    elif fairy_choice == "Shield":
+        st.write("This assumes 4 slots for skill cooldown used.")
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
