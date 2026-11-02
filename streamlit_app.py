@@ -20,8 +20,8 @@ melee_bad = st.segmented_control(
     selection_mode="single"
 ) 
 
-if melee_bad == "melee":
-    selected_item = "melee"
+if melee_bad == "Melee":
+    selected_item = "Melee"
     item_windup = st.number_input(
         "I don't like melee, enter item windup speed manually:",
         min_value=0.0,
@@ -84,8 +84,6 @@ else:
         default=items[0],
         selection_mode="single"
     )
-
-
 
 
 skin_hider = st.segmented_control(
@@ -363,7 +361,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    if melee_q == "ranged":
+    if melee_q == "Ranged":
         rdmg_max = 0.15
     else:
         rdmg_max = 0.5
@@ -387,7 +385,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
         
                 for N_dmg in range(7):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf + 0.44
-                    if melee_q == "ranged":
+                    if melee_q == "Ranged":
                         rdmg_lim = N_dmg
                     else:
                         rdmg_lim = 12
@@ -443,7 +441,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    if melee_q == "ranged":
+    if melee_q == "Ranged":
         rdmg_max = 0.15
     else:
         rdmg_max = 0.5
@@ -526,7 +524,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    if melee_q == "ranged":
+    if melee_q == "Ranged":
         rdmg_max = 0.15
     else:
         rdmg_max = 0.5
@@ -551,7 +549,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
         
                 for N_dmg in range(7):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf
-                    if melee_q == "ranged":
+                    if melee_q == "Ranged":
                         rdmg_lim = N_dmg
                     else:
                         rdmg_lim = 12
@@ -624,9 +622,9 @@ if Clicked:
         SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
 
     if fairy_choice == "Damage":
-        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
+        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', melee_bad, 'Double', 'Speed'] 
     else:
-        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
+        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Damage', melee_bad, 'Double', 'Speed']
 
     combined_df = pd.DataFrame()
     combined_df['% Perf'] = SubN[:, 0]
