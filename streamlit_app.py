@@ -85,7 +85,7 @@ else:
         selection_mode="single"
     )
 
-col1, col2 = st.columns([4, 1], wrap=False)
+col1, col2 = st.columns([3, 1], wrap=False)
 with col1:
     st.write("Do you have a weapon skin?") 
 with col2:
@@ -98,7 +98,8 @@ with col2:
         required=True,
         default="No",
         selection_mode="single",
-        label_visibility="collapsed" 
+        label_visibility="collapsed",
+        width="stretch" 
     ) 
 if skin_hider == "No":
     skin_q="None"
