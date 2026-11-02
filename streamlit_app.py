@@ -549,9 +549,9 @@ if Clicked:
         SubN, SubV = best_substats(final_breakpoints, N_ls)
 
     if fairy_choice == "Damage":
-        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
+        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
     else:
-        col_names = ['% Perf', 'Crit Chance', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
+        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
 
     combined_df = pd.DataFrame()
     combined_df['% Perf'] = SubN[:, 0]
