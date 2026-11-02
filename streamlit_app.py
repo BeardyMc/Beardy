@@ -59,45 +59,57 @@ selected_item = st.segmented_control(
     selection_mode="single"
 )
 
-skin_q = st.segmented_control(
-    "Skin:",
+skin_hider = st.segmented_control(
+    "Do you have a weapon skin?", 
     [
-        "None",
-        "Anubis",
-        "Boxer",
-        "Bunny",
-        "Cat",
-        "Chef",
-        "Clown",
-        "Cubeguy",
-        "Dark Planet Warrior",
-        "Demon",
-        "Druid",
-        "Eagle",
-        "Fishbowl",
-        "Flower",
-        "Guardian", 
-        "King",
-        "Knight",
-        "Lavaman",
-        "Leprechaun",
-        "Millionaire",
-        "Moth", 
-        "Mummy",
-        "Mushroom",
-        "Reaper",
-        "Santa", 
-        "Shadow", 
-        "Shark",
-        "Skater",
-        "Skeleton",
-        "Ski", 
-        "Snowman", 
+        "Yes", 
+        "No"
     ],
     required=True,
-    default="None",
-    selection_mode="single",
-    #width="stretch" 
+    default="No",
+    selection_mode="single"
+) 
+if skin_hider == "No":
+    skin_q="None"
+else:
+    skin_q = st.segmented_control(
+        "Skin:",
+        [
+            "Anubis",
+            "Boxer",
+            "Bunny",
+            "Cat",
+            "Chef",
+            "Clown",
+            "Cubeguy",
+            "Dark Planet Warrior",
+            "Demon",
+            "Druid",
+            "Eagle",
+            "Fishbowl",
+            "Flower",
+            "Guardian", 
+            "King",
+            "Knight",
+            "Lavaman",
+            "Leprechaun",
+            "Millionaire",
+            "Moth", 
+            "Mummy",
+            "Mushroom",
+            "Reaper",
+            "Santa", 
+            "Shadow", 
+            "Shark",
+            "Skater",
+            "Skeleton",
+            "Ski", 
+            "Snowman", 
+        ],
+        required=True,
+        default="None",
+        selection_mode="single",
+        #width="stretch" 
 )
 
 weapon_windups = {
