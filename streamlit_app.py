@@ -9,7 +9,7 @@ st.write(
     "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nWeapon:\n"
 )
 
-melee_bad = st.segmented_contol(
+melee_bad = st.segmented_control(
     "Do you have ranged or melee weapon?", 
     [
         "Ranged", 
