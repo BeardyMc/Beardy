@@ -216,6 +216,20 @@ with col2:
         selection_mode="single"
     )
 
+fairy_shield = st.segmented_control(
+    "Do you want to aim for best DPS overall, or vs critical hit defence fairy?", 
+    [
+        "Overall", 
+        "vs Shield"
+    ],
+    required=True,
+    default="Overall",
+    selection_mode="single"
+if fairy_shield == "Overall":
+    c_shield_q=0
+else:
+    c_shield_q=1
+
 Clicked = st.button("Let's go!")
 
 def calculate_breakpoints(Windup):
@@ -310,7 +324,7 @@ def combine_breakpoints(IB,SB):
             
                 
 
-def best_substats_5th(timings, N_ls):
+def best_substats_5th(timings, N_ls, c_shield):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
@@ -353,8 +367,11 @@ def best_substats_5th(timings, N_ls):
                                     C = timings[B]
                                     time1 = C[-1, 1:3]
                                     
-                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    Crit_multi = CC * (1.2 + cd) + 0.2
+                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
+                                    if c_shield ==0:
+                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                    else:
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -381,7 +398,7 @@ def best_substats_5th(timings, N_ls):
     return Record, Record_stats
                        
 
-def best_substats_dmg(timings, N_ls):
+def best_substats_dmg(timings, N_ls, c_shield):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
@@ -427,7 +444,10 @@ def best_substats_dmg(timings, N_ls):
                                     time1 = C[-1, 1:3]
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    Crit_multi = CC * (1.2 + cd) + 0.2
+                                    if c_shield ==0:
+                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                    else:
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -454,7 +474,7 @@ def best_substats_dmg(timings, N_ls):
     return Record, Record_stats
 
 
-def best_substats(timings, N_ls):
+def best_substats(timings, N_ls, c_shield):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
@@ -498,7 +518,10 @@ def best_substats(timings, N_ls):
                                     time1 = C[-1, 1:3]
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    Crit_multi = CC * (1.2 + cd) + 0.2
+                                    if c_shield ==0:
+                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                    else:
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -542,11 +565,11 @@ if Clicked:
         df["Applied Skin"] = wearing
     
     if fairy_choice == "5th hit boost":
-        SubN, SubV = best_substats_5th(final_breakpoints, N_ls)
+        SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q)
     elif fairy_choice == "Damage":
-        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls)
+        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q)
     else:
-        SubN, SubV = best_substats(final_breakpoints, N_ls)
+        SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q)
 
     if fairy_choice == "Damage":
         col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
