@@ -9,16 +9,23 @@ st.write(
     "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nWeapon:\n"
 )
 
-melee_bad = st.segmented_control(
-    "Do you have ranged or melee weapon?", 
-    [
-        "Ranged", 
-        "Melee"
-    ],
-    required=True,
-    default="Ranged",
-    selection_mode="single"
-) 
+
+col1, col2 = st.columns([3, 2], wrap=False)
+with col1:
+    st.write("Do you have ranged or melee weapon?") 
+with col2:
+    melee_bad = st.segmented_control(
+        "Do you have ranged or melee weapon?", 
+        [
+            "Ranged", 
+            "Melee"
+        ],
+        required=True,
+        default="Ranged",
+        selection_mode="single", 
+        label_visibility="collapsed",
+        width="stretch"  
+    ) 
 
 if melee_bad == "Melee":
     selected_item = "Melee"
@@ -85,7 +92,7 @@ else:
         selection_mode="single"
     )
 
-col1, col2 = st.columns([3, 1], wrap=False)
+col1, col2 = st.columns([3, 2], wrap=False)
 with col1:
     st.write("Do you have a weapon skin?") 
 with col2:
