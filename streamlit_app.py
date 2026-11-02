@@ -85,17 +85,21 @@ else:
         selection_mode="single"
     )
 
-
-skin_hider = st.segmented_control(
-    "Do you have a weapon skin?", 
-    [
-        "Yes", 
-        "No"
-    ],
-    required=True,
-    default="No",
-    selection_mode="single"
-) 
+col1, col2 = st.columns([1, 1], wrap=False)
+with col1:
+    st.write("Do you have a weapon skin?") 
+with col2:
+    skin_hider = st.segmented_control(
+        "Do you have a weapon skin?", 
+        [
+            "Yes", 
+            "No"
+        ],
+        required=True,
+        default="No",
+        selection_mode="single",
+        label_visibility="collapsed" 
+    ) 
 if skin_hider == "No":
     skin_q="None"
 else:
@@ -261,7 +265,7 @@ else:
 
 
 # Create 3 columns: push space to the left, keep button on the right
-col1, col2 = st.columns([3, 1], wrap=False)
+col1, col2 = st.columns([3, 2], wrap=False)
 
 with col2:
     Clicked = st.button("Let's go!", use_container_width=True)
