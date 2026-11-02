@@ -1,4 +1,4 @@
-import streamlit as st
+8import streamlit as st
 import math
 import numpy as np
 import pandas as pd
@@ -225,6 +225,7 @@ fairy_shield = st.segmented_control(
     required=True,
     default="Overall",
     selection_mode="single"
+) 
 if fairy_shield == "Overall":
     c_shield_q=0
 else:
