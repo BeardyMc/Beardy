@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 
 
-st.title("🎈 Beardy Does Maths")
+st.title("Beardy's Forge Master DPS Optimiser")
 st.write(
-    "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nWeapon:\n"
+    "Please select your weapon:" 
 )
 
 
