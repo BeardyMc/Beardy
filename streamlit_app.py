@@ -85,7 +85,7 @@ else:
         selection_mode="single"
     )
 
-col1, col2 = st.columns([1, 1], wrap=False)
+col1, col2 = st.columns([4, 1], wrap=False)
 with col1:
     st.write("Do you have a weapon skin?") 
 with col2:
