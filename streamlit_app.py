@@ -107,7 +107,7 @@ else:
             "Snowman", 
         ],
         required=True,
-        default="None",
+        default="Clown",
         selection_mode="single",
         #width="stretch" 
 )
