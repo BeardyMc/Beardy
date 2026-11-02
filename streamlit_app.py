@@ -713,6 +713,23 @@ if Clicked:
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
     st.dataframe(df, use_container_width=True, height="content", hide_index=True)
+
+
+
+st.divider()
+
+st.markdown(
+    """
+    <div style="text-align: center; color: #888888; font-size: 0.85rem;">
+        Special thanks and credit to the community tools that inspire aided this optimizer:<br>
+        <a href="https://1vcian.me/fm/" target="_blank" style="color: #888888; text-decoration: underline;">1vcian's FM Tool</a> 
+        &nbsp;|&nbsp; 
+        <a href="https://uncledanny.github.io/ForgeMasterTools/" target="_blank" style="color: #888888; text-decoration: underline;">UncleDanny's Forge Master Tool</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
     
 
 
