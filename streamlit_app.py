@@ -178,8 +178,9 @@ weapon_windups = {
     "Staff": 0.833,
     "Staff of Wisdom": 0.717,
 }
- 
-item_windup = weapon_windups.get(selected_item, 1.5)
+
+if melee_bad == "Ranged":
+    item_windup = weapon_windups.get(selected_item, 1.5)
 
 # Show on screen
 st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
