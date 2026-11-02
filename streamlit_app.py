@@ -231,6 +231,9 @@ if fairy_shield == "Overall":
 else:
     c_shield_q=1
 
+melee_bad = "melee" 
+# melee_bad = "ranged" 
+
 Clicked = st.button("Let's go!")
 
 def calculate_breakpoints(Windup):
@@ -325,14 +328,17 @@ def combine_breakpoints(IB,SB):
             
                 
 
-def best_substats_5th(timings, N_ls, c_shield):
+def best_substats_5th(timings, N_ls, c_shield_q, melee_q):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    rdmg_max = 0.15
+    if melee_q == "ranged":
+        rdmg_max = 0.15
+    else:
+        rdmg_max = 0.5
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
@@ -353,8 +359,11 @@ def best_substats_5th(timings, N_ls, c_shield):
         
                 for N_dmg in range(7):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf + 0.44
-            
-                    for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
+                    if melee_q == "ranged":
+                        rdmg_lim = N_dmg
+                    else:
+                        rdmg_lim = 12
+                    for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
                 
                         for N_dc in range(7):  # 0 to 6 inclusive
@@ -399,14 +408,18 @@ def best_substats_5th(timings, N_ls, c_shield):
     return Record, Record_stats
                        
 
-def best_substats_dmg(timings, N_ls, c_shield):
+def best_substats_dmg(timings, N_ls, c_shield, melee_q):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    rdmg_max = 0.15
+    if melee_q == "ranged":
+        rdmg_max = 0.15
+    else:
+        rdmg_max = 0.5
+    spd_max = 0.4
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
@@ -429,8 +442,11 @@ def best_substats_dmg(timings, N_ls, c_shield):
                     N_health=N_dmg
                     health_r = N_health * perf * 0.15
                     dmg = math.floor(health_r/0.1) * 0.15
-            
-                    for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
+                    if melee_q == "ranged":
+                        rdmg_lim = N_dmg
+                    else:
+                        rdmg_lim = 12
+                    for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
                 
                         for N_dc in range(7):  # 0 to 6 inclusive
@@ -475,14 +491,18 @@ def best_substats_dmg(timings, N_ls, c_shield):
     return Record, Record_stats
 
 
-def best_substats(timings, N_ls, c_shield):
+def best_substats(timings, N_ls, c_shield, melee_q):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    rdmg_max = 0.15
+    if melee_q == "ranged":
+        rdmg_max = 0.15
+    else:
+        rdmg_max = 0.5
+    spd_max = 0.4
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
@@ -503,8 +523,11 @@ def best_substats(timings, N_ls, c_shield):
         
                 for N_dmg in range(7):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf
-            
-                    for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
+                    if melee_q == "ranged":
+                        rdmg_lim = N_dmg
+                    else:
+                        rdmg_lim = 12
+                    for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
                 
                         for N_dc in range(7):  # 0 to 6 inclusive
@@ -566,11 +589,11 @@ if Clicked:
         df["Applied Skin"] = wearing
     
     if fairy_choice == "5th hit boost":
-        SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q)
+        SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
     elif fairy_choice == "Damage":
-        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q)
+        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q, melee_bad)
     else:
-        SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q)
+        SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
 
     if fairy_choice == "Damage":
         col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', 'Ranged', 'Double', 'Speed'] 
