@@ -328,7 +328,7 @@ def combine_breakpoints(IB,SB):
             
                 
 
-def best_substats_5th(timings, N_ls, c_shield_q, melee_q):
+def best_substats_5th(timings, N_ls, c_shield, melee_q):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
