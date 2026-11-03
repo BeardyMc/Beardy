@@ -173,9 +173,9 @@ selected_item = st.segmented_control(
 
 # get winduo
 if melee_bad == "Melee":
-    item_windup =  MELEE_WEAPONS.get(selected_item, 1.5)
+    item_windup =  MELEE_WEAPONS[selected_age].get(selected_item, 1.5)
 else:
-    item_windup = RANGED_WEAPONS.get(selected_item, 1.5)
+    item_windup = RANGED_WEAPONS[selected_age].get(selected_item, 1.5)
 
 col1, col2 = st.columns([3, 2], wrap=False)
 with col1:
