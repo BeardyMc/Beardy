@@ -27,70 +27,154 @@ with col2:
         width="stretch"  
     ) 
 
-if melee_bad == "Melee":
-    selected_item = "Melee"
-    item_windup = st.number_input(
-        "I don't like melee, enter item windup speed manually:",
-        min_value=0.0,
-        max_value=1.5,
-        value=1.0,       # Your default starting value
-        step=0.001,      # Allows increments down to 0.001
-        format="%.3f"    # 3 dp precision
+# Melee weapons and their base windup times by age 
+MELEE_WEAPONS = {
+    "Primitive": {
+        "Axe": 0.767,
+        "Bone": 0.600,
+        "Branch": 0.783,
+        "Club": 0.933,
+    },
+    "Medieval": {
+        "Sword & Shield": 0.567,
+        "Spear & Shield": 0.650,
+        "Scythe": 0.567,
+        "War Hammer": 0.783,
+        "Katana": 0.900,
+    },
+    "Early-Modern": {
+        "Executioner": 0.667,
+        "Pirate Sword": 0.767,
+        "Rapier": 0.667,
+    },
+    "Modern": {
+        "Baton": 0.583,
+        "Knuckle Dusters": 0.667,
+        "Riot Shield": 0.733,
+        "Wrench": 0.783,
+    },
+    "Space": {
+        "Robot Sword": 0.767,
+        "Saber": 0.783,
+    },
+    "Interstellar": {
+        "Double Saber": 0.750,
+        "Isobaric Cutter": 0.717,
+        "Light & Shield": 0.750,
+    },
+    "Multiverse": {
+        "Projected Cutlass": 0.700,
+        "Spearsh": 0.700,
+        "Trident": 0.700,
+        "Virtual Sword": 0.883,
+    },
+    "Quantum": {
+        "Black Hammer": 1.100,
+        "Black Spear": 0.900,
+        "Black Sword & Shield": 0.567,
+    },
+    "Underworld": {
+        "Soulpiercer": 0.817,
+        "Doom Mace": 0.900,
+        "Shadow Scimitar": 0.383,
+    },
+    "Divine": {
+        "Angelic Pitchfork": 0.667,
+        "Dragon Dagger": 0.733,
+        "Serpent Sword": 0.733,
+        "Siren's Song": 0.317,
+    },
+}
+
+# Ranged weapons and their base windup times by age 
+RANGED_WEAPONS = {
+    "Primitive": {
+        "Blowgun": 0.467,
+        "Rock": 0.683,
+        "Slinger": 1.083,
+    },
+    "Medieval": {
+        "Bow": 1.083,
+        "Tomahawk": 0.683,
+    },
+    "Early-Modern": {
+        "Crossbow": 0.567,
+        "Musket": 0.667,
+        "Dual Pistols": 0.833,
+    },
+    "Modern": {
+        "AK": 0.500,
+        "M4": 0.500,
+        "Sniper": 0.833,
+        "Uzi": 0.333,
+    },
+    "Space": {
+        "Blaster": 0.667,
+        "Space Gun": 0.717,
+        "Space Pistol": 0.917,
+    },
+    "Interstellar": {
+        "Ionic Blaster": 0.667,
+        "Plasma Rifle": 0.833,
+        "Ray Gun": 0.967,
+    },
+    "Multiverse": {
+        "Virtual Bow": 1.083,
+        "Virtual Gun": 0.833,
+    },
+    "Quantum": {
+        "Black Bow": 0.833,
+        "Black Gun": 1.000,
+        "Black Staff": 0.950,
+    },
+    "Underworld": {
+        "Infernal Trident": 1.000,
+        "Abyssal Fork": 0.817,
+    },
+    "Divine": {
+        "Staff": 0.833,
+        "Staff Of Wisdom": 0.717,
+    },
+}
+
+era = st.segmented_control(
+    "Age:",
+    [   "Primitive",
+        "Medieval",
+        "Early-Modern",
+        "Modern",
+        "Space",
+        "Interstellar",
+        "Multiverse",
+        "Quantum",
+        "Underworld",
+        "Divine",
+    ],
+    required=True,
+    default="Primitive",
+    selection_mode="single",
+    width="stretch" 
     )
-    if item_windup == None:
-        item_windup = 1.0
+
+if melee_bad == "Melee":
+    items=[f"{w} ({t:.3f}s)" for w, t in MELEE_WEAPONS[selected_age].items()]
 
 else:
-    era = st.segmented_control(
-        "Age:",
-        [   "Primitive",
-            "Medieval",
-            "Early-Modern",
-            "Modern",
-            "Space",
-            "Interstellar",
-            "Multiverse",
-            "Quantum",
-            "Underworld",
-            "Divine",
-        ],
-        required=True,
-        default="Primitive",
-        selection_mode="single",
-        width="stretch" 
-        )
+    
+ 
     
     
-    if era == "Primitive":
-        items = ["Blowgun", "Rock", "Slinger"] 
-    elif era =="Medieval":
-        items = ["Bow", "Tomahawk"] 
-    elif era == "Early-Modern":
-        items = ["Crossbow", "Dual Pistols", "Musket"]
-    elif era == "Modern":
-        items = ["AK", "M4", "Sniper", "Uzi"]
-    elif era == "Space":
-        items = ["Blaster", "Space Gun", "Space Pistol"] 
-    elif era == "Interstellar":
-        items = ["Ionic Blaster", "Plasma Rifle", "Ray Gun"]
-    elif era == "Multiverse":
-        items = ["Virtual Gun", "Virtual Bow"] 
-    elif era == "Quantum":
-        items = ["Black Bow", "Black Gun", "Black Staff"] 
-    elif era == "Underworld":
-        items = ["Abyssal Fork", "Abyssal Trident"] 
-    elif era == "Divine":
-        items = ["Staff", "Staff of Wisdom"]
-    else:
-        items = ["Please select an age"] 
     
-    selected_item = st.segmented_control(
-        "Weapon:",
-        items, 
-        required=True,
-        default=items[0],
-        selection_mode="single"
-    )
+    
+selected_item = st.segmented_control(
+    "Weapon:",
+    items, 
+    required=True,
+    default=items[0],
+    selection_mode="single"
+)
+
+item_windup = weapon_windups.get(selected_item, 1.5)
 
 col1, col2 = st.columns([3, 2], wrap=False)
 with col1:
@@ -151,50 +235,8 @@ else:
         #width="stretch" 
 )
 
-weapon_windups = {
-    # Primitive
-    "Blowgun": 0.467,
-    "Rock": 0.683,
-    "Slinger": 1.083,
-    # Medieval
-    "Bow": 1.083,
-    "Tomahawk": 0.683,
-    # Early-Modern
-    "Crossbow": 0.567,
-    "Dual Pistols": 0.833,
-    "Musket": 0.667,
-    # Modern
-    "AK": 0.5,
-    "M4": 0.5,
-    "Sniper": 0.833,
-    "Uzi": 0.333,
-    # Space
-    "Blaster": 0.667,
-    "Space Gun": 0.717,
-    "Space Pistol": 0.917,
-    # Interstellar
-    "Ionic Blaster": 0.667,
-    "Plasma Rifle": 0.833,
-    "Ray Gun": 0.967,
-    # Multiverse
-    "Virtual Gun": 0.833,
-    "Virtual Bow": 1.083,
-    # Quantum
-    "Black Bow": 0.833,
-    "Black Gun": 1.0,
-    "Black Staff": 0.95,
-    # Underworld
-    "Abyssal Fork": 0.817,
-    "Abyssal Trident": 1.0,
-    # Divine
-    "Staff": 0.833,
-    "Staff of Wisdom": 0.717,
-}
 
-if melee_bad == "Ranged":
-    item_windup = weapon_windups.get(selected_item, 1.5)
-
-# Show on screen
+# Show on screen windup
 st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
 
 # 1. Dictionary for all skin modifiers
