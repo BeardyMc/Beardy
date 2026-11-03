@@ -820,9 +820,9 @@ if Clicked:
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
 
-    if fairy shield == "Mixed" and melee_bad == "Melee":
+    if fairy_shield == "Mixed" and melee_bad == "Melee":
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 9.01, the max achievable by an 84% perfect, melee shielding fairy build.")
-    elif fairy shield == "Mixed" and melee_bad == "Ranged":
+    elif fairy_shield == "Mixed" and melee_bad == "Ranged":
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
 
 
