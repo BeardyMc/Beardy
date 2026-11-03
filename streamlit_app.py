@@ -505,7 +505,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]) and bestest[7]>0:
+        if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val) 
@@ -604,7 +604,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]) and bestest[7]>0:
+        if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
@@ -697,7 +697,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]) and bestest[7]>0:
+        if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
