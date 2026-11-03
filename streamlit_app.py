@@ -607,7 +607,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
         print(last_row_check) 
         print(bestest)
         print(bestest[6], flush=True)
-        if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
+        if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             print(bestest)
             print(bestest[6])
