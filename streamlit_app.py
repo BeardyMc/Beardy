@@ -308,7 +308,8 @@ fairy_shield = st.segmented_control(
     "Do you want to aim for best DPS overall, or vs critical hit defence fairy?", 
     [
         "Overall", 
-        "vs Shield"
+        "vs Shield",
+        "Mixed"
     ],
     required=True,
     default="Overall",
@@ -316,8 +317,10 @@ fairy_shield = st.segmented_control(
 ) 
 if fairy_shield == "Overall":
     c_shield_q=0
-else:
+elif fairy_shield == "vs Shield":
     c_shield_q=1
+else:
+    c_shield_q=2
 
 
 # Create 3 columns: push space to the left, keep button on the right
@@ -434,12 +437,12 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
     
     # initialise
-    Record=[[0,0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[]
     
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,0,24,0]
+        bestest=[0,0,0,0,0,24,0,0]
         
         for N_cc in range(1,13):
             CC = min(1, N_cc * cc_max * perf)
@@ -468,22 +471,22 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                     time1 = C[-1, 1:3]
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
-                                    if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
-                                    else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
+                                    Crit_multi1 = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
+
     
-                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
     
-                                    if DPS > bestest[6]:
+                                    if DPS1 > bestest[6]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
     
-                                    elif DPS == bestest[6]:
+                                    elif DPS1 == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
