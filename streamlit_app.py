@@ -324,7 +324,7 @@ else:
 col1, col2 = st.columns([3, 2], wrap=False)
 
 with col2:
-    Clicked = st.button("Let's go!", width=”stretch”)
+    Clicked = st.button("Let's go!", width="stretch")
 
 def calculate_breakpoints(Windup):
     #fun comes here
