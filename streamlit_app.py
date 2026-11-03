@@ -752,7 +752,7 @@ if Clicked:
 
     st.write("Below we look at the PvP capabilities of these builds. \n\nNote: standard health is 8x damage, with a 5x multiplier in PvP. Pet typing and equipped items levels can change this distribution. These percentages assume health is the standard 40x base damage before modifiers.") 
 
-    col_names = ["% Perf", "Speed", "APS", "DPS normal", "DPS crits shielded", "Lifesteal", "Regen/s", "Regen/hit"] 
+    col_names = ["% Perf", "Speed", "APS", "DPS normal", "DPS v shield", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0]
 
@@ -779,7 +779,7 @@ if Clicked:
     second_df['Speed'] = spd_str
     second_df['APS'] = aps
     second_df['DPS normal'] = SubV[:,7]
-    second_df['DPS crits shielded'] = SubV[:,8]
+    second_df['DPS v shield'] = SubV[:,8]
     second_df['Lifesteal'] = lifesteal 
     second_df['Regen/s'] = regenS
     second_df['Regen/hit'] = regenH
@@ -791,8 +791,8 @@ if Clicked:
         second_df.style.format({
         '% Perf': '{:.2f}',
         'APS': '{:.2f}',
-        'DPS nornal': '{:.2f}',
-        'DPS crits shielded': '{:.2f}',
+        'DPS normal': '{:.2f}',
+        'DPS v shield': '{:.2f}',
         'Lifesteal': '{:.1f}%',
         'Regen/s': '{:.2f}%',
         'Regen/hit': '{:.2f}%'
