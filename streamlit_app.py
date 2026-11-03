@@ -157,7 +157,7 @@ selected_age = st.segmented_control(
     )
 
 if melee_bad == "Melee":
-    items=[f"{w} " for w, t in MELEE_WEAPONS[selected_age].items()]
+    items=[f"{w}" for w, t in MELEE_WEAPONS[selected_age].items()]
 
 else:
     items=[f"{w}" for w, t in RANGED_WEAPONS[selected_age].items()]
