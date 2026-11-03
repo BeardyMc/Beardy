@@ -275,9 +275,9 @@ skin_modifiers = {
 
 if skin_q != "None":
   skin_windup = skin_modifiers.get(skin_q, 1.0)
-  if skin_q == "Druid" and melee_bad=="Melee"
+  if skin_q == "Druid" and melee_bad=="Melee":
       skin_windup=0.667
-  elif skin_q == "Flower" and melee_bad=="Melee" 
+  elif skin_q == "Flower" and melee_bad=="Melee":
       skin_windup=0.783
   st.write(f"Windup for **{skin_q}** skin: {skin_windup}")
 
