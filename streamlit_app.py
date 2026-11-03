@@ -505,7 +505,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
+        if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val) 
@@ -604,13 +604,8 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        print(last_row_check) 
-        print(bestest)
-        print(bestest[6], flush=True)
         if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
-            print(bestest)
-            print(bestest[6])
             Record.append(new_row)
             Record_stats.append(best_val)
      
@@ -702,7 +697,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
+        if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
@@ -746,8 +741,6 @@ if Clicked:
     combined_df['% Perf'] = SubN[:, 0]
 
     # Loop through columns 1 to 5 to combine raw and scaled values
-    print(SubN)
-    print(SubV) 
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
         print(SubV[:, i]) 
@@ -826,6 +819,12 @@ if Clicked:
         st.write("This DPS value is the average over the 5 hits from the fairies boost.")
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
+
+    if fairy shield == "Mixed" and melee_bad == "Melee":
+        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 9.01, the max achievable by an 84% perfect, melee shielding fairy build.")
+    elif fairy shield == "Mixed" and melee_bad == "Ranged":
+        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
+
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
