@@ -160,7 +160,7 @@ if melee_bad == "Melee":
     items=[f"{w} ({t:.3f}s)" for w, t in MELEE_WEAPONS[selected_age].items()]
 
 else:
-    
+    items=[f"{w} ({t:.3f}s)" for w, t in RANGED_WEAPONS[selected_age].items()]
  
     
     
