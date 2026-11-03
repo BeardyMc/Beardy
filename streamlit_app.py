@@ -275,6 +275,10 @@ skin_modifiers = {
 
 if skin_q != "None":
   skin_windup = skin_modifiers.get(skin_q, 1.0)
+  if skin_q == "Druid" and melee_bad=="Melee":
+      skin_windup=0.667
+  elif skin_q == "Flower" and melee_bad=="Melee":
+      skin_windup=0.783
   st.write(f"Windup for **{skin_q}** skin: {skin_windup}")
 
 N_ls = st.slider(
@@ -465,9 +469,9 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
                                     if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -548,9 +552,9 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
                                     if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                        Crit_multi = CC * (1.2 + cd) + 1 - CC 
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -629,9 +633,9 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
                                     if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -780,7 +784,7 @@ st.divider()
 st.markdown(
     """
     <div style="text-align: center; color: #888888; font-size: 0.85rem;">
-        Special thanks and credit to the community tools that inspire aided this optimizer:<br>
+        Special thanks and credit to the community tools that inspired and aided this project:<br>
         <a href="https://1vcian.me/fm/" target="_blank" style="color: #888888; text-decoration: underline;">1vcian's FM Tool</a> 
         &nbsp;|&nbsp; 
         <a href="https://uncledanny.github.io/ForgeMasterTools/" target="_blank" style="color: #888888; text-decoration: underline;">UncleDanny's Forge Master Tool</a>
