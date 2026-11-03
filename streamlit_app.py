@@ -784,7 +784,7 @@ st.divider()
 st.markdown(
     """
     <div style="text-align: center; color: #888888; font-size: 0.85rem;">
-        Special thanks and credit to the community tools that inspire aided this optimizer:<br>
+        Special thanks and credit to the community tools that inspired and aided this project:<br>
         <a href="https://1vcian.me/fm/" target="_blank" style="color: #888888; text-decoration: underline;">1vcian's FM Tool</a> 
         &nbsp;|&nbsp; 
         <a href="https://uncledanny.github.io/ForgeMasterTools/" target="_blank" style="color: #888888; text-decoration: underline;">UncleDanny's Forge Master Tool</a>
