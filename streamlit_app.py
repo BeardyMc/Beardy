@@ -430,8 +430,10 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
     dmg_max = 0.15
     if melee_q == "Ranged":
         rdmg_max = 0.15
+        cs_max=5.26
     else:
         rdmg_max = 0.5
+        cs_max=9.01
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
@@ -473,17 +475,30 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
                                     Crit_multi1 = CC * (1.2 + cd) + 1 - CC
                                     Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
-                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi1 * APS * 1.44
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS * 1.44
 
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
     
-                                    if DPS1 > bestest[6]:
+                                    if c_shield==0:
+                                        DPS=DPS1
+                                        val_check = 6
+                                    elif c_shield==1:
+                                        DPS=DPS2
+                                        val_check = 7
+                                    else:
+                                        if DPS2<cs_max:
+                                            DPS=0
+                                        else:
+                                            DPS=DPS1
+                                         val_check=6
+
+                                    if DPS > bestest[val_check]:
                                         bestest = best_new
                                         best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
     
-                                    elif DPS1 == bestest[6]:
+                                    elif DPS == bestest[val_check]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
