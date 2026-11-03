@@ -304,13 +304,13 @@ with col2:
         width="stretch"   
     )
 
+if fairy_choice == "Shield" and melee_bad == "Ranged":
+    target_options=["Overall", "vs Shield"] 
+else:
+    target_options=["Overall", "vs Shield", "Mixed"] 
 fairy_shield = st.segmented_control(
     "Do you want to aim for best DPS overall, or vs critical hit defence fairy?", 
-    [
-        "Overall", 
-        "vs Shield",
-        "Mixed"
-    ],
+    target_options,
     required=True,
     default="Overall",
     selection_mode="single"
