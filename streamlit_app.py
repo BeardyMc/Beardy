@@ -327,7 +327,7 @@ else:
 col1, col2 = st.columns([3, 2], wrap=False)
 
 with col2:
-    Clicked = st.button("Let's go!", use_container_width=True)
+    Clicked = st.button("Let's go!", width="stretch")
 
 def calculate_breakpoints(Windup):
     #fun comes here
@@ -504,7 +504,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
+        if np.any(last_row_check != bestest[0:5]) and bestest[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val) 
@@ -602,7 +602,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
+        if np.any(last_row_check != bestest[0:5]) and bestest[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
@@ -682,7 +682,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
+        if np.any(last_row_check != bestest[0:5]) and bestest[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
@@ -745,7 +745,7 @@ if Clicked:
     st.write("This is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
     st.dataframe(
         combined_df, 
-        use_container_width=True, 
+        width="stretch", 
         height="content", 
         hide_index=True
     )
@@ -797,7 +797,7 @@ if Clicked:
         'Regen/s': '{:.2f}%',
         'Regen/hit': '{:.2f}%'
     }),  
-        use_container_width=True, 
+        width="stretch", 
         height="content", 
         hide_index=True
     )
@@ -809,7 +809,7 @@ if Clicked:
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
-    st.dataframe(df, use_container_width=True, height="content", hide_index=True)
+    st.dataframe(df, width="stretch", height="content", hide_index=True)
 
 
 
