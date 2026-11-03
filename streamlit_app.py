@@ -4,79 +4,151 @@ import numpy as np
 import pandas as pd
 
 
-st.title("🎈 Beardy Does Maths")
+st.title("Beardy's Forge Master DPS Optimiser")
 st.write(
-    "Built using streamlit: [docs.streamlit.io](https://docs.streamlit.io/) \n\nWeapon:\n"
+    "Please select your weapon:" 
 )
-era = st.selectbox(
-    "Age:",
-    [   "Primitive",
-        "Medieval",
-        "Early-Modern",
-        "Modern",
-        "Space",
-        "Interstellar",
-        "Multiverse",
-        "Quantum",
-        "Underworld",
-        "Divine",
-    ],
-) 
 
-if era == "Primitive":
-    items = ["Blowgun", "Rock", "Slinger"] 
-elif era =="Medieval":
-    items = ["Bow", "Tomahawk"] 
-elif era == "Early-Modern":
-    items = ["Crossbow", "Dual Pistols", "Musket"]
-elif era == "Modern":
-    items = ["AK", "M4", "Sniper", "Uzi"]
-elif era == "Space":
-    items = ["Blaster", "Space Gun", "Space Pistol"] 
-elif era == "Interstellar":
-    items = ["Ionic Blaster", "Plasma Rifle", "Ray Gun"]
-elif era == "Multiverse":
-    items = ["Virtual Gun", "Virtual Bow"] 
-elif era == "Quantum":
-    items = ["Black Bow", "Black Gun", "Black Staff"] 
-elif era == "Underworld":
-    items = ["Abyssal Fork", "Abyssal Trident"] 
-elif era == "Divine":
-    items = ["Staff", "Staff of Wisdom"]
+
+col1, col2 = st.columns([3, 2], wrap=False)
+with col1:
+    st.write("Do you have ranged or melee weapon?") 
+with col2:
+    melee_bad = st.segmented_control(
+        "Do you have ranged or melee weapon?", 
+        [
+            "Ranged", 
+            "Melee"
+        ],
+        required=True,
+        default="Ranged",
+        selection_mode="single", 
+        label_visibility="collapsed",
+        width="stretch"  
+    ) 
+
+if melee_bad == "Melee":
+    selected_item = "Melee"
+    item_windup = st.number_input(
+        "I don't like melee, enter item windup speed manually:",
+        min_value=0.0,
+        max_value=1.5,
+        value=1.0,       # Your default starting value
+        step=0.001,      # Allows increments down to 0.001
+        format="%.3f"    # 3 dp precision
+    )
+    if item_windup == None:
+        item_windup = 1.0
+
 else:
-    items = ["Please select an age"] 
+    era = st.segmented_control(
+        "Age:",
+        [   "Primitive",
+            "Medieval",
+            "Early-Modern",
+            "Modern",
+            "Space",
+            "Interstellar",
+            "Multiverse",
+            "Quantum",
+            "Underworld",
+            "Divine",
+        ],
+        required=True,
+        default="Primitive",
+        selection_mode="single",
+        width="stretch" 
+        )
+    
+    
+    if era == "Primitive":
+        items = ["Blowgun", "Rock", "Slinger"] 
+    elif era =="Medieval":
+        items = ["Bow", "Tomahawk"] 
+    elif era == "Early-Modern":
+        items = ["Crossbow", "Dual Pistols", "Musket"]
+    elif era == "Modern":
+        items = ["AK", "M4", "Sniper", "Uzi"]
+    elif era == "Space":
+        items = ["Blaster", "Space Gun", "Space Pistol"] 
+    elif era == "Interstellar":
+        items = ["Ionic Blaster", "Plasma Rifle", "Ray Gun"]
+    elif era == "Multiverse":
+        items = ["Virtual Gun", "Virtual Bow"] 
+    elif era == "Quantum":
+        items = ["Black Bow", "Black Gun", "Black Staff"] 
+    elif era == "Underworld":
+        items = ["Abyssal Fork", "Abyssal Trident"] 
+    elif era == "Divine":
+        items = ["Staff", "Staff of Wisdom"]
+    else:
+        items = ["Please select an age"] 
+    
+    selected_item = st.segmented_control(
+        "Weapon:",
+        items, 
+        required=True,
+        default=items[0],
+        selection_mode="single"
+    )
 
-selected_item = st.selectbox(f"Weapon:", items)
-
-skin_q = st.selectbox(
-    "Skin:",
-    [
-        "None",
-        "Anubis",
-        "Boxer",
-        "Bunny",
-        "Cat",
-        "Chef",
-        "Clown",
-        "Cubeguy",
-        "Dark Planet Warrior",
-        "Demon",
-        "Druid",
-        "Eagle",
-        "Fishbowl",
-        "Flower",
-        "King",
-        "Knight",
-        "Lavaman",
-        "Leprechaun",
-        "Millionaire",
-        "Mummy",
-        "Mushroom",
-        "Reaper",
-        "Shark",
-        "Skater",
-        "Skeleton",
-    ],
+col1, col2 = st.columns([3, 2], wrap=False)
+with col1:
+    st.write("Do you have a weapon skin?") 
+with col2:
+    skin_hider = st.segmented_control(
+        "Do you have a weapon skin?", 
+        [
+            "Yes", 
+            "No"
+        ],
+        required=True,
+        default="No",
+        selection_mode="single",
+        label_visibility="collapsed",
+        width="stretch" 
+    ) 
+if skin_hider == "No":
+    skin_q="None"
+else:
+    skin_q = st.segmented_control(
+        "Skin:",
+        [
+            "Anubis",
+            "Boxer",
+            "Bunny",
+            "Cat",
+            "Chef",
+            "Clown",
+            "Cubeguy",
+            "Dark Planet Warrior",
+            "Demon",
+            "Druid",
+            "Eagle",
+            "Fishbowl",
+            "Flower",
+            "Guardian", 
+            "King",
+            "Knight",
+            "Lavaman",
+            "Leprechaun",
+            "Millionaire",
+            "Moth", 
+            "Mummy",
+            "Mushroom",
+            "Reaper",
+            "Santa", 
+            "Shadow", 
+            "Shark",
+            "Skater",
+            "Skeleton",
+            "Ski", 
+            "Snowman", 
+        ],
+        required=True,
+        default="Clown",
+        selection_mode="single",
+        #width="stretch" 
 )
 
 weapon_windups = {
@@ -118,8 +190,9 @@ weapon_windups = {
     "Staff": 0.833,
     "Staff of Wisdom": 0.717,
 }
- 
-item_windup = weapon_windups.get(selected_item, 1.0)
+
+if melee_bad == "Ranged":
+    item_windup = weapon_windups.get(selected_item, 1.5)
 
 # Show on screen
 st.write(f"Item Windup for {selected_item}: **{item_windup}s**")
@@ -144,12 +217,17 @@ skin_modifiers = {
     "Lavaman": 0.967,
     "Leprechaun": 0.317,
     "Millionaire": 0.667,
+    "Moth": 0.717,
     "Mummy": 0.667,
     "Mushroom": 0.733,
     "Reaper": 0.567,
+    "Santa": 0.783,
+    "Shadow": 0.717,
     "Shark": 0.9,
     "Skater": 0.733,
     "Skeleton": 0.783,
+    "Ski": 0.783,
+    "Snowman": 0.783
 }
 
 if skin_q != "None":
@@ -157,21 +235,56 @@ if skin_q != "None":
   st.write(f"Windup for **{skin_q}** skin: {skin_windup}")
 
 N_ls = st.slider(
-    label="Select desired amount of lifesteal slots, recommended 2:", 
+    label="Select desired amount of lifesteal slots:", 
     min_value=0,
     max_value=12,
-    value=2,
+    value=3,
     step=1
 )
 
-Clicked = st.button("Let's go!")
+# Columns force the segmented control to take up only 1 line
+col1, col2 = st.columns([1, 3], wrap=False)
+with col1:
+    st.markdown("**Fairy Choice:**")
+with col2:
+    fairy_choice = st.segmented_control(
+        "Fairy Choice Label", # Hidden label
+        ["Damage", "5th hit boost", "Shield"], 
+        label_visibility="collapsed", #Hides label
+        required=True,
+        default="5th hit boost", 
+        selection_mode="single", 
+        width="stretch"   
+    )
+
+fairy_shield = st.segmented_control(
+    "Do you want to aim for best DPS overall, or vs critical hit defence fairy?", 
+    [
+        "Overall", 
+        "vs Shield"
+    ],
+    required=True,
+    default="Overall",
+    selection_mode="single"
+) 
+if fairy_shield == "Overall":
+    c_shield_q=0
+else:
+    c_shield_q=1
+
+
+# Create 3 columns: push space to the left, keep button on the right
+col1, col2 = st.columns([3, 2], wrap=False)
+
+with col2:
+    Clicked = st.button("Let's go!", use_container_width=True)
 
 def calculate_breakpoints(Windup):
     #fun comes here
     breakpoints=[[0,0,0]] #initialise
     BaseD=1.5 #standard time for all weapons
     
-    inc=0.09999999976 #fd6
+    inc= math.floor((2**32)/10)/(2**32) #fd6
     n_tics = math.ceil(Windup / inc)
     first_hit = inc * n_tics
     cooldown_tics = max(1, math.ceil((BaseD - first_hit) / inc))
@@ -258,77 +371,253 @@ def combine_breakpoints(IB,SB):
             
                 
 
-def best_substats(timings, N_ls):
+def best_substats_5th(timings, N_ls, c_shield, melee_q):
     timings=np.array(timings)
     # function for finding optimal substat builds
     cd_max = 0.8
     cc_max = 0.12
     dc_max = 0.2
     dmg_max = 0.15
-    rdmg_max = 0.15
+    if melee_q == "Ranged":
+        rdmg_max = 0.15
+    else:
+        rdmg_max = 0.5
     spd_max = 0.4
 
-    CC = 0.8 #setting manually due to Mira, update at each new fairy launch
+    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
     
     # initialise
-    Record=[[0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0]]
+    Record_stats=[]
     
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,24,0,0]
+        bestest=[0,0,0,0,0,24,0]
         
-        for N_cd in range(1, 13):
-            cd = N_cd * cd_max * perf
-    
-            for N_dmg in range(7):  # 0 to 6 inclusive
-                dmg = N_dmg * dmg_max * perf
+        for N_cc in range(1,13):
+            CC = min(1, N_cc * cc_max * perf)
         
-                for N_rdmg in range(N_dmg + 1):  # 0 up to N_dmg inclusive
-                    rdmg = N_rdmg * rdmg_max * perf
-            
-                    for N_dc in range(7):  # 0 to 6 inclusive
-                        dc = min(1, dc_max * N_dc * perf)
+            for N_cd in range(1, 13):
+                cd = N_cd * cd_max * perf
+        
+                for N_dmg in range(7):  # 0 to 6 inclusive
+                    dmg = N_dmg * dmg_max * perf + 0.44
+                    if melee_q == "Ranged":
+                        rdmg_lim = N_dmg
+                    else:
+                        rdmg_lim = 12
+                    for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
+                        rdmg = N_rdmg * rdmg_max * perf
                 
-                        for N_spd in range(1, 13):
-                            if (N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-3-N_ls):
-                                spd = N_spd * spd_max * perf * 100
-                                
-                                B = timings[:,0]<spd
-                                C = timings[B]
-                                time1 = C[-1, 1:3]
-                                
-                                APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                Crit_multi = CC * (1.2 + cd) + 0.2
-                                DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
-
-                                best_new = [N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
-
-                                if DPS > bestest[5]:
-                                    bestest = best_new
-                                    best_val = [cd, dmg, rdmg, dc, spd]
-
-                                elif DPS == bestest[5]:
-                                    if max(best_new[0:5]) < max(bestest[0:5]):
+                        for N_dc in range(7):  # 0 to 6 inclusive
+                            dc = min(1, dc_max * N_dc * perf)
+                    
+                            for N_spd in range(1, 13):
+                                if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls):
+                                    spd = N_spd * spd_max * perf * 100
+                                    
+                                    B = timings[:,0]<spd
+                                    C = timings[B]
+                                    time1 = C[-1, 1:3]
+                                    
+                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
+                                    if c_shield ==0:
+                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                    else:
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+    
+                                    if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [cd, dmg, rdmg, dc, spd]
-
+                                        best_val = [perf, CC*100, cd*100, dmg*100-44, rdmg*100, dc*100, spd, DPS]
+    
+                                    elif DPS == bestest[6]:
+                                        if max(best_new[0:6]) < max(bestest[0:6]):
+                                            bestest = best_new
+                                            best_val = [perf, CC*100, cd*100, dmg*100-44, rdmg*100, dc*100, spd, DPS]
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
             new_row = [perf] + bestest
             Record.append(new_row)
+            Record_stats.append(best_val) 
+     
+    Record = np.array(Record)
+    Record = Record[1:] 
+    Record_stats = np.array(Record_stats)
+
+    return Record, Record_stats
+                       
+
+def best_substats_dmg(timings, N_ls, c_shield, melee_q):
+    timings=np.array(timings)
+    # function for finding optimal substat builds
+    cd_max = 0.8
+    cc_max = 0.12
+    dc_max = 0.2
+    dmg_max = 0.15
+    if melee_q == "Ranged":
+        rdmg_max = 0.15
+    else:
+        rdmg_max = 0.5
+    spd_max = 0.4
+    spd_max = 0.4
+
+    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
+    
+    # initialise
+    Record=[[0,0,0,0,0,0,0,0]]
+    Record_stats=[] 
+    
+    for i in range(70,101):
+        perf=i/100
+        bestest=[0,0,0,0,0,24,0]
         
+        for N_cc in range(1,13):
+            CC = min(1, N_cc * cc_max * perf)
+        
+            for N_cd in range(1, 13):
+                cd = N_cd * cd_max * perf
+        
+                for N_dmg in range(13):  # 0 to 12 inclusive
+                    N_health=N_dmg
+                    health_r = N_health * perf * 0.15
+                    dmg = math.floor(health_r/0.1) * 0.15
+                    if melee_q == "ranged":
+                        rdmg_lim = N_dmg
+                    else:
+                        rdmg_lim = 12
+                    for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
+                        rdmg = N_rdmg * rdmg_max * perf
+                
+                        for N_dc in range(7):  # 0 to 6 inclusive
+                            dc = min(1, dc_max * N_dc * perf)
+                    
+                            for N_spd in range(1, 13):
+                                if (N_cc+N_spd+N_dc+N_rdmg+N_health+N_cd) == (24-N_ls):
+                                    spd = N_spd * spd_max * perf * 100
+                                    
+                                    B = timings[:,0]<spd
+                                    C = timings[B]
+                                    time1 = C[-1, 1:3]
+                                    
+                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
+                                    if c_shield ==0:
+                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                    else:
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+    
+                                    if DPS > bestest[6]:
+                                        bestest = best_new
+                                        best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
+    
+                                    elif DPS == bestest[6]:
+                                        if max(best_new[0:6]) < max(bestest[0:6]):
+                                            bestest = best_new
+                                            best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
+        
+        last_row_check = Record[-1][1:6]
+        if np.any(last_row_check != bestest[0:5]):
+            new_row = [perf] + bestest
+            Record.append(new_row)
+            Record_stats.append(best_val)
+     
     Record = np.array(Record)
     Record = Record[1:]
-
-    Record_stats = Record.copy()
-    Record_stats[:, 1:6] = Record[:, 1:6] * Record[:, 0:1]
-    max_factors = np.array([cd_max, dmg_max, rdmg_max, dc_max, spd_max])
-    Record_stats[:, 1:6] = Record_stats[:, 1:6] * max_factors * 100
+    Record_stats = np.array(Record_stats) 
 
     return Record, Record_stats
 
 
+def best_substats(timings, N_ls, c_shield, melee_q):
+    timings=np.array(timings)
+    # function for finding optimal substat builds
+    cd_max = 0.8
+    cc_max = 0.12
+    dc_max = 0.2
+    dmg_max = 0.15
+    if melee_q == "Ranged":
+        rdmg_max = 0.15
+    else:
+        rdmg_max = 0.5
+    spd_max = 0.4
+    spd_max = 0.4
+
+    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
+    
+    # initialise
+    Record=[[0,0,0,0,0,0,0,0]]
+    Record_stats=[] 
+    
+    for i in range(70,101):
+        perf=i/100
+        bestest=[0,0,0,0,0,24,0]
+        
+        for N_cc in range(1,13):
+            CC = min(1, N_cc * cc_max * perf)
+        
+            for N_cd in range(1, 13):
+                cd = N_cd * cd_max * perf
+        
+                for N_dmg in range(7):  # 0 to 6 inclusive
+                    dmg = N_dmg * dmg_max * perf
+                    if melee_q == "Ranged":
+                        rdmg_lim = N_dmg
+                    else:
+                        rdmg_lim = 12
+                    for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
+                        rdmg = N_rdmg * rdmg_max * perf
+                
+                        for N_dc in range(7):  # 0 to 6 inclusive
+                            dc = min(1, dc_max * N_dc * perf)
+                    
+                            for N_spd in range(1, 13):
+                                if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls-4):
+                                    spd = N_spd * spd_max * perf * 100
+                                    
+                                    B = timings[:,0]<spd
+                                    C = timings[B]
+                                    time1 = C[-1, 1:3]
+                                    
+                                    APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
+                                    if c_shield ==0:
+                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                    else:
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+    
+                                    if DPS > bestest[6]:
+                                        bestest = best_new
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+    
+                                    elif DPS == bestest[6]:
+                                        if max(best_new[0:6]) < max(bestest[0:6]):
+                                            bestest = best_new
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+        
+        last_row_check = Record[-1][1:6]
+        if np.any(last_row_check != bestest[0:5]):
+            new_row = [perf] + bestest
+            Record.append(new_row)
+            Record_stats.append(best_val)
+     
+    Record = np.array(Record)
+    Record = Record[1:]
+    Record_stats = np.array(Record_stats)
+
+    return Record, Record_stats
+
+
+
 if Clicked:
+    print(fairy_choice) 
     item_breakpoints = calculate_breakpoints(item_windup)
 
     if skin_q !="None":
@@ -342,28 +631,39 @@ if Clicked:
     if skin_q != "None":
         df["Applied Skin"] = wearing
     
+    if fairy_choice == "5th hit boost":
+        SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
+    elif fairy_choice == "Damage":
+        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q, melee_bad)
+    else:
+        SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
 
-    SubN, SubV = best_substats(final_breakpoints, N_ls)
-
-    col_names = ['% Perf', 'Crit Dmg', 'Damage', 'Ranged', 'Double', 'Speed']
+    if fairy_choice == "Damage":
+        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', melee_bad, 'Double', 'Speed'] 
+    else:
+        col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Damage', melee_bad, 'Double', 'Speed']
 
     combined_df = pd.DataFrame()
     combined_df['% Perf'] = SubN[:, 0]
 
     # Loop through columns 1 to 5 to combine raw and scaled values
+    print(SubN)
+    print(SubV) 
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
+        print(SubV[:, i]) 
         scaled_vals = SubV[:, i]
     
     # Combine them into a "Raw / Scaled" string format
     # (Using int() on raw values since tiers are whole numbers, and .1f for scaled)
         combined_df[col_name] = [
-            f"{int(r)} ({s:.1f}%)" for r, s in zip(raw_vals, scaled_vals)
+            " " if int(r) == 0 else f"{int(r)} ({s:.1f}%)" 
+            for r, s in zip(raw_vals, scaled_vals)
         ]
     
     st.divider()
     st.subheader("Results")
-    st.write("These results all assume 3 slots are taken for Skill Damage, with a lvl 20 Mira giving 80% Crit Chance. \n\nThis is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
+    st.write("This is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
     st.dataframe(
         combined_df, 
         use_container_width=True, 
@@ -385,21 +685,21 @@ if Clicked:
     regenS=[] 
 
     for i in range(len(SubV)):
-        spd=SubV[i,5]
+        spd=SubV[i,6]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
         
         spd_str.append(f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)")
-        aps.append((1-SubV[i,4]/100)/C[-1,0] + 0.02*SubV[i,4]/C[-1,1])
+        aps.append((1-SubV[i,5]/100)/C[-1,0] + 0.02*SubV[i,5]/C[-1,1])
         lifesteal.append(SubV[i,0]*20*N_ls)
-        regenH.append((lifesteal[i]*SubV[i,6]/aps[i])/40)
-        regenS.append(lifesteal[i]*SubV[i,6]/40)
+        regenH.append((lifesteal[i]*SubV[i,7]/aps[i])/40)
+        regenS.append(lifesteal[i]*SubV[i,7]/40)
         
         
  
     second_df['Speed'] = spd_str
     second_df['APS'] = aps
-    second_df['DPS'] = SubV[:,6]
+    second_df['DPS'] = SubV[:,7]
     second_df['Lifesteal'] = lifesteal 
     second_df['Regen/s'] = regenS
     second_df['Regen/hit'] = regenH
@@ -421,9 +721,32 @@ if Clicked:
         hide_index=True
     )
 
+    if fairy_choice == "5th hit boost":
+        st.write("This DPS value is the average over the 5 hits from the fairies boost.")
+    elif fairy_choice == "Shield":
+        st.write("This assumes 4 slots for skill cooldown used.")
+
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
     st.dataframe(df, use_container_width=True, height="content", hide_index=True)
+
+
+
+st.divider()
+
+st.markdown(
+    """
+    <div style="text-align: center; color: #888888; font-size: 0.85rem;">
+        Special thanks and credit to the community tools that inspire aided this optimizer:<br>
+        <a href="https://1vcian.me/fm/" target="_blank" style="color: #888888; text-decoration: underline;">1vcian's FM Tool</a> 
+        &nbsp;|&nbsp; 
+        <a href="https://uncledanny.github.io/ForgeMasterTools/" target="_blank" style="color: #888888; text-decoration: underline;">UncleDanny's Forge Master Tool</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
     
+
 
 
