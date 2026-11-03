@@ -775,7 +775,7 @@ if Clicked:
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
-    st.dataframe(df, width=”stretch”, height="content", hide_index=True)
+    st.dataframe(df, width="stretch", height="content", hide_index=True)
 
 
 
