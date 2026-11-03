@@ -157,15 +157,12 @@ selected_age = st.segmented_control(
     )
 
 if melee_bad == "Melee":
-    items=[f"{w} ({t:.3f}s)" for w, t in MELEE_WEAPONS[selected_age].items()]
+    items=[f"{w} " for w, t in MELEE_WEAPONS[selected_age].items()]
 
 else:
-    items=[f"{w} ({t:.3f}s)" for w, t in RANGED_WEAPONS[selected_age].items()]
+    items=[f"{w}" for w, t in RANGED_WEAPONS[selected_age].items()]
  
-    
-    
-    
-    
+# choose item 
 selected_item = st.segmented_control(
     "Weapon:",
     items, 
@@ -174,7 +171,11 @@ selected_item = st.segmented_control(
     selection_mode="single"
     )
 
-item_windup = weapon_windups.get(selected_item, 1.5)
+# get winduo
+if melee_bad == "Melee":
+    item_windup =  MELEE_WEAPONS.get(selected_item, 1.5)
+else:
+    item_windup = RANGED_WEAPONS.get(selected_item, 1.5)
 
 col1, col2 = st.columns([3, 2], wrap=False)
 with col1:
