@@ -492,7 +492,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                             DPS=0
                                         else:
                                             DPS=DPS1
-                                         val_check=6
+                                        val_check=6
 
                                     if DPS > bestest[val_check]:
                                         bestest = best_new
