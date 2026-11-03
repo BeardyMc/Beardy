@@ -713,7 +713,7 @@ if Clicked:
     st.write("This is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
     st.dataframe(
         combined_df, 
-        width=”stretch”, 
+        width="stretch", 
         height="content", 
         hide_index=True
     )
@@ -763,7 +763,7 @@ if Clicked:
         'Regen/s': '{:.2f}%',
         'Regen/hit': '{:.2f}%'
     }),  
-        width=”stretch”, 
+        width="stretch", 
         height="content", 
         hide_index=True
     )
