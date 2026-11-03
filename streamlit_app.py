@@ -469,9 +469,9 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
                                     if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -552,9 +552,9 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
                                     if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                        Crit_multi = CC * (1.2 + cd) + 1 - CC 
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
@@ -633,9 +633,9 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
                                     if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 0.2
+                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
+                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
                                     DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
