@@ -525,20 +525,22 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
     dmg_max = 0.15
     if melee_q == "Ranged":
         rdmg_max = 0.15
+        cs_max=5.26
     else:
         rdmg_max = 0.5
+        cs_max=9.01
     spd_max = 0.4
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
     
     # initialise
-    Record=[[0,0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[] 
     
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,0,24,0]
+        bestest=[0,0,0,0,0,24,0,0]
         
         for N_cc in range(1,13):
             CC = min(1, N_cc * cc_max * perf)
@@ -569,22 +571,35 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                     time1 = C[-1, 1:3]
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 1 - CC 
+                                    Crit_multi1 = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi1 * APS
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS
+                                    
+
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
+    
+                                    if c_shield==0:
+                                        DPS=DPS1
+                                        val_check = 6
+                                    elif c_shield==1:
+                                        DPS=DPS2
+                                        val_check = 7
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
-    
-                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
-    
-                                    if DPS > bestest[6]:
+                                        if DPS2<cs_max:
+                                            DPS=0
+                                        else:
+                                            DPS=DPS1
+                                        val_check=6
+                                    if DPS > bestest[val_check]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
+                                        best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
     
-                                    elif DPS == bestest[6]:
+                                    elif DPS == bestest[val_check]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
+                                            best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
@@ -608,20 +623,20 @@ def best_substats(timings, N_ls, c_shield, melee_q):
     dmg_max = 0.15
     if melee_q == "Ranged":
         rdmg_max = 0.15
+        cs_max=5.26
     else:
         rdmg_max = 0.5
-    spd_max = 0.4
+        cs_max=9.01
     spd_max = 0.4
 
-    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
     
     # initialise
-    Record=[[0,0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[] 
     
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,0,24,0]
+        bestest=[0,0,0,0,0,24,0,0]
         
         for N_cc in range(1,13):
             CC = min(1, N_cc * cc_max * perf)
@@ -650,22 +665,21 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                     time1 = C[-1, 1:3]
                                     
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
-                                    else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+                                    Crit_multi1 = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi1 * APS
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS
     
-                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
     
                                     if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
     
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
@@ -738,7 +752,7 @@ if Clicked:
 
     st.write("Below we look at the PvP capabilities of these builds. \n\nNote: standard health is 8x damage, with a 5x multiplier in PvP. Pet typing and equipped items levels can change this distribution. These percentages assume health is the standard 40x base damage before modifiers.") 
 
-    col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
+    col_names = ["% Perf", "Speed", "APS", "DPS normal", "DPS crits shielded", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0]
 
@@ -764,7 +778,8 @@ if Clicked:
  
     second_df['Speed'] = spd_str
     second_df['APS'] = aps
-    second_df['DPS'] = SubV[:,7]
+    second_df['DPS normal'] = SubV[:,7]
+    second_df['DPS crits shielded'] = SubV[:,8]
     second_df['Lifesteal'] = lifesteal 
     second_df['Regen/s'] = regenS
     second_df['Regen/hit'] = regenH
@@ -776,7 +791,8 @@ if Clicked:
         second_df.style.format({
         '% Perf': '{:.2f}',
         'APS': '{:.2f}',
-        'DPS': '{:.2f}',
+        'DPS nornal': '{:.2f}',
+        'DPS crits shielded': '{:.2f}',
         'Lifesteal': '{:.1f}%',
         'Regen/s': '{:.2f}%',
         'Regen/hit': '{:.2f}%'
