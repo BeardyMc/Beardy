@@ -606,6 +606,8 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]) and bestest[6]>0:
             new_row = [perf] + bestest
+            print(bestest)
+            print(bestest[6])
             Record.append(new_row)
             Record_stats.append(best_val)
      
