@@ -304,20 +304,23 @@ with col2:
         width="stretch"   
     )
 
+if fairy_choice == "Shield" and melee_bad == "Ranged":
+    target_options=["Overall", "vs Shield"] 
+else:
+    target_options=["Overall", "vs Shield", "Mixed"] 
 fairy_shield = st.segmented_control(
     "Do you want to aim for best DPS overall, or vs critical hit defence fairy?", 
-    [
-        "Overall", 
-        "vs Shield"
-    ],
+    target_options,
     required=True,
     default="Overall",
     selection_mode="single"
 ) 
 if fairy_shield == "Overall":
     c_shield_q=0
-else:
+elif fairy_shield == "vs Shield":
     c_shield_q=1
+else:
+    c_shield_q=2
 
 
 # Create 3 columns: push space to the left, keep button on the right
@@ -427,18 +430,23 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
     dmg_max = 0.15
     if melee_q == "Ranged":
         rdmg_max = 0.15
+        cs_max=5.26
     else:
         rdmg_max = 0.5
+        cs_max=9.01
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
 
     # initialise
-    Record=[[0,0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[]
 
     for i in range(70,101):
         perf=i/100
+
+        bestest=[0,0,0,0,0,24,0,0]
+        
         bestest=[0,0,0,0,0,24,0]
 
         for N_cc in range(1,13):
@@ -486,7 +494,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
 
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
+        if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val) 
@@ -507,15 +515,17 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
     dmg_max = 0.15
     if melee_q == "Ranged":
         rdmg_max = 0.15
+        cs_max=5.26
     else:
         rdmg_max = 0.5
+        cs_max=9.01
     spd_max = 0.4
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
 
     # initialise
-    Record=[[0,0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[] 
 
     for i in range(70,101):
@@ -569,7 +579,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
 
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
+        if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
@@ -590,15 +600,16 @@ def best_substats(timings, N_ls, c_shield, melee_q):
     dmg_max = 0.15
     if melee_q == "Ranged":
         rdmg_max = 0.15
+        cs_max=5.26
     else:
         rdmg_max = 0.5
-    spd_max = 0.4
+        cs_max=9.01
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
 
     # initialise
-    Record=[[0,0,0,0,0,0,0,0]]
+    Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[] 
 
     for i in range(70,101):
@@ -650,7 +661,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
 
         last_row_check = Record[-1][1:6]
-        if np.any(last_row_check != bestest[0:5]):
+        if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
@@ -694,8 +705,6 @@ if Clicked:
     combined_df['% Perf'] = SubN[:, 0]
 
     # Loop through columns 1 to 5 to combine raw and scaled values
-    print(SubN)
-    print(SubV) 
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
         print(SubV[:, i]) 
@@ -720,7 +729,7 @@ if Clicked:
 
     st.write("Below we look at the PvP capabilities of these builds. \n\nNote: standard health is 8x damage, with a 5x multiplier in PvP. Pet typing and equipped items levels can change this distribution. These percentages assume health is the standard 40x base damage before modifiers.") 
 
-    col_names = ["% Perf", "Speed", "APS", "DPS", "Lifesteal", "Regen/s", "Regen/hit"] 
+    col_names = ["% Perf", "Speed", "APS", "DPS normal", "DPS v shield", "Lifesteal", "Regen/s", "Regen/hit"] 
     second_df = pd.DataFrame()
     second_df['% Perf'] = SubN[:, 0]
 
@@ -746,7 +755,8 @@ if Clicked:
 
     second_df['Speed'] = spd_str
     second_df['APS'] = aps
-    second_df['DPS'] = SubV[:,7]
+    second_df['DPS normal'] = SubV[:,7]
+    second_df['DPS v shield'] = SubV[:,8]
     second_df['Lifesteal'] = lifesteal 
     second_df['Regen/s'] = regenS
     second_df['Regen/hit'] = regenH
@@ -758,7 +768,8 @@ if Clicked:
         second_df.style.format({
         '% Perf': '{:.2f}',
         'APS': '{:.2f}',
-        'DPS': '{:.2f}',
+        'DPS normal': '{:.2f}',
+        'DPS v shield': '{:.2f}',
         'Lifesteal': '{:.1f}%',
         'Regen/s': '{:.2f}%',
         'Regen/hit': '{:.2f}%'
@@ -772,6 +783,12 @@ if Clicked:
         st.write("This DPS value is the average over the 5 hits from the fairies boost.")
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
+
+    if fairy_shield == "Mixed" and melee_bad == "Melee":
+        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 9.01, the max achievable by an 84% perfect, melee shielding fairy build.")
+    elif fairy_shield == "Mixed" and melee_bad == "Ranged":
+        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
+
 
     st.divider()
     st.write("Here is the full breakpoint table for your build:")
