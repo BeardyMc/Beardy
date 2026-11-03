@@ -490,6 +490,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                     else:
                                         if DPS2<cs_max:
                                             DPS=0
+                                            DPS1=0
                                         else:
                                             DPS=DPS1
                                         val_check=6
@@ -589,6 +590,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                                     else:
                                         if DPS2<cs_max:
                                             DPS=0
+                                            DPS1=0
                                         else:
                                             DPS=DPS1
                                         val_check=6
@@ -671,12 +673,25 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                                     DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
+                                    if c_shield==0:
+                                        DPS=DPS1
+                                        val_check = 6
+                                    elif c_shield==1:
+                                        DPS=DPS2
+                                        val_check = 7
+                                    else:
+                                        if DPS2<cs_max:
+                                            DPS=0
+                                            DPS1=0
+                                        else:
+                                            DPS=DPS1
+                                        val_check=6
     
-                                    if DPS > bestest[6]:
+                                    if DPS > bestest[val_check]:
                                         bestest = best_new
                                         best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
     
-                                    elif DPS == bestest[6]:
+                                    elif DPS == bestest[val_check]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
                                             best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
