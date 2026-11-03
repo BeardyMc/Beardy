@@ -172,7 +172,7 @@ selected_item = st.segmented_control(
     required=True,
     default=items[0],
     selection_mode="single"
-)
+    )
 
 item_windup = weapon_windups.get(selected_item, 1.5)
 
