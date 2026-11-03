@@ -137,7 +137,7 @@ RANGED_WEAPONS = {
     },
 }
 
-era = st.segmented_control(
+selected_age = st.segmented_control(
     "Age:",
     [   "Primitive",
         "Medieval",
