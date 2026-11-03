@@ -444,7 +444,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                 cd = N_cd * cd_max * perf
         
                 for N_dmg in range(7):  # 0 to 6 inclusive
-                    dmg = N_dmg * dmg_max * perf + 0.44
+                    dmg = N_dmg * dmg_max * perf
                     if melee_q == "Ranged":
                         rdmg_lim = N_dmg
                     else:
@@ -468,18 +468,18 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                                         Crit_multi = CC * (1.2 + cd) + 0.2
                                     else:
                                         Crit_multi = CC * (1.2 + cd) * 0.3 + 0.2
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
+                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
     
                                     best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
     
                                     if DPS > bestest[6]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, dmg*100-44, rdmg*100, dc*100, spd, DPS]
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
     
                                     elif DPS == bestest[6]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, dmg*100-44, rdmg*100, dc*100, spd, DPS]
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
         
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]):
