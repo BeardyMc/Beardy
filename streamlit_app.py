@@ -6,7 +6,7 @@ import time
 
 if "clicked" not in st.session_state:
     st.session_state.clicked = False
-    st.session_state.Sub
+
 
 st.title("Beardy's Forge Master DPS Optimiser")
 st.write(
