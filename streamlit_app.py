@@ -717,11 +717,26 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
+def dynamic_step(x):
+    if x == 0 or x is None:
+        return 0.01
+    try:
+        return 10 ** (math.floor(math.log10(abs(x))) - 2)
+    except ValueError:
+        return 0.01
+def dynamic_number_input(label, key, min_value=0.0):
+    if key not in st.session_state:
+        st.session_state[key] = min_value
+    step_size = dynamic_step(st.session_state[key])
+
+    return st.number_input(label, min_value=min_value, step=step_size, key=key)
+
+
 if clicked:
     print(fairy_choice)
     with st.spinner("Finding highest DPS build...", show_time=True):
         item_breakpoints = calculate_breakpoints(item_windup)
-
+Ol
         if skin_q !="None":
             skin_breakpoints = calculate_breakpoints(skin_windup)
             final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
@@ -854,31 +869,37 @@ if st.session_state.clicked:
     st.markdown("### Compare Your Current Build")
     st.write("Do you want to compare your current build? Enter your substats below:")
 
-# --- Row 1: 3 columns ---
-    col1, col2, col3 = st.columns(3, wrap=False)
-    with col1:
-        crit_chance = st.number_input("Crit Chance", value=0.0)
-    with col2:
-        crit_damage = st.number_input("Crit Damage (%)", value=0.0)
-    with col3:
-        st.write("Your build's DPS is...")
+    left_pane, right_pane = st.columns([1.8, 1], wrap=False)
 
-    col4, col5, col6 = st.columns(3, wrap=False) 
-    with col4:
-        damage = st.number_input("Damage", value=0.0)
-    with col5:
-        ranged_damage = st.number_input("Ranged Damage", value=0.0)
+    with left_pane:
+  # --- ROW 1 of the 2x3 grid ---
+        r1_c1, r1_c2 = st.columns(2, wrap=False)
+        with r1_c1:
+            crit_chance = dynamic_number_input("Crit Chance", "crit_chance")
+        with r1_c2:
+            crit_damage = dynamic_number_input("Crit Damage", "crit_damage")
+  # --- ROW 2 of the 2x3 grid ---
+        r2_c1, r2_c2 = st.columns(2, wrap=False) 
+        with r2_c1:
+            damage = dynamic_number_input("Damage", "damage")
+        with r2_c2:
+            ranged_damage = dynamic_number_input("Ranged Damage", "ranged_damage")
+        r3_c1, r3_c1 = st.columns(2, wrap=False) 
+        with r3_c1:
+            double_stat = dynamic_number_input("Double Stat", "double_stat")
+        with r3_c2:
+            attack_speed = dynamic_number_input("Attack Speed", "attack_speed")
 
-    col7, col8, col9 = st.columns(3, wrap=False) 
-    with col7:
-        double_stat = st.number_input("Double Stat", value=0.0)
-    with col8:
-        attack_speed = st.number_input("Attack Speed", value=0.0)
-    single_hit_damage = st.number_input(
-        "Single hit damage in-game (Optional)",
-        value=0.0,
-        help="Enter your actual observed in-game hit to calibrate exact DPS",
-    )
+  # --- Optional Box Below ---
+        single_hit_damage = st.number_input(
+            "Single hit damage in-game (Optional)",
+            value=0.0,
+            help="Enter your observed in-game damage to get your exact DPS."
+        ) 
+
+
+    with right_pane:
+        st.markdown("#### 📊 Results Panel") 
   
 
 
