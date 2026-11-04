@@ -433,7 +433,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
         cs_max=5.26
     else:
         rdmg_max = 0.5
-        cs_max=9.01
+        cs_max=10.19
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
@@ -529,7 +529,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
         cs_max=5.26
     else:
         rdmg_max = 0.5
-        cs_max=9.01
+        cs_max=10.19
     spd_max = 0.4
     spd_max = 0.4
 
@@ -628,7 +628,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
         cs_max=5.26
     else:
         rdmg_max = 0.5
-        cs_max=9.01
+        cs_max=10.19
     spd_max = 0.4
 
     
@@ -816,12 +816,12 @@ if Clicked:
     )
 
     if fairy_choice == "5th hit boost":
-        st.write("This DPS value is the average over the 5 hits from the fairies boost.")
+        st.write("This DPS value is the average over the 5 hits from the fairies boost. The first 4 hits will be 70% of the average, and the 5th is 2.22x the average")
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
 
     if fairy_shield == "Mixed" and melee_bad == "Melee":
-        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 9.01, the max achievable by an 84% perfect, melee shielding fairy build.")
+        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 10.19, the max achievable by an 84% perfect, melee shielding fairy build.")
     elif fairy_shield == "Mixed" and melee_bad == "Ranged":
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
 
