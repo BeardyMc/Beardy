@@ -728,6 +728,7 @@ def dynamic_number_input(label, key, min_value=0.0):
     if key not in st.session_state:
         st.session_state[key] = min_value
     step_size = dynamic_step(st.session_state[key])
+    print(step_size, flush=True) 
 
     return st.number_input(label, min_value=min_value, step=step_size, key=key)
 
