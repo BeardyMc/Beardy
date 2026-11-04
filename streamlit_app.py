@@ -884,7 +884,7 @@ if st.session_state.clicked:
             damage = dynamic_number_input("Damage", "damage")
         with r2_c2:
             ranged_damage = dynamic_number_input("Ranged Damage", "ranged_damage")
-        r3_c1, r3_c1 = st.columns(2, wrap=False) 
+        r3_c1, r3_c2 = st.columns(2, wrap=False) 
         with r3_c1:
             double_stat = dynamic_number_input("Double Stat", "double_stat")
         with r3_c2:
