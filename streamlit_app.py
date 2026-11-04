@@ -727,6 +727,7 @@ if clicked:
             final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
         else:
             final_breakpoints = item_breakpoints
+            wearing = [] 
 
     
         if fairy_choice == "5th hit boost":
