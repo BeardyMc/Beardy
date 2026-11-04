@@ -883,10 +883,10 @@ if st.session_state.clicked:
         with r2_c1:
             damage = dynamic_number_input("Damage", "damage")
         with r2_c2:
-            ranged_damage = dynamic_number_input("Ranged Damage", "ranged_damage")
+            ranged_damage = dynamic_number_input(f"{melee_bad} Damage", "ranged_damage")
         r3_c1, r3_c2 = st.columns(2, wrap=False) 
         with r3_c1:
-            double_stat = dynamic_number_input("Double Stat", "double_stat")
+            double_chance = dynamic_number_input("Double Chance", "double_chance")
         with r3_c2:
             attack_speed = dynamic_number_input("Attack Speed", "attack_speed")
 
@@ -899,6 +899,7 @@ if st.session_state.clicked:
 
 
     with right_pane:
+
         st.markdown("#### 📊 Results Panel") 
   
 
