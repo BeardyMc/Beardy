@@ -736,7 +736,7 @@ if clicked:
     print(fairy_choice)
     with st.spinner("Finding highest DPS build...", show_time=True):
         item_breakpoints = calculate_breakpoints(item_windup)
-Ol
+
         if skin_q !="None":
             skin_breakpoints = calculate_breakpoints(skin_windup)
             final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
