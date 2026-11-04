@@ -724,11 +724,18 @@ def dynamic_step(x):
         return float(max(0.01, 10 ** (math.floor(math.log10(abs(x))) - 2)))
     except ValueError:
         return 0.01
+
 def dynamic_number_input(label, key, min_value=0.0):
     if key not in st.session_state:
         st.session_state[key] = min_value
     step_size = dynamic_step(st.session_state[key])
-    print(step_size, flush=True) 
+    if step_size >= 1.0:
+        decimals = 0
+    elif step_size >= 0.1:
+        decimals = 1
+    else:
+        decimals = 2
+    st.session_state[key] = round(current_val, decimals)
 
     return st.number_input(label, min_value=min_value, step=step_size, key=key)
 
