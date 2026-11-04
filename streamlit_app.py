@@ -889,7 +889,7 @@ st.markdown(
 )
 
     
-print(st.session_state.clicked) 
+print(st.session_state.clicked, flush=True) 
 
 
 
