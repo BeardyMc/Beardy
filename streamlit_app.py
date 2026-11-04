@@ -728,7 +728,9 @@ def dynamic_step(x):
 def dynamic_number_input(label, key, min_value=0.0):
     if key not in st.session_state:
         st.session_state[key] = min_value
-    step_size = dynamic_step(st.session_state[key])
+
+    current_val = st.session_state[key]
+    step_size = dynamic_step(current_val)
     if step_size >= 1.0:
         decimals = 0
     elif step_size >= 0.1:
