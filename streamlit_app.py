@@ -841,7 +841,7 @@ if Clicked:
     with col2:
         crit_damage = st.number_input("Crit Damage (%)", value=0.0)
     with col3:
-        # do maths here Dan
+        st.write("Your build's DPS is...")
 
     col4, col5, col6 = st.columns(3) 
     with col4:
