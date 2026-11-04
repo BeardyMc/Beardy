@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import time
 
+if "clicked" not in st.session_state:
+  st.session_state.clicked = False
 
 st.title("Beardy's Forge Master DPS Optimiser")
 st.write(
@@ -328,7 +330,7 @@ else:
 col1, col2 = st.columns([3, 2], wrap=False)
 
 with col2:
-    Clicked = st.button("Let's go!", width="stretch")
+    st.session_state.clicked = st.button("Let's go!", width="stretch")
 
 def calculate_breakpoints(Windup):
     #fun comes here
@@ -711,7 +713,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
-if Clicked:
+if st.session_state.clicked:
     print(fairy_choice)
     with st.spinner("Finding highest DPS build...", show_time=True):
         item_breakpoints = calculate_breakpoints(item_windup)
