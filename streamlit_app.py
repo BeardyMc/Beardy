@@ -742,9 +742,10 @@ if clicked:
     st.session_state.SubN = SubN
     st.session_state.SubV = SubV
 
-    st.success("Done!")
-
 if st.session_state.clicked:
+
+    st.success("Done!") 
+
     final_breakpoints = st.session_state.final_breakpoints
     wearing = st.session_state.wearing
     SubN = st.session_state.SubN
