@@ -161,7 +161,7 @@ if melee_bad == "Melee":
 
 else:
     items=[f"{w}" for w, t in RANGED_WEAPONS[selected_age].items()]
-
+ 
 # choose item 
 selected_item = st.segmented_control(
     "Weapon:",
@@ -333,15 +333,15 @@ def calculate_breakpoints(Windup):
     #fun comes here
     breakpoints=[[0,0,0]] #initialise
     BaseD=1.5 #standard time for all weapons
-
+    
     inc= math.floor((2**32)/10)/(2**32) #fd6
     n_tics = math.ceil(Windup / inc)
     first_hit = inc * n_tics
     cooldown_tics = max(1, math.ceil((BaseD - first_hit) / inc))
     total_t = (n_tics + cooldown_tics + 1) * 0.1
-
+    
     breakpoints[0][1] = round(total_t,1) #first row, second val
-
+    
     d_reset = Windup * 0.75
     gap = max(1, math.ceil((Windup - d_reset) / inc))
     t2 = d_reset + gap * inc
@@ -350,7 +350,7 @@ def calculate_breakpoints(Windup):
     d_total = gap + d_cool + 1 + n_tics
 
     breakpoints[0][2] = round(d_total * 0.1,1)#first row, third val
-
+    
     for i in range(1,48001):
         AS=i*0.01
 
@@ -369,9 +369,9 @@ def calculate_breakpoints(Windup):
 
         if total_t < breakpoints[-1][1] or d_total < breakpoints[-1][2]:
             breakpoints.append([round(AS,2), total_t, d_total])
-
+    
     return breakpoints
-
+    
 
 def manual_lookup(x_val, dataset):
     # search function
@@ -391,17 +391,17 @@ def combine_breakpoints(IB,SB):
     for row in SB:
         all_AS.add(row[0])    
     all_AS = sorted(list(all_AS))
-
+    
     # initialise combined
     CB=[]
     choice=[]
     single_speed=2
     double_speed=2
-
+    
     for AS in all_AS:
         item_single, item_double = manual_lookup(AS,IB)
         skin_single, skin_double = manual_lookup(AS,SB)
-
+        
         if item_single<single_speed or item_double<double_speed or skin_double<double_speed:
             if item_double < skin_double:
                 CB.append([AS, item_single, item_double])
@@ -416,10 +416,10 @@ def combine_breakpoints(IB,SB):
                 choice.append("equal")
                 double_speed=item_double
             single_speed=item_single
-
+        
     return CB, choice
-
-
+            
+                
 
 def best_substats_5th(timings, N_ls, c_shield, melee_q):
     timings=np.array(timings)
@@ -433,29 +433,26 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
         cs_max=5.26
     else:
         rdmg_max = 0.5
-        cs_max=9.01
+        cs_max=10.19
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
-
+    
     # initialise
     Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[]
-
+    
     for i in range(70,101):
         perf=i/100
-
         bestest=[0,0,0,0,0,24,0,0]
         
-        bestest=[0,0,0,0,0,24,0]
-
-        for N_cc in range(1,13):
+        for N_cc in range(13):
             CC = min(1, N_cc * cc_max * perf)
-
-            for N_cd in range(1, 13):
+        
+            for N_cd in range(13):
                 cd = N_cd * cd_max * perf
-
-                for N_dmg in range(7):  # 0 to 6 inclusive
+        
+                for N_dmg in range(13):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf
                     if melee_q == "Ranged":
                         rdmg_lim = N_dmg
@@ -463,48 +460,62 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                         rdmg_lim = 12
                     for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
-
-                        for N_dc in range(7):  # 0 to 6 inclusive
+                
+                        for N_dc in range(8):  # 0 to 6 inclusive
                             dc = min(1, dc_max * N_dc * perf)
-
+                    
                             for N_spd in range(1, 13):
                                 if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls):
                                     spd = N_spd * spd_max * perf * 100
-
+                                    
                                     B = timings[:,0]<spd
                                     C = timings[B]
                                     time1 = C[-1, 1:3]
-
+                                    
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1] 
-                                    if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi1 = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi1 * APS * 1.44
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS * 1.44
+
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
+    
+                                    if c_shield==0:
+                                        DPS=DPS1
+                                        val_check = 6
+                                    elif c_shield==1:
+                                        DPS=DPS2
+                                        val_check = 7
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS * 1.44
+                                        if DPS2<cs_max:
+                                            DPS=0
+                                            DPS1=0
+                                        else:
+                                            DPS=DPS1
+                                        val_check=6
 
-                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
-
-                                    if DPS > bestest[6]:
+                                    if DPS > bestest[val_check]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
-
-                                    elif DPS == bestest[6]:
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
+    
+                                    elif DPS == bestest[val_check]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
-
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val) 
-
+     
     Record = np.array(Record)
     Record = Record[1:] 
     Record_stats = np.array(Record_stats)
 
     return Record, Record_stats
-
+                       
 
 def best_substats_dmg(timings, N_ls, c_shield, melee_q):
     timings=np.array(timings)
@@ -518,26 +529,26 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
         cs_max=5.26
     else:
         rdmg_max = 0.5
-        cs_max=9.01
+        cs_max=10.19
     spd_max = 0.4
     spd_max = 0.4
 
     # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
-
+    
     # initialise
     Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[] 
-
+    
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,0,24,0]
-
-        for N_cc in range(1,13):
+        bestest=[0,0,0,0,0,24,0,0]
+        
+        for N_cc in range(13):
             CC = min(1, N_cc * cc_max * perf)
-
-            for N_cd in range(1, 13):
+        
+            for N_cd in range(13):
                 cd = N_cd * cd_max * perf
-
+        
                 for N_dmg in range(13):  # 0 to 12 inclusive
                     N_health=N_dmg
                     health_r = N_health * perf * 0.15
@@ -548,42 +559,56 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                         rdmg_lim = 12
                     for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
-
-                        for N_dc in range(7):  # 0 to 6 inclusive
+                
+                        for N_dc in range(8):  # 0 to 6 inclusive
                             dc = min(1, dc_max * N_dc * perf)
-
+                    
                             for N_spd in range(1, 13):
                                 if (N_cc+N_spd+N_dc+N_rdmg+N_health+N_cd) == (24-N_ls):
                                     spd = N_spd * spd_max * perf * 100
-
+                                    
                                     B = timings[:,0]<spd
                                     C = timings[B]
                                     time1 = C[-1, 1:3]
-
+                                    
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 1 - CC 
+                                    Crit_multi1 = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi1 * APS
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS
+                                    
+
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
+    
+                                    if c_shield==0:
+                                        DPS=DPS1
+                                        val_check = 6
+                                    elif c_shield==1:
+                                        DPS=DPS2
+                                        val_check = 7
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
-
-                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
-
-                                    if DPS > bestest[6]:
+                                        if DPS2<cs_max:
+                                            DPS=0
+                                            DPS1=0
+                                        else:
+                                            DPS=DPS1
+                                        val_check=6
+                                    if DPS > bestest[val_check]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
-
-                                    elif DPS == bestest[6]:
+                                        best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
+    
+                                    elif DPS == bestest[val_check]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS]
-
+                                            best_val = [perf, CC*100, cd*100, health_r*100, rdmg*100, dc*100, spd, DPS1, DPS2]
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
-
+     
     Record = np.array(Record)
     Record = Record[1:]
     Record_stats = np.array(Record_stats) 
@@ -603,26 +628,25 @@ def best_substats(timings, N_ls, c_shield, melee_q):
         cs_max=5.26
     else:
         rdmg_max = 0.5
-        cs_max=9.01
+        cs_max=10.19
     spd_max = 0.4
 
-    # CC = 0.8 #setting manually due to Mira, update at each new fairy launch
-
+    
     # initialise
     Record=[[0,0,0,0,0,0,0,0,0]]
     Record_stats=[] 
-
+    
     for i in range(70,101):
         perf=i/100
-        bestest=[0,0,0,0,0,24,0]
-
-        for N_cc in range(1,13):
+        bestest=[0,0,0,0,0,24,0,0]
+        
+        for N_cc in range(13):
             CC = min(1, N_cc * cc_max * perf)
-
-            for N_cd in range(1, 13):
+        
+            for N_cd in range(13):
                 cd = N_cd * cd_max * perf
-
-                for N_dmg in range(7):  # 0 to 6 inclusive
+        
+                for N_dmg in range(13):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf
                     if melee_q == "Ranged":
                         rdmg_lim = N_dmg
@@ -630,42 +654,54 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                         rdmg_lim = 12
                     for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
-
-                        for N_dc in range(7):  # 0 to 6 inclusive
+                
+                        for N_dc in range(8):  # 0 to 6 inclusive
                             dc = min(1, dc_max * N_dc * perf)
-
+                    
                             for N_spd in range(1, 13):
                                 if (N_cc+N_spd+N_dc+N_rdmg+N_dmg+N_cd) == (24-N_ls-4):
                                     spd = N_spd * spd_max * perf * 100
-
+                                    
                                     B = timings[:,0]<spd
                                     C = timings[B]
                                     time1 = C[-1, 1:3]
-
+                                    
                                     APS = (1 - dc) / time1[0] + dc * 2 / time1[1]
-                                    if c_shield ==0:
-                                        Crit_multi = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi1 = CC * (1.2 + cd) + 1 - CC
+                                    Crit_multi2 = CC * (1.2 + cd) * 0.3 + 1 - CC
+                                    DPS1 = (dmg + 1) * (rdmg + 1) * Crit_multi1 * APS
+                                    DPS2 = (dmg + 1) * (rdmg + 1) * Crit_multi2 * APS
+    
+                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS1, DPS2]
+                                    if c_shield==0:
+                                        DPS=DPS1
+                                        val_check = 6
+                                    elif c_shield==1:
+                                        DPS=DPS2
+                                        val_check = 7
                                     else:
-                                        Crit_multi = CC * (1.2 + cd) * 0.3 + 1 - CC
-                                    DPS = (dmg + 1) * (rdmg + 1) * Crit_multi * APS
-
-                                    best_new = [N_cc, N_cd, N_dmg, N_rdmg, N_dc, N_spd, DPS]
-
-                                    if DPS > bestest[6]:
+                                        if DPS2<cs_max:
+                                            DPS=0
+                                            DPS1=0
+                                        else:
+                                            DPS=DPS1
+                                        val_check=6
+    
+                                    if DPS > bestest[val_check]:
                                         bestest = best_new
-                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
-
-                                    elif DPS == bestest[6]:
+                                        best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
+    
+                                    elif DPS == bestest[val_check]:
                                         if max(best_new[0:6]) < max(bestest[0:6]):
                                             bestest = best_new
-                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS]
-
+                                            best_val = [perf, CC*100, cd*100, dmg*100, rdmg*100, dc*100, spd, DPS1, DPS2]
+        
         last_row_check = Record[-1][1:6]
         if np.any(last_row_check != bestest[0:5]) and best_val[7]>0:
             new_row = [perf] + bestest
             Record.append(new_row)
             Record_stats.append(best_val)
-
+     
     Record = np.array(Record)
     Record = Record[1:]
     Record_stats = np.array(Record_stats)
@@ -688,7 +724,7 @@ if Clicked:
 
     if skin_q != "None":
         df["Applied Skin"] = wearing
-
+    
     if fairy_choice == "5th hit boost":
         SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
     elif fairy_choice == "Damage":
@@ -709,14 +745,14 @@ if Clicked:
         raw_vals = SubN[:, i]
         print(SubV[:, i]) 
         scaled_vals = SubV[:, i]
-
+    
     # Combine them into a "Raw / Scaled" string format
     # (Using int() on raw values since tiers are whole numbers, and .1f for scaled)
         combined_df[col_name] = [
             " " if int(r) == 0 else f"{int(r)} ({s:.1f}%)" 
             for r, s in zip(raw_vals, scaled_vals)
         ]
-
+    
     st.divider()
     st.subheader("Results")
     st.write("This is optimising for the highest DPS, which sometimes lowers speed for bigger hits. This has the trade-off of hampering survivability if the enemy can hit you multiple times between your lifesteal activating. \n\nHere are the number of slots that should be given to each substat if the required level of perfection is reached, plus the raw substat value:")
@@ -744,15 +780,15 @@ if Clicked:
         spd=SubV[i,6]
         B=workable_breakpoints[:,0]<spd
         C=workable_breakpoints[B,1:3]
-
+        
         spd_str.append(f"{spd:.0f}% ({C[-1,0]:.1f}s / {C[-1,1]:.1f}s)")
         aps.append((1-SubV[i,5]/100)/C[-1,0] + 0.02*SubV[i,5]/C[-1,1])
         lifesteal.append(SubV[i,0]*20*N_ls)
         regenH.append((lifesteal[i]*SubV[i,7]/aps[i])/40)
         regenS.append(lifesteal[i]*SubV[i,7]/40)
-
-
-
+        
+        
+ 
     second_df['Speed'] = spd_str
     second_df['APS'] = aps
     second_df['DPS normal'] = SubV[:,7]
@@ -761,7 +797,7 @@ if Clicked:
     second_df['Regen/s'] = regenS
     second_df['Regen/hit'] = regenH
 
-
+    
 
 
     st.dataframe(
@@ -780,12 +816,12 @@ if Clicked:
     )
 
     if fairy_choice == "5th hit boost":
-        st.write("This DPS value is the average over the 5 hits from the fairies boost.")
+        st.write("This DPS value is the average over the 5 hits from the fairies boost. The first 4 hits will be 70% of the average, and the 5th is 2.22x the average")
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
 
     if fairy_shield == "Mixed" and melee_bad == "Melee":
-        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 9.01, the max achievable by an 84% perfect, melee shielding fairy build.")
+        st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 10.19, the max achievable by an 84% perfect, melee shielding fairy build.")
     elif fairy_shield == "Mixed" and melee_bad == "Ranged":
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
 
@@ -809,3 +845,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+    
+
+
+
