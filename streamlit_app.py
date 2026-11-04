@@ -820,7 +820,7 @@ if Clicked:
     )
 
     if fairy_choice == "5th hit boost":
-        st.write("This DPS value is the average over the 5 hits from the fairies boost. The first 4 hits will be 70% of the average, and the 5th is 2.22x the average")
+        st.write("This DPS value is the average over the 5 hits from the fairies boost. The first 4 hits will be 69.4% of the average, and the 5th is 2.22x the average")
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
 
@@ -828,6 +828,42 @@ if Clicked:
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 10.19, the max achievable by an 84% perfect, melee shielding fairy build.")
     elif fairy_shield == "Mixed" and melee_bad == "Ranged":
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
+
+
+
+    st.markdown("### Compare Your Current Build")
+    st.write("Do you want to compare your current build? Enter your substats below:")
+
+# --- Row 1: 3 columns ---
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        crit_chance = st.number_input("Crit Chance", value=0.0)
+    with col2:
+        crit_damage = st.number_input("Crit Damage (%)", value=0.0)
+    with col3:
+        # do maths here Dan
+
+    col4, col5, col6 = st.columns(3) 
+    with col4:
+        damage = st.number_input("Damage", value=0.0, step=1.0)
+    with col5:
+        ranged_damage = st.number_input("Ranged Damage", value=0.0, step=1.0)
+
+    col7, col8, col9 = st.columns(3) 
+    with col7:
+        double_stat = st.number_input
+    with col8:
+        attack_speed = st.number_input("Attack Speed", value=0.0, step=1.0)
+    single_hit_damage = st.number_input(
+        "Single hit damage in-game (Optional)",
+        value=0.0,
+        step=1.0,
+        help="Enter your actual observed in-game hit to calibrate your multiplier.",
+    )
+  
+
+
+
 
 
     st.divider()
