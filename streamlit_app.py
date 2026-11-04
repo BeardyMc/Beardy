@@ -889,6 +889,7 @@ st.markdown(
 )
 
     
+print(st.session_state.clicked) 
 
 
 
