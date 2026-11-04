@@ -446,13 +446,13 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
         perf=i/100
         bestest=[0,0,0,0,0,24,0,0]
         
-        for N_cc in range(1,13):
+        for N_cc in range(13):
             CC = min(1, N_cc * cc_max * perf)
         
-            for N_cd in range(1, 13):
+            for N_cd in range(13):
                 cd = N_cd * cd_max * perf
         
-                for N_dmg in range(7):  # 0 to 6 inclusive
+                for N_dmg in range(13):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf
                     if melee_q == "Ranged":
                         rdmg_lim = N_dmg
@@ -461,7 +461,7 @@ def best_substats_5th(timings, N_ls, c_shield, melee_q):
                     for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
                 
-                        for N_dc in range(7):  # 0 to 6 inclusive
+                        for N_dc in range(8):  # 0 to 6 inclusive
                             dc = min(1, dc_max * N_dc * perf)
                     
                             for N_spd in range(1, 13):
@@ -543,10 +543,10 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
         perf=i/100
         bestest=[0,0,0,0,0,24,0,0]
         
-        for N_cc in range(1,13):
+        for N_cc in range(13):
             CC = min(1, N_cc * cc_max * perf)
         
-            for N_cd in range(1, 13):
+            for N_cd in range(13):
                 cd = N_cd * cd_max * perf
         
                 for N_dmg in range(13):  # 0 to 12 inclusive
@@ -560,7 +560,7 @@ def best_substats_dmg(timings, N_ls, c_shield, melee_q):
                     for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
                 
-                        for N_dc in range(7):  # 0 to 6 inclusive
+                        for N_dc in range(8):  # 0 to 6 inclusive
                             dc = min(1, dc_max * N_dc * perf)
                     
                             for N_spd in range(1, 13):
@@ -640,13 +640,13 @@ def best_substats(timings, N_ls, c_shield, melee_q):
         perf=i/100
         bestest=[0,0,0,0,0,24,0,0]
         
-        for N_cc in range(1,13):
+        for N_cc in range(13):
             CC = min(1, N_cc * cc_max * perf)
         
-            for N_cd in range(1, 13):
+            for N_cd in range(13):
                 cd = N_cd * cd_max * perf
         
-                for N_dmg in range(7):  # 0 to 6 inclusive
+                for N_dmg in range(13):  # 0 to 6 inclusive
                     dmg = N_dmg * dmg_max * perf
                     if melee_q == "Ranged":
                         rdmg_lim = N_dmg
@@ -655,7 +655,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
                     for N_rdmg in range(rdmg_lim + 1):  # 0 up to N_dmg inclusive
                         rdmg = N_rdmg * rdmg_max * perf
                 
-                        for N_dc in range(7):  # 0 to 6 inclusive
+                        for N_dc in range(8):  # 0 to 6 inclusive
                             dc = min(1, dc_max * N_dc * perf)
                     
                             for N_spd in range(1, 13):
