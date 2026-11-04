@@ -721,7 +721,7 @@ def dynamic_step(x):
     if x == 0 or x is None:
         return 0.01
     try:
-        return 10 ** (math.floor(math.log10(abs(x))) - 2)
+        return float(10 ** (math.floor(math.log10(abs(x))) - 2)) 
     except ValueError:
         return 0.01
 def dynamic_number_input(label, key, min_value=0.0):
