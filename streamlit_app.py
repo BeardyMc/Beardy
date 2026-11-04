@@ -5,7 +5,8 @@ import pandas as pd
 import time
 
 if "clicked" not in st.session_state:
-  st.session_state.clicked = False
+    st.session_state.clicked = False
+    st.session_state.Sub
 
 st.title("Beardy's Forge Master DPS Optimiser")
 st.write(
@@ -727,10 +728,6 @@ if clicked:
         else:
             final_breakpoints = item_breakpoints
 
-        df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
-
-        if skin_q != "None":
-            df["Applied Skin"] = wearing
     
         if fairy_choice == "5th hit boost":
             SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
@@ -739,9 +736,24 @@ if clicked:
         else:
             SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
 
+    st.session_state.final_breakpoints = final_breakpoints
+    st.session_state.wearing = wearing
+    st.session_state.SubN = SubN
+    st.session_state.SubV = SubV
+
     st.success("Done!")
 
 if st.session_state.clicked:
+    final_breakpoints = st.session_state.final_breakpoints
+    wearing = st.session_state.wearing
+    SubN = st.session_state.SubN
+    SubV = st.session_state.SubV
+
+
+    df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
+    if skin_q != "None":
+        df["Applied Skin"] = wearing 
+
     if fairy_choice == "Damage":
         col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', melee_bad, 'Double', 'Speed'] 
     else:
@@ -851,20 +863,19 @@ if st.session_state.clicked:
 
     col4, col5, col6 = st.columns(3, wrap=False) 
     with col4:
-        damage = st.number_input("Damage", value=0.0, step=1.0)
+        damage = st.number_input("Damage", value=0.0)
     with col5:
-        ranged_damage = st.number_input("Ranged Damage", value=0.0, step=1.0)
+        ranged_damage = st.number_input("Ranged Damage", value=0.0)
 
     col7, col8, col9 = st.columns(3, wrap=False) 
     with col7:
-        double_stat = st.number_input
+        double_stat = st.number_input("Double Stat", value=0.0)
     with col8:
-        attack_speed = st.number_input("Attack Speed", value=0.0, step=1.0)
+        attack_speed = st.number_input("Attack Speed", value=0.0)
     single_hit_damage = st.number_input(
         "Single hit damage in-game (Optional)",
         value=0.0,
-        step=1.0,
-        help="Enter your actual observed in-game hit to calibrate your multiplier.",
+        help="Enter your actual observed in-game hit to calibrate exact DPS",
     )
   
 
