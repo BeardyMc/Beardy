@@ -713,7 +713,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 if Clicked:
     print(fairy_choice)
-    with st.st.spinner("Finding highest DPS build...", show_time=True):
+    with st.spinner("Finding highest DPS build...", show_time=True):
         item_breakpoints = calculate_breakpoints(item_windup)
 
         if skin_q !="None":
