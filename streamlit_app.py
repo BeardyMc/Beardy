@@ -2,6 +2,7 @@ import streamlit as st
 import math
 import numpy as np
 import pandas as pd
+import time
 
 
 st.title("Beardy's Forge Master DPS Optimiser")
@@ -711,26 +712,29 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 if Clicked:
-    print(fairy_choice) 
-    item_breakpoints = calculate_breakpoints(item_windup)
+    print(fairy_choice)
+    with st.st.spinner("Finding highest DPS build...", show_time=True):
+        item_breakpoints = calculate_breakpoints(item_windup)
 
-    if skin_q !="None":
-        skin_breakpoints = calculate_breakpoints(skin_windup)
-        final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
-    else:
-        final_breakpoints = item_breakpoints
+        if skin_q !="None":
+            skin_breakpoints = calculate_breakpoints(skin_windup)
+            final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
+        else:
+            final_breakpoints = item_breakpoints
 
-    df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
+        df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
 
-    if skin_q != "None":
-        df["Applied Skin"] = wearing
+        if skin_q != "None":
+            df["Applied Skin"] = wearing
     
-    if fairy_choice == "5th hit boost":
-        SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
-    elif fairy_choice == "Damage":
-        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q, melee_bad)
-    else:
-        SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
+        if fairy_choice == "5th hit boost":
+            SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
+        elif fairy_choice == "Damage":
+            SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q, melee_bad)
+        else:
+            SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
+
+    st.success("Done!")
 
     if fairy_choice == "Damage":
         col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', melee_bad, 'Double', 'Speed'] 
