@@ -716,7 +716,7 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
-if st.session_state.clicked:
+if clicked:
     print(fairy_choice)
     with st.spinner("Finding highest DPS build...", show_time=True):
         item_breakpoints = calculate_breakpoints(item_windup)
@@ -741,6 +741,7 @@ if st.session_state.clicked:
 
     st.success("Done!")
 
+if st.session_state.clicked:
     if fairy_choice == "Damage":
         col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', melee_bad, 'Double', 'Speed'] 
     else:
