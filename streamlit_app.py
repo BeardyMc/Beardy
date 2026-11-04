@@ -835,7 +835,7 @@ if Clicked:
     st.write("Do you want to compare your current build? Enter your substats below:")
 
 # --- Row 1: 3 columns ---
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3, wrap=False)
     with col1:
         crit_chance = st.number_input("Crit Chance", value=0.0)
     with col2:
@@ -843,13 +843,13 @@ if Clicked:
     with col3:
         st.write("Your build's DPS is...")
 
-    col4, col5, col6 = st.columns(3) 
+    col4, col5, col6 = st.columns(3, wrap=False) 
     with col4:
         damage = st.number_input("Damage", value=0.0, step=1.0)
     with col5:
         ranged_damage = st.number_input("Ranged Damage", value=0.0, step=1.0)
 
-    col7, col8, col9 = st.columns(3) 
+    col7, col8, col9 = st.columns(3, wrap=False) 
     with col7:
         double_stat = st.number_input
     with col8:
