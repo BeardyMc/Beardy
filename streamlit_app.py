@@ -894,7 +894,7 @@ if st.session_state.clicked:
         elif fairy_choice == "Damage":
             max_val = 270
         else:
-            max_val = 180 "{melee_bad} Damage", l
+            max_val = 180
 
         type_damage = st.select_slider(f"{melee_bad} Damage", options=generate_tiered_options(max_val), key="type_damage_slider") 
 
