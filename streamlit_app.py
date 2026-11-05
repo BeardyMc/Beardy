@@ -936,7 +936,7 @@ if st.session_state.clicked:
     else:
         user_single = workable_breakpoints[0,1]
         user_double = workable_breakpoints[0,2] 
-    user_APS=(1-double_chance)/user_single + 2*double_chance/user_double
+    user_APS=(1-double_chance/100)/user_single + (2*double_chance/100)/user_double
 
     with right_pane:
 
@@ -944,7 +944,7 @@ if st.session_state.clicked:
 
         if double_chance > 0:
             writeup += f" and your double attack cycle will take {user_double:.1f}s,"
-        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_APS:f}."
+        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_APS:.2f}."
 
         st.write(writeup) 
 
