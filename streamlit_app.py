@@ -942,9 +942,9 @@ if st.session_state.clicked:
     cchdmg_dp = get_dp_config(crit_hit_dmg) 
     crit_multi = crit_chance/100 * crit_hit_dmg + 1 - crit_chance/100 
     if fairy_choice == "5th hit boost":
-        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * USER_APS * 1.44
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS * 1.44
     else:
-        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * USER_APS
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS
 
     with right_pane:
 
