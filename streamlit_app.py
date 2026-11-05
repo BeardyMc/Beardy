@@ -940,11 +940,13 @@ if st.session_state.clicked:
 
     with right_pane:
 
-        writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, you single attack cycle is {user_single:.1f}s"
+        writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, your build's single attack cycle is {user_single:.1f}s and"
 
         if double_chance > 0:
-            writeup += f" and your double attack cycle will take {user_double:.1f}s,"
-        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_APS:.2f}."
+            writeup += f" your double attack cycle will take {user_double:.1f}s. With your double chance % of {double_chance:.{dc_dp}f}%"
+        else:
+            writeup += " "
+        writeup += f" your average number of attacks per second will be {user_APS:.2f}."
 
         st.write(writeup) 
 
