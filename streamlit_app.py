@@ -983,7 +983,7 @@ if st.session_state.clicked:
 
         writeup4 = f"Your build's specific DPS multiplier is {user_DPS_multi:.2f}".rstrip("0").rstrip(".")
 
-        st.write(writeup4
+        st.write(writeup)
 
 
 
