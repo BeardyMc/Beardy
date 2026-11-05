@@ -888,7 +888,7 @@ if st.session_state.clicked:
     st.markdown("### Compare Your Current Build")
     st.write("Do you want to compare your current build? Enter your substats below:")
 
-    left_pane, right_pane = st.columns([1.8, 1], wrap=False)
+    left_pane, right_pane = st.columns([1.3, 1], wrap=False)
 
     damage_max = 270.0 if fairy_choice == "Damage" else 180.0
     type_damage_max = 600.0 if melee_bad == "Melee" else 180.0
@@ -938,6 +938,13 @@ if st.session_state.clicked:
         user_double = workable_breakpoints[0,2] 
     user_APS=(1-double_chance/100)/user_single + (2*double_chance/100)/user_double
 
+    crit_hit_dmg = (crit_damage + 120)/100
+    cchdmg_dp = get_dp_config(crit_hit_dmg) 
+    crit_multi = crit_chance/100 * crit_hit_dmg + 1 - crit_chance/100 
+    if fairy_choice == "5th hit boost":
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * USER_APS * 1.44
+    else:
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * USER_APS
 
     with right_pane:
 
@@ -952,18 +959,34 @@ if st.session_state.clicked:
         st.write(writeup) 
 
         if crit_chance > 0:
-            crit_hit_dmg = (crit_damage + 120)/100
-            cchdmg_dp = get_dp_config(crit_hit_dmg) 
-            crit_multi = crit_chance/100 * crit_hit_dmg + 1 - crit_chance/100 
             writeup2 = f"Your crit hits will be {crit_hit_dmg:.2f}".rstrip("0").rstrip(".")
             writeup2 += f"x your "
             if single_hit_damage>0:
                 crits = single_hit_damage*crit_hit_dmg
                 crits_dp = get_dp_config(crits) 
-                writeup2 += f"{single_hit_damage:g} regular hits, dealing {crits:.{crits_dp}f} damage."
+                writeup2 += f"{single_hit_damage:g}dmg regular hits, dealing {crits:.{crits_dp}f} damage."
+                if fairy_choice == "5th hit boost":
+                    lora_crit = crits*3.2
+                    lora_crit_dp = get_dp_config(lora_crit) 
+                    writeup2 += f" Lora will boost your 5th hit, if that is a critical hit it will be {lora_crit:.{lora_crit_dp}f}dmg."
             else:
                 writeup2 += "regular hits."
+            
             st.write(writeup2)
+
+        if single_hit_damage>0 and (damage>0 or type_damage>0):
+            base_dmg = single_hit_damage / (1+damage/100) / (1+type_damage/100)
+            base_dmg_dp = get_dp_config(base_dmg) 
+            writeup3 = f"Your damage multipliers mean your build's base damage is {base_dmg:.{base_dmg_dp}f}dmg."
+            st.write(writeup3)
+
+
+        writeup4 = f"Your build's specific DPS multiplier is {user_DPS_multi:.2f}".rstrip("0").rstrip(".")
+
+        st.write(writeup4
+
+
+
 
 
 
