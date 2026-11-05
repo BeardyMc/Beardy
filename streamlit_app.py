@@ -717,36 +717,30 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
-def get_slider_config(val):
+def get_dp_config(val):
   abs_val = abs(val)
   if abs_val >= 100:
-    return 1.0, 0
+    return 0
   elif abs_val >= 10:
-    return 0.1, 1
+    return 1
   else:
-    return 0.01, 2
+    return 2
 
-def dynamic_slider(label, key, max_val, min_val=0.0):
-  if key not in st.session_state:
-    st.session_state[key] = min_val
+def generate_tiered_options(max_val):
+  options = []
+  # Tier 1: 0.00 to 9.99 (step 0.01)
+  for i in range(1000):
+    options.append(round(i / 100.0, 2))
 
-  current_val = st.session_state[key]
+  # Tier 2: 10.0 to 99.9 (step 0.1)
+  for i in range(100, 1000):
+    options.append(round(i / 10.0, 1))
 
-  # Clamp value to new max if dynamic bounds shift (e.g. toggling fairy off)
-  if current_val > float(max_val):
-    current_val = float(max_val)
+  # Tier 3: 100 to max_val (step 1.0)
+  for i in range(100, int(max_val) + 1):
+    options.append(float(i))
 
-  step_size, decimals = get_slider_config(current_val)
-  st.session_state[key] = round(current_val, decimals)
-
-  return st.slider(
-      label,
-      min_value=float(min_val),
-      max_value=float(max_val),
-      step=step_size,
-      key=key,
-      format=f"%.{decimals}f",
-  ) 
+  return options
 
 
 if clicked:
@@ -889,22 +883,24 @@ if st.session_state.clicked:
     left_pane, right_pane = st.columns([1.8, 1], wrap=False)
 
     with left_pane:
-        crit_chance = dynamic_slider("Crit Chance", "crit_chance", max_val=100.0)
+        crit_chance = st.select_slider("Crit Chance", key="crit_chance", options=generate_tiered_options(100.0)
 
-        crit_damage = dynamic_slider("Crit Damage", "crit_damage", max_val=960.0)
+        crit_damage = st.select_slider("Crit Damage", key="crit_damage", options=generate_tiered_options(960.0)) 
 
-        damage = dynamic_slider("Damage", "damage", max_val=180)
+        damage = st.select_slider("Damage", key="damage", options=generate_tiered_options(180))
 
         if melee_bad == "Melee":
-            type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=600)
+            max_val = 600
         elif fairy_choice == "Damage":
-            type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=270) 
+            max_val = 270
         else:
-            type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=180)
+            max_val = 180 "{melee_bad} Damage", l
 
-    double_chance = dynamic_slider("Double Chance (%)", "double_stat", max_val=100.0)
+        type_damage = st.select_slider(f"{melee_bad} Damage", options=generate_tiered_options(max_val), key="type_damage_slider") 
 
-    attack_speed = dynamic_slider("Attack Speed", "attack_speed", max_val=480.0) 
+        double_chance = st.select_slider("Double Chance", key="double_stat", options=generate_tiered_options(100))
+
+        attack_speed = st.select_slider("Attack Speed", key="attack_speed", options=generate_tiered_options(480)) 
 
   # --- Optional Box Below ---
     single_hit_damage = st.number_input(
@@ -914,9 +910,12 @@ if st.session_state.clicked:
     ) 
 
 
+
+
+
     with right_pane:
 
-        st.markdown("#### 📊 Results Panel") 
+        st.write("With an attack speed of f") 
   
 
 
