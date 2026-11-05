@@ -883,7 +883,7 @@ if st.session_state.clicked:
     left_pane, right_pane = st.columns([1.8, 1], wrap=False)
 
     with left_pane:
-        crit_chance = st.select_slider("Crit Chance", key="crit_chance", options=generate_tiered_options(100.0)
+        crit_chance = st.select_slider("Crit Chance", key="crit_chance", options=generate_tiered_options(100.0)) 
 
         crit_damage = st.select_slider("Crit Damage", key="crit_damage", options=generate_tiered_options(960.0)) 
 
@@ -908,14 +908,24 @@ if st.session_state.clicked:
         value=0.0,
         help="Enter your observed in-game damage to get your exact DPS."
     ) 
+    user_health = st.number_input(
+        "Health in-game (Optional)",
+        value=0.0,
+        help="Enter your observed in-game health to get your exact regen."
+    ) 
 
 
 
 
-
+    cc_dp = get_dp_config(crit_chance)
+    cd_dp = get_dp_config(crit_damage) 
+    dmg_dp = get_dp_config(damage) 
+    dmg_dp = get_dp_config(type_damage) 
+    dc_dp = get_dp_config(double_chance) 
+    as_dp = get_dp_config(attack_speed
     with right_pane:
 
-        st.write("With an attack speed of f") 
+        st.write(f"With an attack speed of {attack_speed:.{as_dp}f}")
   
 
 
