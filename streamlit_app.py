@@ -960,7 +960,7 @@ if st.session_state.clicked:
             if single_hit_damage>0:
                 writeup2 += f"{single_hit_damage:g} damage, dealing {(single_hit_damage*crit_hit_dmg):g} damage."
             else:
-                writeup2 += "base damage.
+                writeup2 += "base damage."
             st.write(writeup2)
 
 
