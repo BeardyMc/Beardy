@@ -745,7 +745,7 @@ def dynamic_slider(label, key, max_val):
       max_value=float(max_val),
       step=0.01,
       key=key,
-      format="0.2%f"
+      format=f"%0.2f"
   )
 
 
