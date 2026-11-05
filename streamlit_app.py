@@ -930,10 +930,14 @@ if st.session_state.clicked:
     dc_dp = get_dp_config(double_chance) 
     as_dp = get_dp_config(attack_speed)
     
-    user_B=workable_breakpoints[:,0]<attack_speed
-    user_C=workable_breakpoints[user_B,1:3]
-    user_single=user_C[-1,0]
-    user_double=user_C[-1,1]
+    if attack_speed>0:
+        user_B = workable_breakpoints[:,0]<attack_speed
+        user_C = workable_breakpoints[user_B,1:3]
+        user_single = user_C[-1,0]
+        user_double = user_C[-1,1]
+    else:
+        user_single = workable_breakpoints[0,1]
+        user_double = workable_breakpoints[0,2] 
     user_APS=(1-double_chance)/user_single + 2*double_chance/user_double
 
     print(workable_breakpoints)
@@ -947,7 +951,7 @@ if st.session_state.clicked:
 
         if double_chance > 0:
             writeup += f" and your double attack cycle will take {user_double:.1f}s,"
-        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_aps:.1f}."
+        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_APS:.1f}."
 
         st.write(writeup) 
 
