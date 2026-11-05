@@ -896,11 +896,11 @@ if st.session_state.clicked:
         damage = dynamic_slider("Damage", "damage", max_val=damage_max)
 
         if melee_bad == "Melee":
-            type_damage(dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=600)
+            type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=600)
         elif fairy_choice == "Damage":
-            type_damage(dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=270) 
+            type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=270) 
         else:
-            type_damage(dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=180)
+            type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=180)
 
     double_chance = dynamic_slider("Double Chance (%)", "double_stat", max_val=100.0)
 
