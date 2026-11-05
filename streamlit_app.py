@@ -944,7 +944,7 @@ if st.session_state.clicked:
 
         if double_chance > 0:
             writeup += f" and your double attack cycle will take {user_double:.1f}s,"
-        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_APS:.1f}."
+        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_APS:f}."
 
         st.write(writeup) 
 
