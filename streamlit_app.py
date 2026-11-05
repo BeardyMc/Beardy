@@ -745,7 +745,7 @@ def dynamic_slider(label, key, max_val):
       max_value=float(max_val),
       step=0.01,
       key=key,
-      format=f"%0.2f"
+      format="%0.2f%%"
   )
 
 
@@ -896,15 +896,15 @@ if st.session_state.clicked:
     type_damage_max = 600.0 if melee_bad == "Melee" else 180.0
 
     with left_pane:
-        crit_chance = dynamic_slider("Crit Chance (%)", "crit_chance", max_val=100.0)
+        crit_chance = dynamic_slider("Crit Chance", "crit_chance", max_val=100.0)
 
-        crit_damage = dynamic_slider("Crit Damage (%)", "crit_damage", max_val=960.0)
+        crit_damage = dynamic_slider("Crit Damage", "crit_damage", max_val=960.0)
 
         damage = dynamic_slider("Damage", "damage", max_val=damage_max)
 
         type_damage = dynamic_slider(f"{melee_bad} Damage", "ranged_damage", max_val=type_damage_max)
 
-        double_chance = dynamic_slider("Double Chance (%)", "double_stat", max_val=100.0)
+        double_chance = dynamic_slider("Double Chance", "double_stat", max_val=100.0)
 
         attack_speed = dynamic_slider("Attack Speed", "attack_speed", max_val=480.0)
 
