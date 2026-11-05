@@ -907,11 +907,11 @@ if st.session_state.clicked:
     attack_speed = dynamic_slider("Attack Speed", "attack_speed", max_val=480.0) 
 
   # --- Optional Box Below ---
-        single_hit_damage = st.number_input(
-            "Single hit damage in-game (Optional)",
-            value=0.0,
-            help="Enter your observed in-game damage to get your exact DPS."
-        ) 
+    single_hit_damage = st.number_input(
+        "Single hit damage in-game (Optional)",
+        value=0.0,
+        help="Enter your observed in-game damage to get your exact DPS."
+    ) 
 
 
     with right_pane:
