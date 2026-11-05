@@ -934,13 +934,19 @@ if st.session_state.clicked:
     user_C=workable_breakpoints[user_B,1:3]
     user_single=user_C[-1,0]
     user_double=user_C[-1,1]
-        
+    user_APS=(1-double_chance)/user_single + 2*double_chance/user_double
 
 
     with right_pane:
 
-        st.write(f"With an attack speed of {attack_speed:.{as_dp}f}%, you single attack cycle is {user_single:.1f}s")
-  
+        writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, you single attack cycle is {user_single:.1f}s"
+
+        if double_chance > 0:
+            writeup += f" and your double attack cycle will take {user_double:.1f}s,"
+        writeup += f" and with your double chance of {double_chance:.{dc_dp}f}% your average number of attacks per second is {user_aps:.1f}."
+
+        st.write(writeup) 
+
 
 
 
