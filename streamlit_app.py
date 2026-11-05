@@ -958,9 +958,11 @@ if st.session_state.clicked:
             writeup2 = f"Your crit hits will be {crit_hit_dmg:.2f}".rstrip("0").rstrip(".")
             writeup2 += f"x your "
             if single_hit_damage>0:
-                writeup2 += f"{single_hit_damage:g} damage, dealing {(single_hit_damage*crit_hit_dmg):g} damage."
+                crits = single_hit_damage*crit_hit_dmg
+                crits_dp = get_dp_config(crits) 
+                writeup2 += f"{single_hit_damage:g} regular hits, dealing {crits:.{crits_dp}f} damage."
             else:
-                writeup2 += "base damage."
+                writeup2 += "regular hits."
             st.write(writeup2)
 
 
