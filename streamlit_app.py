@@ -737,7 +737,7 @@ def dynamic_slider(label, key, max_val):
     current_val = float(max_val)
 
   decimals = get_dp_config(current_val)
-  st.session_state[key] = round(current_val, decimals)
+  st.session_state[key] = float(round(current_val, decimals))
 
   return st.slider(
       label,
