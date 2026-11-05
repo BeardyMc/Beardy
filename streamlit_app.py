@@ -922,7 +922,7 @@ if st.session_state.clicked:
     dmg_dp = get_dp_config(damage) 
     dmg_dp = get_dp_config(type_damage) 
     dc_dp = get_dp_config(double_chance) 
-    as_dp = get_dp_config(attack_speed
+    as_dp = get_dp_config(attack_speed)
     with right_pane:
 
         st.write(f"With an attack speed of {attack_speed:.{as_dp}f}")
