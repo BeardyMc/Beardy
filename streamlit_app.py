@@ -754,7 +754,6 @@ def dynamic_slider(label, key, max_val):
 
 
 if clicked:
-    print(fairy_choice)
     with st.spinner("Finding highest DPS build...", show_time=True):
         item_breakpoints = calculate_breakpoints(item_windup)
 
@@ -803,7 +802,6 @@ if st.session_state.clicked:
     # Loop through columns 1 to 5 to combine raw and scaled values
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
-        print(SubV[:, i]) 
         scaled_vals = SubV[:, i]
     
     # Combine them into a "Raw / Scaled" string format
@@ -939,11 +937,6 @@ if st.session_state.clicked:
         user_single = workable_breakpoints[0,1]
         user_double = workable_breakpoints[0,2] 
     user_APS=(1-double_chance)/user_single + 2*double_chance/user_double
-
-    print(workable_breakpoints)
-    print(attack_speed) 
-    print(user_B) 
-    print(user_C) 
 
     with right_pane:
 
