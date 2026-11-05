@@ -936,6 +936,10 @@ if st.session_state.clicked:
     user_double=user_C[-1,1]
     user_APS=(1-double_chance)/user_single + 2*double_chance/user_double
 
+    print(workable_breakpoints)
+    print(attack_speed) 
+    print(user_B) 
+    print(user_C) 
 
     with right_pane:
 
