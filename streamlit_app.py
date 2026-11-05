@@ -717,29 +717,36 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
-def dynamic_step(x):
-    if x == 0 or x is None:
-        return 0.01
-    try:
-        return float(max(0.01, 10 ** (math.floor(math.log10(abs(x))) - 2)))
-    except ValueError:
-        return 0.01
+def get_slider_config(val):
+  abs_val = abs(val)
+  if abs_val >= 100:
+    return 1.0, 0
+  elif abs_val >= 10:
+    return 0.1, 1
+  else:
+    return 0.01, 2
 
-def dynamic_number_input(label, key, min_value=0.0):
-    if key not in st.session_state:
-        st.session_state[key] = min_value
+def dynamic_slider(label, key, max_val, min_val=0.0):
+  if key not in st.session_state:
+    st.session_state[key] = min_val
 
-    current_val = st.session_state[key]
-    step_size = dynamic_step(current_val)
-    if step_size >= 1.0:
-        decimals = 0
-    elif step_size >= 0.1:
-        decimals = 1
-    else:
-        decimals = 2
-    st.session_state[key] = round(current_val, decimals)
+  current_val = st.session_state[key]
 
-    return st.number_input(label, min_value=min_value, step=step_size, key=key)
+  # Clamp value to new max if dynamic bounds shift (e.g. toggling fairy off)
+  if current_val > float(max_val):
+    current_val = float(max_val)
+
+  step_size, decimals = get_slider_config(current_val)
+  st.session_state[key] = round(current_val, decimals)
+
+  return st.slider(
+      label,
+      min_value=float(min_val),
+      max_value=float(max_val),
+      step=step_size,
+      key=key,
+      format=f"%.{decimals}f",
+  ) 
 
 
 if clicked:
@@ -882,23 +889,22 @@ if st.session_state.clicked:
     left_pane, right_pane = st.columns([1.8, 1], wrap=False)
 
     with left_pane:
-  # --- ROW 1 of the 2x3 grid ---
-        r1_c1, r1_c2 = st.columns(2, wrap=False)
-        with r1_c1:
-            crit_chance = dynamic_number_input("Crit Chance", "crit_chance")
-        with r1_c2:
-            crit_damage = dynamic_number_input("Crit Damage", "crit_damage")
-  # --- ROW 2 of the 2x3 grid ---
-        r2_c1, r2_c2 = st.columns(2, wrap=False) 
-        with r2_c1:
-            damage = dynamic_number_input("Damage", "damage")
-        with r2_c2:
-            ranged_damage = dynamic_number_input(f"{melee_bad} Damage", "ranged_damage")
-        r3_c1, r3_c2 = st.columns(2, wrap=False) 
-        with r3_c1:
-            double_chance = dynamic_number_input("Double Chance", "double_chance")
-        with r3_c2:
-            attack_speed = dynamic_number_input("Attack Speed", "attack_speed")
+        crit_chance = dynamic_slider("Crit Chance", "crit_chance", max_val=100.0)
+
+        crit_damage = dynamic_slider("Crit Damage", "crit_damage", max_val=960.0)
+
+        damage = dynamic_slider("Damage", "damage", max_val=damage_max)
+
+        if melee_bad == "Melee":
+            type_damage(dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=600)
+        elif fairy_choice == "Damage":
+            type_damage(dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=270) 
+        else:
+            type_damage(dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=180)
+
+    double_chance = dynamic_slider("Double Chance (%)", "double_stat", max_val=100.0)
+
+    attack_speed = dynamic_slider("Attack Speed", "attack_speed", max_val=480.0) 
 
   # --- Optional Box Below ---
         single_hit_damage = st.number_input(
