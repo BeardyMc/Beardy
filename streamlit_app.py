@@ -893,7 +893,7 @@ if st.session_state.clicked:
 
         crit_damage = dynamic_slider("Crit Damage", "crit_damage", max_val=960.0)
 
-        damage = dynamic_slider("Damage", "damage", max_val=damage_max)
+        damage = dynamic_slider("Damage", "damage", max_val=180)
 
         if melee_bad == "Melee":
             type_damage=dynamic_slider(f"{melee_bad} Damage", "type_damage", max_val=600)
