@@ -929,9 +929,17 @@ if st.session_state.clicked:
     dmg_dp = get_dp_config(type_damage) 
     dc_dp = get_dp_config(double_chance) 
     as_dp = get_dp_config(attack_speed)
+    
+    user_B=workable_breakpoints[:,0]<attack_speed
+    user_C=workable_breakpoints[user_B,1:3]
+    user_single=user_C[-1,0]
+    user_double=user_C[-1,1]
+        
+
+
     with right_pane:
 
-        st.write(f"With an attack speed of {attack_speed:.{as_dp}f}")
+        st.write(f"With an attack speed of {attack_speed:.{as_dp}f}%, you single attack cycle is {user_single:.1f}s")
   
 
 
