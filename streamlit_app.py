@@ -938,17 +938,27 @@ if st.session_state.clicked:
         user_double = workable_breakpoints[0,2] 
     user_APS=(1-double_chance/100)/user_single + (2*double_chance/100)/user_double
 
+
     with right_pane:
 
         writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, your build's single attack cycle is {user_single:.1f}s and"
 
         if double_chance > 0:
-            writeup += f" your double attack cycle will take {user_double:.1f}s. With your double chance % of {double_chance:.{dc_dp}f}%"
+            writeup += f" your double attack cycle will take {user_double:.1f}s. With your double chance at {double_chance:.{dc_dp}f}%"
         else:
             writeup += " "
         writeup += f" your average number of attacks per second will be {user_APS:.2f}."
 
         st.write(writeup) 
+
+        if crit_chance > 0:
+            crit_hit_dmg = (crit_damage + 120)/100
+            cchdmg_dp = get_dp_config(crit_hit_dmg) 
+            crit_multi = crit_chance/100 * crit_hit_dmg + 1 - crit_chance/100 
+            writeup2 = f"Your crit hits will be {crit_hit_dmg:.2f}".rstrip("0").rstrip(".")
+            writeup2 += f"x your "
+            if single_hit_damage>0:
+                writeup2 += f"{single_hit_damage:g} damage, dealing {(single_hit_damage*crit_hit_dmg):g} damage."
 
 
 
