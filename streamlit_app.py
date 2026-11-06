@@ -888,12 +888,13 @@ if st.session_state.clicked:
     st.markdown("### Compare Your Current Build")
     st.write("Do you want to compare your current build? Enter your substats below:")
 
-    left_pane, right_pane = st.columns([1.3, 1], wrap=False)
+    # left_pane, right_pane = st.columns([1.3, 1], wrap=False)
 
     damage_max = 270.0 if fairy_choice == "Damage" else 180.0
     type_damage_max = 600.0 if melee_bad == "Melee" else 180.0
 
-    with left_pane:
+    # with left_pane:
+    if True:
         crit_chance = dynamic_slider("Crit Chance", "crit_chance", max_val=100.0)
 
         crit_damage = dynamic_slider("Crit Damage", "crit_damage", max_val=960.0)
@@ -946,7 +947,7 @@ if st.session_state.clicked:
     else:
         user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS
 
-    with right_pane:
+    if True: # with right_pane:
 
         writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, your build's single attack cycle is {user_single:.1f}s and"
 
