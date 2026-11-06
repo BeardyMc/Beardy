@@ -1097,13 +1097,17 @@ if st.session_state.clicked:
     metric1 = f"{user_DPS_multi:.2f}".rstrip("0").rstrip(".")
     delta1 = 100*(user_DPS_multi / optimal_dps_1 - 1)
     writeup4 += metric1
+    if abs(delta1) < 0.01:
+        delta1=0
+    else:
+        writeup4 += f", a change of {delta1:.2g}%
 
     if single_hit_damage > 0:
         user_dps = single_hit_damage * user_DPS_multi
         user_dps_dp = get_dp_config(user_dps) 
-        writeup4 += f"** and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
+        writeup4 += f"**, and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
     else:
-        writeup4 +="**" 
+        writeup4 +="**." 
 
     st.write(writeup4)
 
@@ -1117,7 +1121,7 @@ if st.session_state.clicked:
 
     l_metric, r_metric = st.columns(2, wrap=False)
     with l_metric:
-        st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}", border=True)
+        st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}%", border=True)
 
 
 
