@@ -1093,7 +1093,10 @@ if st.session_state.clicked:
         st.write(writeup3)
 
 
-    writeup4 = f"Your build's specific DPS multiplier is **{user_DPS_multi:.2f}".rstrip("0").rstrip(".")
+    writeup4 = "Your build's specific DPS multiplier is **" 
+    metric1 = f"{user_DPS_multi:.2f}".rstrip("0").rstrip(".")
+    delta1 = user_DPS_multi / optimal_dps_1
+    writeup4 += metric1
 
     if single_hit_damage > 0:
         user_dps = single_hit_damage * user_DPS_multi
@@ -1112,6 +1115,9 @@ if st.session_state.clicked:
 
 
 
+    l_metric, r_metric = st.columns(2)
+    with l_metric:
+        st.metric(label="DPS", value=metric1, delta=delta1, border=True) 
 
 
 
