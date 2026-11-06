@@ -741,45 +741,47 @@ def synced_stat_input(label, key, max_val):
   slider_key = f"{key}_slider"
   num_key = f"{key}_num"
 
-  # 1. Initialize session state values if they don't exist
+  # 1. Initialize session state values as strict floats
   if key not in st.session_state:
     st.session_state[key] = 0.0
   if slider_key not in st.session_state:
-    st.session_state[slider_key] = st.session_state[key]
+    st.session_state[slider_key] = float(st.session_state[key])
   if num_key not in st.session_state:
-    st.session_state[num_key] = st.session_state[key]
+    st.session_state[num_key] = float(st.session_state[key])
 
-  current_val = st.session_state[key]
+  # Ensure current_val is a float
+  current_val = float(st.session_state[key])
+  f_max_val = float(max_val)
 
   # Clamp if dynamic bounds shift
-  if current_val > float(max_val):
-    current_val = float(max_val)
+  if current_val > f_max_val:
+    current_val = f_max_val
 
   # Apply in-game precision rounding via get_dp_config
   decimals = get_dp_config(current_val)
-  current_val = round(current_val, decimals)
+  current_val = float(round(current_val, decimals))
 
-  # Update states with the rounded value
+  # Update states strictly as floats
   st.session_state[key] = current_val
   st.session_state[slider_key] = current_val
   st.session_state[num_key] = current_val
 
-  # Map decimals to number_input step size (0 -> 1.0, 1 -> 0.1, 2 -> 0.01)
-  step_size = 10 ** (-decimals)
+  # Force step_size to be a float (1.0, 0.1, or 0.01) rather than an int (1)
+  step_size = float(10 ** (-decimals))
 
-  # 2. Bidirectional sync callbacks with snapping
+  # 2. Bidirectional sync callbacks with type-safe rounding
   def sync_from_slider():
-    val = st.session_state[slider_key]
+    val = float(st.session_state[slider_key])
     dec = get_dp_config(val)
-    val = round(val, dec)
+    val = float(round(val, dec))
     st.session_state[slider_key] = val
     st.session_state[num_key] = val
     st.session_state[key] = val
 
   def sync_from_number():
-    val = st.session_state[num_key]
+    val = float(st.session_state[num_key])
     dec = get_dp_config(val)
-    val = round(val, dec)
+    val = float(round(val, dec))
     st.session_state[num_key] = val
     st.session_state[slider_key] = val
     st.session_state[key] = val
@@ -792,10 +794,10 @@ def synced_stat_input(label, key, max_val):
     st.slider(
         f"{label} Slider",
         min_value=0.0,
-        max_value=float(max_val),
-        step=0.01,  # Fine movement granularity
+        max_value=f_max_val,
+        step=0.01,
         key=slider_key,
-        format="%.2f",  # Consistent 2 decimal display format
+        format="%.2f",
         on_change=sync_from_slider,
         label_visibility="collapsed",
     )
@@ -804,8 +806,8 @@ def synced_stat_input(label, key, max_val):
     st.number_input(
         f"{label} Number",
         min_value=0.0,
-        max_value=float(max_val),
-        step=step_size,  # Adapts step based on in-game precision tier
+        max_value=f_max_val,
+        step=step_size,  # Guaranteed to be float (e.g. 1.0, 0.1, 0.01)
         format="%.2f",
         key=num_key,
         on_change=sync_from_number,
