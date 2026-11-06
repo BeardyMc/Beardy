@@ -726,27 +726,94 @@ def get_dp_config(val):
   else:
     return 2
 
-def dynamic_slider(label, key, max_val):
+
+
+def get_dp_config(val):
+  abs_val = abs(val)
+  if abs_val >= 100:
+    return 0
+  elif abs_val >= 10:
+    return 1
+  else:
+    return 2
+
+def synced_stat_input(label, key, max_val):
+  slider_key = f"{key}_slider"
+  num_key = f"{key}_num"
+
+  # 1. Initialize session state values if they don't exist
   if key not in st.session_state:
     st.session_state[key] = 0.0
+  if slider_key not in st.session_state:
+    st.session_state[slider_key] = st.session_state[key]
+  if num_key not in st.session_state:
+    st.session_state[num_key] = st.session_state[key]
 
   current_val = st.session_state[key]
 
-  # Clamp value to new max if dynamic bounds shift (e.g. toggling fairy off)
+  # Clamp if dynamic bounds shift
   if current_val > float(max_val):
     current_val = float(max_val)
 
+  # Apply in-game precision rounding via get_dp_config
   decimals = get_dp_config(current_val)
-  st.session_state[key] = float(round(current_val, decimals))
+  current_val = round(current_val, decimals)
 
-  return st.slider(
-      label,
-      min_value=float(0.0),
-      max_value=float(max_val),
-      step=0.01,
-      key=key,
-      format="%0.2f%%"
-  )
+  # Update states with the rounded value
+  st.session_state[key] = current_val
+  st.session_state[slider_key] = current_val
+  st.session_state[num_key] = current_val
+
+  # Map decimals to number_input step size (0 -> 1.0, 1 -> 0.1, 2 -> 0.01)
+  step_size = 10 ** (-decimals)
+
+  # 2. Bidirectional sync callbacks with snapping
+  def sync_from_slider():
+    val = st.session_state[slider_key]
+    dec = get_dp_config(val)
+    val = round(val, dec)
+    st.session_state[slider_key] = val
+    st.session_state[num_key] = val
+    st.session_state[key] = val
+
+  def sync_from_number():
+    val = st.session_state[num_key]
+    dec = get_dp_config(val)
+    val = round(val, dec)
+    st.session_state[num_key] = val
+    st.session_state[slider_key] = val
+    st.session_state[key] = val
+
+  # 3. Render UI Row
+  st.markdown(f"**{label}**")
+  col_slider, col_num = st.columns([3, 1], gap="small")
+
+  with col_slider:
+    st.slider(
+        f"{label} Slider",
+        min_value=0.0,
+        max_value=float(max_val),
+        step=0.01,  # Fine movement granularity
+        key=slider_key,
+        format="%.2f",  # Consistent 2 decimal display format
+        on_change=sync_from_slider,
+        label_visibility="collapsed",
+    )
+
+  with col_num:
+    st.number_input(
+        f"{label} Number",
+        min_value=0.0,
+        max_value=float(max_val),
+        step=step_size,  # Adapts step based on in-game precision tier
+        format="%.2f",
+        key=num_key,
+        on_change=sync_from_number,
+        label_visibility="collapsed",
+    )
+
+  return st.session_state[key]
+ 
 
 
 
@@ -893,21 +960,22 @@ if st.session_state.clicked:
     damage_max = 270.0 if fairy_choice == "Damage" else 180.0
     type_damage_max = 600.0 if melee_bad == "Melee" else 180.0
 
-    # with left_pane:
-    if True:
-        crit_chance = dynamic_slider("Crit Chance", "crit_chance", max_val=100.0)
+ 
+    crit_chance = synced_stat_input("Crit Chance", "crit_chance", max_val=100.0)
 
-        crit_damage = dynamic_slider("Crit Damage", "crit_damage", max_val=960.0)
+    crit_damage = synced_stat_input("Crit Damage", "crit_damage", max_val=960.0)
 
-        damage = dynamic_slider("Damage", "damage", max_val=damage_max)
+    damage = synced_stat_input("Damage", "damage", max_val=damage_max)
 
-        type_damage = dynamic_slider(f"{melee_bad} Damage", "ranged_damage", max_val=type_damage_max)
+    type_damage = synced_stat_input(f"{melee_bad} Damage", "ranged_damage", max_val=type_damage_max)
 
-        double_chance = dynamic_slider("Double Chance", "double_stat", max_val=100.0)
+    double_chance = synced_stat_input("Double Chance", "double_stat", max_val=100.0)
 
-        attack_speed = dynamic_slider("Attack Speed", "attack_speed", max_val=480.0)
+    attack_speed = synced_stat_input("Attack Speed", "attack_speed", max_val=480.0)
 
-  # --- Optional Box Below ---
+    lifesteal = synced_stat_input("Lifesteal", "Lifesteal", max_val=240.0)
+
+  # --- Optional Boxes Below ---
     single_hit_damage = st.number_input(
         "Single hit damage in-game (Optional)",
         value=0.0,
@@ -918,9 +986,6 @@ if st.session_state.clicked:
         value=0.0,
         help="Enter your observed in-game health to get your exact regen."
     ) 
-
-
-
 
     cc_dp = get_dp_config(crit_chance)
     cd_dp = get_dp_config(crit_damage) 
