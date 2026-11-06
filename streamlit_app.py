@@ -717,15 +717,6 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
-def get_dp_config(val):
-  abs_val = abs(val)
-  if abs_val >= 100:
-    return 0
-  elif abs_val >= 10:
-    return 1
-  else:
-    return 2
-
 
 
 def get_dp_config(val):
@@ -1034,7 +1025,7 @@ if st.session_state.clicked:
     cc_dp = get_dp_config(crit_chance)
     cd_dp = get_dp_config(crit_damage) 
     dmg_dp = get_dp_config(damage) 
-    dmg_dp = get_dp_config(type_damage) 
+    t_dmg_dp = get_dp_config(type_damage) 
     dc_dp = get_dp_config(double_chance) 
     as_dp = get_dp_config(attack_speed)
     
@@ -1051,10 +1042,14 @@ if st.session_state.clicked:
     crit_hit_dmg = (crit_damage + 120)/100
     cchdmg_dp = get_dp_config(crit_hit_dmg) 
     crit_multi = crit_chance/100 * crit_hit_dmg + 1 - crit_chance/100 
+    mira_crit = crit_hit_dmg * 0.3
+    mira_multi = crit_chance/100 * mira_crit + 1 - crit_chance/100 
     if fairy_choice == "5th hit boost":
         user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS * 1.44
+        user_miraDPS_multi = mira_multi * (1+damage/100) * (1+type_damage/100) * user_APS * 1.44
     else:
-        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS 
+        user_miraDPS_multi = mira_multi * (1+damage/100) * (1+type_damage/100) * user_APS  
 
 
     writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, your build's single attack cycle is {user_single:.1f}s and"
@@ -1111,6 +1106,21 @@ if st.session_state.clicked:
 
     st.write(writeup4)
 
+    if crit_chance > 0:
+        
+        mira_crit_dp = get_dp_config(mira_crit)
+        writeup5 = f"Against a level 20 Mira, your crit hits will be lowered to {mira_crit:.{mira_crit_dp}f}× your base hits"
+        if single_hit_damage > 0:
+            mira_crits = crits * 0.3
+            mira_crits_dp = get_dp_config(mira_crits)
+            writeup5 += f", being {mira_crits:.{mira_crits_dp}f}.
+        writeup5 += ". Your DPS against these enemies will be **" 
+        metric2 = f"{user_miraDPS_multi:.2f}".rstrip("0").rstrip(".")
+        delta2 = 100*(user_miraDPS_multi / optimal_dps_2 - 1)
+        writeup5 += metric2
+        writeup5 += "**."
+        st.write(writeup5) 
+
 
 
 
@@ -1122,6 +1132,9 @@ if st.session_state.clicked:
     l_metric, r_metric = st.columns(2, wrap=False)
     with l_metric:
         st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}%", border=True)
+    if crit_chance > 0:
+        with r_metric:
+            st.metric(label="DPS vs Mira", value=metric2, delta=f"{delta2:.2g}%", border=True)
 
 
 
