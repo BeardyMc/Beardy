@@ -1100,7 +1100,7 @@ if st.session_state.clicked:
     if abs(delta1) < 0.01:
         delta1=0
     else:
-        writeup4 += f", a change of {delta1:.2g}%
+        writeup4 += f", a change of {delta1:.2g}%"
 
     if single_hit_damage > 0:
         user_dps = single_hit_damage * user_DPS_multi
