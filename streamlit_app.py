@@ -1113,10 +1113,12 @@ if st.session_state.clicked:
         if single_hit_damage > 0:
             mira_crits = crits * 0.3
             mira_crits_dp = get_dp_config(mira_crits)
-            writeup5 += f", being {mira_crits:.{mira_crits_dp}f}."
+            writeup5 += f", being {mira_crits:.{mira_crits_dp}f}"
         writeup5 += ". Your DPS against these enemies will be **" 
         metric2 = f"{user_miraDPS_multi:.2f}".rstrip("0").rstrip(".")
         delta2 = 100*(user_miraDPS_multi / optimal_dps_2 - 1)
+        if abs(delta2) < 0.01:
+            delta2=0
         writeup5 += metric2
         writeup5 += "**."
         st.write(writeup5) 
