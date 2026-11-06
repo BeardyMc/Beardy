@@ -1059,7 +1059,7 @@ if st.session_state.clicked:
             user_dps_dp = get_dp_config(user_dps) 
             writeup4 += f"** and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
         else:
-            writeup4 += “**“
+            writeup4 +="**" 
 
         st.write(writeup4)
 
