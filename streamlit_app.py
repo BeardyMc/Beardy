@@ -1051,6 +1051,11 @@ if st.session_state.clicked:
 
         writeup4 = f"Your build's specific DPS multiplier is {user_DPS_multi:.2f}".rstrip("0").rstrip(".")
 
+        if single_hit_damage > 0:
+            user_dps = single_hit_damage * user_DPS_multi
+            user_dps_dp = get_dp_config(user_dps) 
+            writeup4 += f" and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
+
         st.write(writeup4)
 
 
