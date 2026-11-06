@@ -786,7 +786,7 @@ def synced_stat_input(label, key, max_val):
 
   # 3. Render UI Row
   st.markdown(f"**{label}**")
-  col_slider, col_num = st.columns([3, 1], gap="small")
+  col_slider, col_num = st.columns([3, 1], gap="small", wrap=False)
 
   with col_slider:
     st.slider(
