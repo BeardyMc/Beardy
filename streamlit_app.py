@@ -1117,7 +1117,8 @@ if st.session_state.clicked:
 
     l_metric, r_metric = st.columns(2, wrap=False)
     with l_metric:
-        st.metric(label="DPS", value=metric1, delta=f"{delta1}:.2g", border=True) 
+        st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}", border=True)
+
 
 
 
