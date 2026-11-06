@@ -855,9 +855,47 @@ if st.session_state.clicked:
     SubN = st.session_state.SubN
     SubV = st.session_state.SubV
 
-    print(SubN)
-    print(SubV) 
+    target_perfection = 0.84
+    perfection_col = SubV[:, 0]
 
+    # 1. Look for an exact match for 0.84
+    match_indices = np.where(np.isclose(perfection_col, target_perfection))[0]
+
+    if len(match_indices) > 0:
+    # Exact 84% build exists! Grab its row index.
+        row_idx = match_indices[0]
+        ideal_build = {
+            "crit_chance": float(SubV[row_idx, 1]),
+            "crit_damage": float(SubV[row_idx, 2]),
+            "damage": float(SubV[row_idx, 3]),
+            "ranged_damage": float(SubV[row_idx, 4]),
+            "double_stat": float(SubV[row_idx, 5]),
+            "attack_speed": float(SubV[row_idx, 6]),
+        }
+        optimal_dps_1 = float(SubV[row_idx, 7])
+        optimal_dps_2 = float(SubV[row_idx, 8])
+    else:
+        # Fallback: Find the highest available perfection tier that is <= 0.84
+        valid_indices = np.where(perfection_col <= target_perfection)[0]
+        if len(valid_indices) > 0:
+            row_idx = valid_indices[-1]  # The closest tier right below 84%
+        else:
+            row_idx = 0  # Absolute fallback
+        ideal_build = {
+            "crit_chance": float(SubN[row_idx, 1] * target_perfection * 12), 
+            "crit_damage": float(SubN[row_idx, 2] * target_perfection * 80),
+            "damage": float(SubN[row_idx, 3] * target_perfection * 15),
+            "ranged_damage": float(SubV[row_idx, 4] * target_perfection / SubV[row_idx, 0]),
+            "double_stat": float(SubN[row_idx, 5] * target_perfection * 20),
+            "attack_speed": float(SubN[row_idx, 6] * target_perfection * 40),
+        }
+
+
+    for key, default_val in ideal_build.items():
+        if key not in st.session_state:
+            st.session_state[key] = float(default_val)
+            st.session_state[f"{key}_slider"] = float(default_val)
+            st.session_state[f"{key}_num"] = float(default_val) 
 
     df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
     if skin_q != "None":
