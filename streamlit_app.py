@@ -855,6 +855,9 @@ if st.session_state.clicked:
     SubN = st.session_state.SubN
     SubV = st.session_state.SubV
 
+    print(SubN)
+    print(SubV) 
+
 
     df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
     if skin_q != "None":
@@ -1049,14 +1052,18 @@ if st.session_state.clicked:
             st.write(writeup3)
 
 
-        writeup4 = f"Your build's specific DPS multiplier is {user_DPS_multi:.2f}".rstrip("0").rstrip(".")
+        writeup4 = f"Your build's specific DPS multiplier is **{user_DPS_multi:.2f}".rstrip("0").rstrip(".")
 
         if single_hit_damage > 0:
             user_dps = single_hit_damage * user_DPS_multi
             user_dps_dp = get_dp_config(user_dps) 
-            writeup4 += f" and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
+            writeup4 += f"** and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
+        else:
+            writeup4 += “**“
 
         st.write(writeup4)
+
+
 
 
 
