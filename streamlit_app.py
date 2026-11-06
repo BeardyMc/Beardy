@@ -1095,7 +1095,7 @@ if st.session_state.clicked:
 
     writeup4 = "Your build's specific DPS multiplier is **" 
     metric1 = f"{user_DPS_multi:.2f}".rstrip("0").rstrip(".")
-    delta1 = user_DPS_multi / optimal_dps_1
+    delta1 = 100*(user_DPS_multi / optimal_dps_1 - 1)
     writeup4 += metric1
 
     if single_hit_damage > 0:
