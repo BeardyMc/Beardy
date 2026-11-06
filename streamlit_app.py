@@ -1050,6 +1050,10 @@ if st.session_state.clicked:
     else:
         user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS 
         user_miraDPS_multi = mira_multi * (1+damage/100) * (1+type_damage/100) * user_APS  
+    metric2 = f"{user_miraDPS_multi:.2f}".rstrip("0").rstrip(".")
+    delta2 = 100*(user_miraDPS_multi / optimal_dps_2 - 1)
+    if abs(delta2) < 0.01:
+        delta2=0
 
 
     writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, your build's single attack cycle is {user_single:.1f}s and"
@@ -1115,10 +1119,7 @@ if st.session_state.clicked:
             mira_crits_dp = get_dp_config(mira_crits)
             writeup5 += f", being {mira_crits:.{mira_crits_dp}f}"
         writeup5 += ". Your DPS against these enemies will be **" 
-        metric2 = f"{user_miraDPS_multi:.2f}".rstrip("0").rstrip(".")
-        delta2 = 100*(user_miraDPS_multi / optimal_dps_2 - 1)
-        if abs(delta2) < 0.01:
-            delta2=0
+        
         writeup5 += metric2
         writeup5 += "**."
         st.write(writeup5) 
@@ -1134,7 +1135,7 @@ if st.session_state.clicked:
     l_metric, r_metric = st.columns(2, wrap=False)
     with l_metric:
         st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}%", border=True)
-    if crit_chance > 0:
+    if ideal_build["crit_chance"] > 0:
         with r_metric:
             st.metric(label="DPS vs Mira", value=metric2, delta=f"{delta2:.2g}%", border=True)
 
