@@ -889,7 +889,8 @@ if st.session_state.clicked:
             "double_stat": float(SubN[row_idx, 5] * target_perfection * 20),
             "attack_speed": float(SubN[row_idx, 6] * target_perfection * 40),
         }
-
+    ideal_build["Lifesteal"] = N_ls * target_perfection * 20
+ 
 
     for key, default_val in ideal_build.items():
         if key not in st.session_state:
