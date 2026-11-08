@@ -880,8 +880,9 @@ if st.session_state.clicked:
             "double_stat": float(SubN[row_idx, 5] * target_perfection * 20),
             "attack_speed": float(SubN[row_idx, 6] * target_perfection * 40),
         }
-    ideal_build["Lifesteal"] = N_ls * target_perfection * 20
- 
+    ideal_build["Lifesteal"] = N_ls *  target_perfection * 20
+    if fairy_choice == "Damage":
+        ideal_build["damage"] = math.floor(ideal_build["damage"] / 10) *15
 
     for key, default_val in ideal_build.items():
         if key not in st.session_state:
