@@ -6,6 +6,8 @@ import time
 import requests
 
 
+st.title("Beardy's Forge Master DPS Optimiser")
+
 # 1. Map your secrets into a secure password dictionary dynamically
 VALID_PASSWORDS = {
     st.secrets["password1"]: "User Group 1",
@@ -42,7 +44,6 @@ def update_stat(user_group):
   except Exception:
     pass
 
-
 def check_password():
   """Handles the password verification and trigger logging"""
 
@@ -62,27 +63,35 @@ def check_password():
       st.session_state["password_correct"] = False
 
   # Render login screen if not authenticated yet
-  if "password_correct" not in st.session_state:
+  if (
+      "password_correct" not in st.session_state
+      or not st.session_state["password_correct"]
+  ):
+    st.subheader("🔒 Restricted Access")
+    st.write(
+        "This is not a widely shared tool yet, please enter a valid password"
+        " to continue."
+    )
+
+    # Show an error message only if they've already tried and failed
+    if (
+        "password_correct" in st.session_state
+        and not st.session_state["password_correct"]
+    ):
+      st.error("😕 Password incorrect")
+
     st.text_input(
-        "Please enter the password:",
+        "Password",
         type="password",
         on_change=password_entered,
         key="password_input",
     )
     return False
 
-  elif not st.session_state["password_correct"]:
-    st.text_input(
-        "Please enter the password:",
-        type="password",
-        on_change=password_entered,
-        key="password_input",
-    )
-    st.error("😕 Password incorrect")
-    return False
+  return True
 
-  else:
-    return True
+
+
 
 
 # 3. Halt the app right here if the user hasn't logged in yet
@@ -96,7 +105,7 @@ if "clicked" not in st.session_state:
     st.session_state.clicked = False
 
 
-st.title("Beardy's Forge Master DPS Optimiser")
+
 st.write(
     "Please select your weapon:" 
 )
