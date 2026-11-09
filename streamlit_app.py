@@ -1138,7 +1138,7 @@ if st.session_state.clicked:
                 writeup6 += "With Tira, your health is boosted, so you will receive a lower % of your health in recovery from lifesteal. If you enter your in-game values for damage and health we can calculate exact percentages for recovery."
 
         else:
-            recovery_s = lifestyle * user_dps / (user_health * 5)
+            recovery_s = lifesteal * user_dps / (user_health * 5)
             recovery_h = recovery_s / user_APS
             writeup6 = f"With your in-game values of damage and health, you should recover {recovery_s:.1f}% of your health per second in PvP, with the average hit recovering {recovery_h:.1f}% health."
             if crit_chance > 0:
