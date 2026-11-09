@@ -1133,7 +1133,7 @@ if st.session_state.clicked:
             writeup6 += f" with the average hit recovering {build_regen_h:.2f}% of your health."
             if crit_chance > 0:
                 build_regen_s_Mira = lifesteal/100 * user_miraDPS_multi / 40
-                build_regen_s_Mira = build_regen_s_Mira / user_APS
+                build_regen_h_Mira = build_regen_s_Mira / user_APS
                 writeup6 += f" Against Mira, this is lowered to healing {build_regen_s_Mira:.2f}% health per second, and {build_regen_h_Mira:.2f}% per average hit."
             st.write(writeup6)
    
