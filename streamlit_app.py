@@ -978,6 +978,9 @@ if st.session_state.clicked:
             "double_stat": float(SubN[row_idx, 5] * target_perfection * 20),
             "attack_speed": float(SubN[row_idx, 6] * target_perfection * 40),
         }
+        optimal_dps_1 = float(SubV[row_idx, 7])
+        optimal_dps_2 = float(SubV[row_idx, 8])
+        ### fucking fix this section 
     ideal_build["Lifesteal"] = N_ls *  target_perfection * 20
     if fairy_choice == "Damage":
         ideal_build["damage"] = math.floor(ideal_build["damage"] / 10) *15
