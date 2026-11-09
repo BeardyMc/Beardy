@@ -12,6 +12,7 @@ st.title("Beardy's Forge Master DPS Optimiser")
 VALID_PASSWORDS = {
     st.secrets["password1"]: "User Group 1",
     st.secrets["password2"]: "User Group 2",
+    st.secrets["password3"]: "User Group 3",
 }
 
 # 2. JSONBin Credentials from Secrets
@@ -30,7 +31,7 @@ def load_stats():
   except Exception:
     pass
   # Fallback dictionary if network/API hiccup occurs
-  return {"User Group 1": 0, "User Group 2": 0}
+  return {"User Group 1": 0, "User Group 2": 0, "User Group 3": 0 }
 
 
 def update_stat(user_group):
