@@ -1127,7 +1127,7 @@ if st.session_state.clicked:
 
     if N_ls > 0:
         if user_health == 0:
-            build_regen_s = lifesteal/100 * user_dps_multi / 40
+            build_regen_s = lifesteal/100 * user_DPS_multi / 40
             build_regen_h = build_regen_s / user_APS
             writeup6 = f"Against regular opponents, your lifesteal will regenerate {build_regen_s:.2f}% of your health per second,"
             writeup6 += f" with the average hit recovering {build_regen_h:.2f}% of your health."
