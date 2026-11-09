@@ -1127,14 +1127,14 @@ if st.session_state.clicked:
 
     if N_ls > 0:
         if user_health == 0:
-            build_regen_s = lifesteal/100 * user_DPS_multi / 40
+            build_regen_s = lifesteal * user_DPS_multi / 40
             build_regen_h = build_regen_s / user_APS
-            writeup6 = f"Against regular opponents, your lifesteal will regenerate {build_regen_s:.2f}% of your health per second,"
-            writeup6 += f" with the average hit recovering {build_regen_h:.2f}% of your health."
+            writeup6 = f"Against regular opponents, your lifesteal will regenerate {build_regen_s:.1f}% of your health per second,"
+            writeup6 += f" with the average hit recovering {build_regen_h:.1f}% of your health."
             if crit_chance > 0:
-                build_regen_s_Mira = lifesteal/100 * user_miraDPS_multi / 40
+                build_regen_s_Mira = lifesteal * user_miraDPS_multi / 40
                 build_regen_h_Mira = build_regen_s_Mira / user_APS
-                writeup6 += f" Against Mira, this is lowered to healing {build_regen_s_Mira:.2f}% health per second, and {build_regen_h_Mira:.2f}% per average hit."
+                writeup6 += f" Against Mira, this is lowered to healing {build_regen_s_Mira:.1f}% health per second, and {build_regen_h_Mira:.1f}% per average hit."
             st.write(writeup6)
    
 
