@@ -1085,9 +1085,8 @@ if st.session_state.clicked:
             
         st.write(writeup2)
 
-    
+    base_dmg = single_hit_damage / (1+damage/100) / (1+type_damage/100) 
     if single_hit_damage>0 and (damage>0 or type_damage>0):
-        base_dmg = single_hit_damage / (1+damage/100) / (1+type_damage/100)
         base_dmg_dp = get_dp_config(base_dmg) 
         writeup3 = f"Your damage multipliers mean your build's base damage is {base_dmg:.{base_dmg_dp}f}dmg."
         st.write(writeup3)
@@ -1103,7 +1102,7 @@ if st.session_state.clicked:
         writeup4 += f", a change of {delta1:.2g}% compared to the 84% perfect build"
 
     if single_hit_damage > 0:
-        user_dps = single_hit_damage * user_DPS_multi
+        user_dps = base_dmg * user_DPS_multi
         user_dps_dp = get_dp_config(user_dps) 
         writeup4 += f"**, and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
     else:
@@ -1126,7 +1125,7 @@ if st.session_state.clicked:
         st.write(writeup5)
 
     if N_ls > 0:
-        if user_health == 0:
+        if user_health == 0 or single_hit_damage == 0:
             build_regen_s = lifesteal * user_DPS_multi / 40
             build_regen_h = build_regen_s / user_APS
             writeup6 = f"Against regular opponents, your lifesteal will regenerate {build_regen_s:.1f}% of your health per second,"
@@ -1135,8 +1134,20 @@ if st.session_state.clicked:
                 build_regen_s_Mira = lifesteal * user_miraDPS_multi / 40
                 build_regen_h_Mira = build_regen_s_Mira / user_APS
                 writeup6 += f" Against Mira, this is lowered to healing {build_regen_s_Mira:.1f}% health per second, and {build_regen_h_Mira:.1f}% per average hit."
-            st.write(writeup6)
-   
+            if fairy_choice == "Damage":
+                writeup6 += "With Tira, your health is boosted, so you will receive a lower % of your health in recovery from lifesteal. If you enter your in-game values for damage and health we can calculate exact percentages for recovery."
+
+        else:
+            recovery_s = lifestyle * user_dps / (user_health * 5)
+            recovery_h = recovery_s / user_APS
+            writeup6 = f"With your in-game values of damage and health, you should recover {recovery_s:.1f}% of your health per second in PvP, with the average hit recovering {recovery_h:.1f}% health."
+            if crit_chance > 0:
+                recovery_s_Mira = lifesteal * base_dmg * user_miraDPS_multi / (user_health * 5)
+                recovery_h_Mira = recovery_s_Mira / user_APS
+                writeup6 += f" Against a lvl20 Mira, this drops to recovering {recovery_s_Mira:.1f}% health per second, and the average hit recovering {recovery_h_Mira:.1f}%."
+
+
+        st.write(writeup6)
 
 
 
