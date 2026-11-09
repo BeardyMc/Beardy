@@ -3,6 +3,94 @@ import math
 import numpy as np
 import pandas as pd
 import time
+import requests
+
+
+# 1. Map your secrets into a secure password dictionary dynamically
+VALID_PASSWORDS = {
+    st.secrets["password1"]: "User Group 1",
+    st.secrets["password2"]: "User Group 2",
+}
+
+# 2. JSONBin Credentials from Secrets
+API_KEY = st.secrets["JSONBIN_API_KEY"]
+BIN_ID = st.secrets["BIN_ID"]
+HEADERS = {"Content-Type": "application/json", "X-Master-Key": API_KEY}
+
+
+def load_stats():
+  """Fetches the current login counts from JSONBin.io"""
+  url = f"https://api.jsonbin.io/v3/b/{BIN_ID}/latest"
+  try:
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+      return response.json()["record"]
+  except Exception:
+    pass
+  # Fallback dictionary if network/API hiccup occurs
+  return {"User Group 1": 0, "User Group 2": 0}
+
+
+def update_stat(user_group):
+  """Increments the specific user group's count and saves it permanently to JSONBin"""
+  stats = load_stats()
+  stats[user_group] = stats.get(user_group, 0) + 1
+
+  url = f"https://api.jsonbin.io/v3/b/{BIN_ID}"
+  try:
+    requests.put(url, json=stats, headers=HEADERS)
+  except Exception:
+    pass
+
+
+def check_password():
+  """Handles the password verification and trigger logging"""
+
+  def password_entered():
+    entered_pw = st.session_state["password_input"]
+
+    if entered_pw in VALID_PASSWORDS:
+      user_group = VALID_PASSWORDS[entered_pw]
+      st.session_state["password_correct"] = True
+      st.session_state["current_user_group"] = user_group
+
+      # Permanently increment the counter on JSONBin
+      update_stat(user_group)
+
+      del st.session_state["password_input"]  # Clear input from state
+    else:
+      st.session_state["password_correct"] = False
+
+  # Render login screen if not authenticated yet
+  if "password_correct" not in st.session_state:
+    st.text_input(
+        "Please enter the password:",
+        type="password",
+        on_change=password_entered,
+        key="password_input",
+    )
+    return False
+
+  elif not st.session_state["password_correct"]:
+    st.text_input(
+        "Please enter the password:",
+        type="password",
+        on_change=password_entered,
+        key="password_input",
+    )
+    st.error("😕 Password incorrect")
+    return False
+
+  else:
+    return True
+
+
+# 3. Halt the app right here if the user hasn't logged in yet
+if not check_password():
+  st.stop()
+
+
+
 
 if "clicked" not in st.session_state:
     st.session_state.clicked = False
