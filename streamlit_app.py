@@ -991,7 +991,6 @@ if st.session_state.clicked:
     st.markdown("### SANDBOX / Compare Your Current Build")
     st.write("Do you want to compare a build? Either slide values or enter your substats below:")
 
-    # left_pane, right_pane = st.columns([1.3, 1], wrap=False)
 
     damage_max = 270.0 if fairy_choice == "Damage" else 180.0
     type_damage_max = 600.0 if melee_bad == "Melee" else 180.0
@@ -1086,6 +1085,7 @@ if st.session_state.clicked:
             
         st.write(writeup2)
 
+    
     if single_hit_damage>0 and (damage>0 or type_damage>0):
         base_dmg = single_hit_damage / (1+damage/100) / (1+type_damage/100)
         base_dmg_dp = get_dp_config(base_dmg) 
@@ -1100,7 +1100,7 @@ if st.session_state.clicked:
     if abs(delta1) < 0.01:
         delta1=0
     else:
-        writeup4 += f", a change of {delta1:.2g}%"
+        writeup4 += f", a change of {delta1:.2g}% compared to the 84% perfect build"
 
     if single_hit_damage > 0:
         user_dps = single_hit_damage * user_DPS_multi
@@ -1123,7 +1123,20 @@ if st.session_state.clicked:
         
         writeup5 += metric2
         writeup5 += "**."
-        st.write(writeup5) 
+        st.write(writeup5)
+
+    if N_ls > 0:
+        if user_health == 0:
+            build_regen_s = lifesteal/100 * user_dps_multi / 40
+            build_regen_h = build_regen_s / user_APS
+            writeup6 = f"Against regular opponents, your lifesteal will regenerate {build_regen_s:.2f}% of your health per second,"
+            writeup6 += f" with the average hit recovering {build_regen_h:.2f}% of your health."
+            if crit_chance > 0:
+                build_regen_s_Mira = lifesteal/100 * user_miraDPS_multi / 40
+                build_regen_s_Mira = build_regen_s_Mira / user_APS
+                writeup6 += f" Against Mira, this is lowered to healing {build_regen_s_Mira:.2f}% health per second, and {build_regen_h_Mira:.2f}% per average hit."
+            st.write(writeup6)
+   
 
 
 
@@ -1136,7 +1149,7 @@ if st.session_state.clicked:
     l_metric, r_metric = st.columns(2, wrap=False)
     with l_metric:
         st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}%", border=True)
-    if ideal_build["crit_chance"] > 0:
+    if ideal_build["crit_chance"] > 0 or crit_chance > 0:
         with r_metric:
             st.metric(label="DPS vs Mira", value=metric2, delta=f"{delta2:.2g}%", border=True)
 
