@@ -2,6 +2,10 @@ import streamlit as st
 import math
 import numpy as np
 import pandas as pd
+import time
+
+if "clicked" not in st.session_state:
+    st.session_state.clicked = False
 
 
 st.title("Beardy's Forge Master DPS Optimiser")
@@ -327,7 +331,10 @@ else:
 col1, col2 = st.columns([3, 2], wrap=False)
 
 with col2:
-    Clicked = st.button("Let's go!", width="stretch")
+    clicked = st.button("Let's go!", width="stretch")
+
+if clicked:
+    st.session_state.clicked = clicked
 
 def calculate_breakpoints(Windup):
     #fun comes here
@@ -710,27 +717,182 @@ def best_substats(timings, N_ls, c_shield, melee_q):
 
 
 
-if Clicked:
-    print(fairy_choice) 
-    item_breakpoints = calculate_breakpoints(item_windup)
 
-    if skin_q !="None":
-        skin_breakpoints = calculate_breakpoints(skin_windup)
-        final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
+
+def get_dp_config(val):
+  abs_val = abs(val)
+  if abs_val >= 100:
+    return 0
+  elif abs_val >= 10:
+    return 1
+  else:
+    return 2
+
+def synced_stat_input(label, key, max_val):
+  slider_key = f"{key}_slider"
+  num_key = f"{key}_num"
+
+  # 1. Initialize session state values as strict floats
+  if key not in st.session_state:
+    st.session_state[key] = 0.0
+  if slider_key not in st.session_state:
+    st.session_state[slider_key] = float(st.session_state[key])
+  if num_key not in st.session_state:
+    st.session_state[num_key] = float(st.session_state[key])
+
+  # Ensure current_val is a float
+  current_val = float(st.session_state[key])
+  f_max_val = float(max_val)
+
+  # Clamp if dynamic bounds shift
+  if current_val > f_max_val:
+    current_val = f_max_val
+
+  # Apply in-game precision rounding via get_dp_config
+  decimals = get_dp_config(current_val)
+  current_val = float(round(current_val, decimals))
+
+  # Update states strictly as floats
+  st.session_state[key] = current_val
+  st.session_state[slider_key] = current_val
+  st.session_state[num_key] = current_val
+
+  # Force step_size to be a float (1.0, 0.1, or 0.01) rather than an int (1)
+  step_size = float(10 ** (-decimals))
+
+  # 2. Bidirectional sync callbacks with type-safe rounding
+  def sync_from_slider():
+    val = float(st.session_state[slider_key])
+    dec = get_dp_config(val)
+    val = float(round(val, dec))
+    st.session_state[slider_key] = val
+    st.session_state[num_key] = val
+    st.session_state[key] = val
+
+  def sync_from_number():
+    val = float(st.session_state[num_key])
+    dec = get_dp_config(val)
+    val = float(round(val, dec))
+    st.session_state[num_key] = val
+    st.session_state[slider_key] = val
+    st.session_state[key] = val
+
+  # 3. Render UI Row
+  st.markdown(f"**{label}**")
+  col_slider, col_num = st.columns([3, 1], gap="small", wrap=False)
+
+  with col_slider:
+    st.slider(
+        f"{label} Slider",
+        min_value=0.0,
+        max_value=f_max_val,
+        step=0.01,
+        key=slider_key,
+        format="%.2f",
+        on_change=sync_from_slider,
+        label_visibility="collapsed",
+    )
+
+  with col_num:
+    st.number_input(
+        f"{label} Number",
+        min_value=0.0,
+        max_value=f_max_val,
+        step=step_size,  # Guaranteed to be float (e.g. 1.0, 0.1, 0.01)
+        format="%.2f",
+        key=num_key,
+        on_change=sync_from_number,
+        label_visibility="collapsed",
+    )
+
+  return st.session_state[key]
+ 
+
+
+
+
+
+
+if clicked:
+    with st.spinner("Finding highest DPS build...", show_time=True):
+        item_breakpoints = calculate_breakpoints(item_windup)
+
+        if skin_q !="None":
+            skin_breakpoints = calculate_breakpoints(skin_windup)
+            final_breakpoints, wearing = combine_breakpoints(item_breakpoints,skin_breakpoints)
+        else:
+            final_breakpoints = item_breakpoints
+            wearing = [] 
+
+    
+        if fairy_choice == "5th hit boost":
+            SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
+        elif fairy_choice == "Damage":
+            SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q, melee_bad)
+        else:
+            SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
+
+    st.session_state.final_breakpoints = final_breakpoints
+    st.session_state.wearing = wearing
+    st.session_state.SubN = SubN
+    st.session_state.SubV = SubV
+
+if st.session_state.clicked:
+
+    st.success("Done!") 
+
+    final_breakpoints = st.session_state.final_breakpoints
+    wearing = st.session_state.wearing
+    SubN = st.session_state.SubN
+    SubV = st.session_state.SubV
+
+    target_perfection = 0.84
+    perfection_col = SubV[:, 0]
+
+    # 1. Look for an exact match for 0.84
+    match_indices = np.where(np.isclose(perfection_col, target_perfection))[0]
+
+    if len(match_indices) > 0:
+    # Exact 84% build exists! Grab its row index.
+        row_idx = match_indices[0]
+        ideal_build = {
+            "crit_chance": float(SubV[row_idx, 1]),
+            "crit_damage": float(SubV[row_idx, 2]),
+            "damage": float(SubV[row_idx, 3]),
+            "ranged_damage": float(SubV[row_idx, 4]),
+            "double_stat": float(SubV[row_idx, 5]),
+            "attack_speed": float(SubV[row_idx, 6]),
+        }
+        optimal_dps_1 = float(SubV[row_idx, 7])
+        optimal_dps_2 = float(SubV[row_idx, 8])
     else:
-        final_breakpoints = item_breakpoints
+        # Fallback: Find the highest available perfection tier that is <= 0.84
+        valid_indices = np.where(perfection_col <= target_perfection)[0]
+        if len(valid_indices) > 0:
+            row_idx = valid_indices[-1]  # The closest tier right below 84%
+        else:
+            row_idx = 0  # Absolute fallback
+        ideal_build = {
+            "crit_chance": float(SubN[row_idx, 1] * target_perfection * 12), 
+            "crit_damage": float(SubN[row_idx, 2] * target_perfection * 80),
+            "damage": float(SubN[row_idx, 3] * target_perfection * 15),
+            "ranged_damage": float(SubV[row_idx, 4] * target_perfection / SubV[row_idx, 0]),
+            "double_stat": float(SubN[row_idx, 5] * target_perfection * 20),
+            "attack_speed": float(SubN[row_idx, 6] * target_perfection * 40),
+        }
+    ideal_build["Lifesteal"] = N_ls *  target_perfection * 20
+    if fairy_choice == "Damage":
+        ideal_build["damage"] = math.floor(ideal_build["damage"] / 10) *15
+
+    for key, default_val in ideal_build.items():
+        if key not in st.session_state:
+            st.session_state[key] = float(default_val)
+            st.session_state[f"{key}_slider"] = float(default_val)
+            st.session_state[f"{key}_num"] = float(default_val) 
 
     df = pd.DataFrame(final_breakpoints,columns=["Attack Speed", "Single Attack cycle", "Double Attack cycle"]) 
-
     if skin_q != "None":
-        df["Applied Skin"] = wearing
-    
-    if fairy_choice == "5th hit boost":
-        SubN, SubV = best_substats_5th(final_breakpoints, N_ls, c_shield_q, melee_bad)
-    elif fairy_choice == "Damage":
-        SubN, SubV = best_substats_dmg(final_breakpoints, N_ls, c_shield_q, melee_bad)
-    else:
-        SubN, SubV = best_substats(final_breakpoints, N_ls, c_shield_q, melee_bad)
+        df["Applied Skin"] = wearing 
 
     if fairy_choice == "Damage":
         col_names = ['% Perf', 'Crit %', 'Crit Dmg', 'Health', melee_bad, 'Double', 'Speed'] 
@@ -743,7 +905,6 @@ if Clicked:
     # Loop through columns 1 to 5 to combine raw and scaled values
     for i, col_name in enumerate(col_names[1:], start=1):
         raw_vals = SubN[:, i]
-        print(SubV[:, i]) 
         scaled_vals = SubV[:, i]
     
     # Combine them into a "Raw / Scaled" string format
@@ -816,7 +977,7 @@ if Clicked:
     )
 
     if fairy_choice == "5th hit boost":
-        st.write("This DPS value is the average over the 5 hits from the fairies boost. The first 4 hits will be 70% of the average, and the 5th is 2.22x the average")
+        st.write("This DPS value is the average over the 5 hits from the fairies boost. The first 4 hits will be 69.4% of the average, and the 5th is 2.22x the average")
     elif fairy_choice == "Shield":
         st.write("This assumes 4 slots for skill cooldown used.")
 
@@ -824,6 +985,187 @@ if Clicked:
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 10.19, the max achievable by an 84% perfect, melee shielding fairy build.")
     elif fairy_shield == "Mixed" and melee_bad == "Ranged":
         st.write("A minimum acceptable DPS vs the crit shielded fairy has been set to 5.26, the max achievable by an 84% perfect, ranged shielding fairy build." )
+
+
+
+    st.markdown("### SANDBOX / Compare Your Current Build")
+    st.write("Do you want to compare a build? Either slide values or enter your substats below:")
+
+
+    damage_max = 270.0 if fairy_choice == "Damage" else 180.0
+    type_damage_max = 600.0 if melee_bad == "Melee" else 180.0
+
+ 
+    crit_chance = synced_stat_input("Crit Chance", "crit_chance", max_val=100.0)
+
+    crit_damage = synced_stat_input("Crit Damage", "crit_damage", max_val=960.0)
+
+    damage = synced_stat_input("Damage", "damage", max_val=damage_max)
+
+    type_damage = synced_stat_input(f"{melee_bad} Damage", "ranged_damage", max_val=type_damage_max)
+
+    double_chance = synced_stat_input("Double Chance", "double_stat", max_val=100.0)
+
+    attack_speed = synced_stat_input("Attack Speed", "attack_speed", max_val=480.0)
+
+    lifesteal = synced_stat_input("Lifesteal", "Lifesteal", max_val=240.0)
+
+  # --- Optional Boxes Below ---
+    single_hit_damage = st.number_input(
+        "Single hit damage in-game (Optional)",
+        value=0.0,
+        help="Enter your observed in-game damage to get your exact DPS."
+    ) 
+    user_health = st.number_input(
+        "Health in-game (Optional)",
+        value=0.0,
+        help="Enter your observed in-game health to get your exact regen."
+    ) 
+
+    cc_dp = get_dp_config(crit_chance)
+    cd_dp = get_dp_config(crit_damage) 
+    dmg_dp = get_dp_config(damage) 
+    t_dmg_dp = get_dp_config(type_damage) 
+    dc_dp = get_dp_config(double_chance) 
+    as_dp = get_dp_config(attack_speed)
+    
+    if attack_speed>0:
+        user_B = workable_breakpoints[:,0]<attack_speed
+        user_C = workable_breakpoints[user_B,1:3]
+        user_single = user_C[-1,0]
+        user_double = user_C[-1,1]
+    else:
+        user_single = workable_breakpoints[0,1]
+        user_double = workable_breakpoints[0,2] 
+    user_APS=(1-double_chance/100)/user_single + (2*double_chance/100)/user_double
+
+    crit_hit_dmg = (crit_damage + 120)/100
+    cchdmg_dp = get_dp_config(crit_hit_dmg) 
+    crit_multi = crit_chance/100 * crit_hit_dmg + 1 - crit_chance/100 
+    mira_crit = crit_hit_dmg * 0.3
+    mira_multi = crit_chance/100 * mira_crit + 1 - crit_chance/100 
+    if fairy_choice == "5th hit boost":
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS * 1.44
+        user_miraDPS_multi = mira_multi * (1+damage/100) * (1+type_damage/100) * user_APS * 1.44
+    else:
+        user_DPS_multi = crit_multi * (1+damage/100) * (1+type_damage/100) * user_APS 
+        user_miraDPS_multi = mira_multi * (1+damage/100) * (1+type_damage/100) * user_APS  
+    metric2 = f"{user_miraDPS_multi:.2f}".rstrip("0").rstrip(".")
+    delta2 = 100*(user_miraDPS_multi / optimal_dps_2 - 1)
+    if abs(delta2) < 0.01:
+        delta2=0
+
+
+    writeup = f"With an attack speed of {attack_speed:.{as_dp}f}%, your build's single attack cycle is {user_single:.1f}s and"
+
+    if double_chance > 0:
+        writeup += f" your double attack cycle will take {user_double:.1f}s. With your double chance at {double_chance:.{dc_dp}f}%"
+
+    writeup += f" your average number of attacks per second will be {user_APS:.2f}."
+
+    st.write(writeup) 
+
+    if crit_chance > 0:
+        writeup2 = f"Your crit hits will be {crit_hit_dmg:.2f}".rstrip("0").rstrip(".")
+        writeup2 += f"× your "
+        if single_hit_damage>0:
+            crits = single_hit_damage*crit_hit_dmg
+            crits_dp = get_dp_config(crits) 
+            writeup2 += f"{single_hit_damage:g}dmg regular hits, dealing {crits:.{crits_dp}f} damage."
+            if fairy_choice == "5th hit boost":
+                lora_crit = crits*3.2
+                lora_crit_dp = get_dp_config(lora_crit) 
+                writeup2 += f" Lora will boost your 5th hit, if that is a critical hit it will be {lora_crit:.{lora_crit_dp}f}dmg."
+        elif fairy_choice == "5th hit boost":
+            lora_0 = crit_hit_dmg * 3.2
+            writeup2 += f"regular hits. If your boosted 5th hit is a critical hit, it will be {lora_0:.2f}".rstrip("0").rstrip(".")
+            writeup2 += "× your regular hits."
+        else:
+            writeup2 += "regular hits."
+            
+        st.write(writeup2)
+
+    base_dmg = single_hit_damage / (1+damage/100) / (1+type_damage/100) 
+    if single_hit_damage>0 and (damage>0 or type_damage>0):
+        base_dmg_dp = get_dp_config(base_dmg) 
+        writeup3 = f"Your damage multipliers mean your build's base damage is {base_dmg:.{base_dmg_dp}f}dmg."
+        st.write(writeup3)
+
+
+    writeup4 = "Your build's specific DPS multiplier is **" 
+    metric1 = f"{user_DPS_multi:.2f}".rstrip("0").rstrip(".")
+    delta1 = 100*(user_DPS_multi / optimal_dps_1 - 1)
+    writeup4 += metric1
+    if abs(delta1) < 0.01:
+        delta1=0
+    else:
+        writeup4 += f", a change of {delta1:.2g}% compared to the 84% perfect build"
+
+    if single_hit_damage > 0:
+        user_dps = base_dmg * user_DPS_multi
+        user_dps_dp = get_dp_config(user_dps) 
+        writeup4 += f"**, and your in-game DPS will be {user_dps:.{user_dps_dp}f}"
+    else:
+        writeup4 +="**." 
+
+    st.write(writeup4)
+
+    if crit_chance > 0:
+        
+        mira_crit_dp = get_dp_config(mira_crit)
+        writeup5 = f"Against a level 20 Mira, your crit hits will be lowered to {mira_crit:.{mira_crit_dp}f}× your base hits"
+        if single_hit_damage > 0:
+            mira_crits = crits * 0.3
+            mira_crits_dp = get_dp_config(mira_crits)
+            writeup5 += f", being {mira_crits:.{mira_crits_dp}f}"
+        writeup5 += ". Your DPS against these enemies will be **" 
+        
+        writeup5 += metric2
+        writeup5 += "**."
+        st.write(writeup5)
+
+    if N_ls > 0:
+        if user_health == 0 or single_hit_damage == 0:
+            build_regen_s = lifesteal * user_DPS_multi / 40
+            build_regen_h = build_regen_s / user_APS
+            writeup6 = f"Against regular opponents, your lifesteal will regenerate {build_regen_s:.1f}% of your health per second,"
+            writeup6 += f" with the average hit recovering {build_regen_h:.1f}% of your health."
+            if crit_chance > 0:
+                build_regen_s_Mira = lifesteal * user_miraDPS_multi / 40
+                build_regen_h_Mira = build_regen_s_Mira / user_APS
+                writeup6 += f" Against Mira, this is lowered to healing {build_regen_s_Mira:.1f}% health per second, and {build_regen_h_Mira:.1f}% per average hit."
+            if fairy_choice == "Damage":
+                writeup6 += "With Tira, your health is boosted, so you will receive a lower % of your health in recovery from lifesteal. If you enter your in-game values for damage and health we can calculate exact percentages for recovery."
+
+        else:
+            recovery_s = lifesteal * user_dps / (user_health * 5)
+            recovery_h = recovery_s / user_APS
+            writeup6 = f"With your in-game values of damage and health, you should recover {recovery_s:.1f}% of your health per second in PvP, with the average hit recovering {recovery_h:.1f}% health."
+            if crit_chance > 0:
+                recovery_s_Mira = lifesteal * base_dmg * user_miraDPS_multi / (user_health * 5)
+                recovery_h_Mira = recovery_s_Mira / user_APS
+                writeup6 += f" Against a lvl20 Mira, this drops to recovering {recovery_s_Mira:.1f}% health per second, and the average hit recovering {recovery_h_Mira:.1f}%."
+
+
+        st.write(writeup6)
+
+
+
+
+
+
+
+
+
+    l_metric, r_metric = st.columns(2, wrap=False)
+    with l_metric:
+        st.metric(label="DPS", value=metric1, delta=f"{delta1:.2g}%", border=True)
+    if ideal_build["crit_chance"] > 0 or crit_chance > 0:
+        with r_metric:
+            st.metric(label="DPS vs Mira", value=metric2, delta=f"{delta2:.2g}%", border=True)
+
+
+
 
 
     st.divider()
@@ -847,6 +1189,7 @@ st.markdown(
 )
 
     
+print(st.session_state.clicked, flush=True) 
 
 
 
